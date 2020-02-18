@@ -13,6 +13,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <LinearLayout
@@ -116,26 +118,19 @@
                     android:id="@+id/restaurat_type"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/pridi_extralight"
                     android:gravity="center|left"
                     android:text="@string/restaurant_type"
                     android:textSize="18sp"
                     android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/button6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/blueWhite"
-                    android:fontFamily="@font/pridi_extralight"
-                    android:text="Button" />
             </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
                 android:background="#FFFFFF">
 
                 <TableRow
@@ -144,6 +139,7 @@
 
                     <CheckBox
                         android:id="@+id/cafe"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -152,6 +148,7 @@
 
                     <CheckBox
                         android:id="@+id/coffee_tea"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -165,6 +162,7 @@
 
                     <CheckBox
                         android:id="@+id/riverside"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -173,6 +171,7 @@
 
                     <CheckBox
                         android:id="@+id/karaoke"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -186,6 +185,7 @@
 
                     <CheckBox
                         android:id="@+id/clubs"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -194,6 +194,7 @@
 
                     <CheckBox
                         android:id="@+id/pub"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -207,6 +208,7 @@
 
                     <CheckBox
                         android:id="@+id/wine_bar"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -215,6 +217,7 @@
 
                     <CheckBox
                         android:id="@+id/Late_night_rice"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -228,6 +231,7 @@
 
                     <CheckBox
                         android:id="@+id/vegeterian"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -236,6 +240,7 @@
 
                     <CheckBox
                         android:id="@+id/hotel_buffet"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -249,6 +254,7 @@
 
                     <CheckBox
                         android:id="@+id/rooftop"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -257,6 +263,7 @@
 
                     <CheckBox
                         android:id="@+id/izakaya"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -276,7 +283,7 @@
                     android:id="@+id/food_type"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/pridi_extralight"
                     android:gravity="center|left"
@@ -284,18 +291,12 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/button7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/blueWhite"
-                    android:fontFamily="@font/pridi_extralight"
-                    android:text="Button" />
             </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
                 android:background="#FFFFFF">
 
                 <TableRow
@@ -304,6 +305,7 @@
 
                     <CheckBox
                         android:id="@+id/dessert"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -312,6 +314,7 @@
 
                     <CheckBox
                         android:id="@+id/alacarte"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -326,6 +329,7 @@
 
                     <CheckBox
                         android:id="@+id/seafood"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -334,6 +338,7 @@
 
                     <CheckBox
                         android:id="@+id/steak"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -347,6 +352,7 @@
 
                     <CheckBox
                         android:id="@+id/iceCream"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -355,6 +361,7 @@
 
                     <CheckBox
                         android:id="@+id/bakery_cake"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -368,6 +375,7 @@
 
                     <CheckBox
                         android:id="@+id/bbq"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -376,6 +384,7 @@
 
                     <CheckBox
                         android:id="@+id/shabu"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -389,6 +398,7 @@
 
                     <CheckBox
                         android:id="@+id/buffet"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -397,6 +407,7 @@
 
                     <CheckBox
                         android:id="@+id/cleanFood"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -410,6 +421,7 @@
 
                     <CheckBox
                         android:id="@+id/thai_bbq"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -418,6 +430,7 @@
 
                     <CheckBox
                         android:id="@+id/pizza"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -431,6 +444,7 @@
 
                     <CheckBox
                         android:id="@+id/sushi"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -439,6 +453,7 @@
 
                     <CheckBox
                         android:id="@+id/burger"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -453,6 +468,7 @@
 
                     <CheckBox
                         android:id="@+id/ramen"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -461,6 +477,7 @@
 
                     <CheckBox
                         android:id="@+id/dimsum"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -474,6 +491,7 @@
 
                     <CheckBox
                         android:id="@+id/vegan"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -482,6 +500,7 @@
 
                     <CheckBox
                         android:id="@+id/vegeterian2"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -501,7 +520,7 @@
                     android:id="@+id/atmosphere"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="20dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/pridi_extralight"
                     android:gravity="left"
@@ -509,17 +528,13 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/button8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/blueWhite"
-                    android:text="Button" />
             </LinearLayout>
 
             <TableLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:background="#FFFFFF">
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -527,6 +542,7 @@
 
                     <CheckBox
                         android:id="@+id/original"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -535,6 +551,7 @@
 
                     <CheckBox
                         android:id="@+id/bar"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -548,6 +565,7 @@
 
                     <CheckBox
                         android:id="@+id/outdoor"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -556,6 +574,7 @@
 
                     <CheckBox
                         android:id="@+id/cozy"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -569,6 +588,7 @@
 
                     <CheckBox
                         android:id="@+id/family"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -577,6 +597,7 @@
 
                     <CheckBox
                         android:id="@+id/minimal"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -590,6 +611,7 @@
 
                     <CheckBox
                         android:id="@+id/warm"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -598,6 +620,7 @@
 
                     <CheckBox
                         android:id="@+id/child"
+                        style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

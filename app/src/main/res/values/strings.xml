@@ -16,7 +16,7 @@
     <string name="room">Private Room</string>
     <string name="bts">Near BTS</string>
     <string name="mrt">Near MRT</string>
-    <string name="numberOfSeats">Nuber of seats</string>
+    <string name="numberOfSeats">Number of seats</string>
     <string name="seats">seats</string>
     <string name="deposite">Deposite</string>
     <string name="btn">Confirm</string>
@@ -64,7 +64,7 @@
     <string name="child">Child</string>
     <string name="myPlace">My Place</string>
     <string name="search">Search</string>
-    <string name="home">home</string>
+    <string name="home">Home</string>
     <string name="account">Manage Account</string>
-    <string name="signout">signout</string>
+    <string name="signout">Signout</string>
 </resources>

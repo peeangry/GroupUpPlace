@@ -67,4 +67,8 @@
     <string name="home">Home</string>
     <string name="account">Manage Account</string>
     <string name="signout">Signout</string>
+    <string name="addImg">+ Add Picture</string>
+    <string name="name_title">Name :</string>
+    <string name="email">Email</string>
+    <string name="email_title">Email :</string>
 </resources>

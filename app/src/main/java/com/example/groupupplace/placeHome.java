@@ -44,6 +44,7 @@ public class placeHome extends AppCompatActivity implements NavigationView.OnNav
                 Log.d(TAG, "onNavigationItemSelected home: " + item.getTitle());
                 break;
             case R.id.menu_account:
+                goToManageAccount();
                 Log.d(TAG, "onNavigationItemSelected account: " + item.getTitle());
                 break;
             case R.id.menu_signout:
@@ -52,6 +53,11 @@ public class placeHome extends AppCompatActivity implements NavigationView.OnNav
         }
         drawerLayout.closeDrawers();
         return true;
+    }
+
+    public void goToManageAccount() {
+        Intent intent = new Intent(placeHome.this,register.class);
+        startActivity(intent);
     }
 
 }

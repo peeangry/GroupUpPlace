@@ -92,7 +92,6 @@
                         android:layout_weight="1"
                         android:ems="10"
                         android:focusable="auto"
-                        android:fontFamily="@font/pridi_extralight"
                         android:hint="@string/search_theme"
                         android:inputType="textPersonName" />
 
@@ -120,7 +119,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:fontFamily="sans-serif-medium"
                     android:gravity="center|left"
                     android:text="@string/restaurant_type"
                     android:textSize="18sp"
@@ -143,7 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
+                        android:gravity="center"
                         android:text="@string/cafe" />
 
                     <CheckBox
@@ -152,7 +151,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
+                        android:gravity="center"
                         android:text="@string/coffee_tea" />
                 </TableRow>
 
@@ -161,13 +160,13 @@
                     android:layout_height="match_parent">
 
                     <CheckBox
-                        android:id="@+id/riverside"
+                        android:id="@+id/pub"
                         style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
-                        android:text="@string/riverside" />
+                        android:gravity="center"
+                        android:text="@string/pub" />
 
                     <CheckBox
                         android:id="@+id/karaoke"
@@ -175,7 +174,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
+                        android:gravity="center"
                         android:text="@string/karaoke" />
                 </TableRow>
 
@@ -189,17 +188,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
+                        android:gravity="center"
                         android:text="@string/clubs" />
 
                     <CheckBox
-                        android:id="@+id/pub"
+                        android:id="@+id/riverside"
                         style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
-                        android:text="@string/pub" />
+                        android:gravity="center"
+                        android:text="@string/riverside" />
                 </TableRow>
 
                 <TableRow
@@ -212,16 +211,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
+                        android:gravity="center"
                         android:text="@string/wine_Bar" />
 
                     <CheckBox
-                        android:id="@+id/Late_night_rice"
+                        android:id="@+id/late_night_rice"
                         style="@style/frame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
+                        android:gravity="center"
                         android:text="@string/late_night_rice" />
                 </TableRow>
 
@@ -235,7 +234,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
+                        android:gravity="center"
                         android:text="@string/vegeterian" />
 
                     <CheckBox
@@ -244,7 +243,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
+                        android:gravity="center"
                         android:text="@string/hotel_buffet" />
                 </TableRow>
 
@@ -258,7 +257,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
+                        android:gravity="center"
                         android:text="@string/rooftop" />
 
                     <CheckBox
@@ -267,7 +266,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
+                        android:gravity="center"
                         android:text="@string/izakaya" />
                 </TableRow>
             </TableLayout>
@@ -285,7 +284,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:fontFamily="sans-serif-medium"
                     android:gravity="center|left"
                     android:text="@string/food_type"
                     android:textSize="18sp"
@@ -309,7 +308,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/dessert" />
 
                     <CheckBox
@@ -318,7 +316,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/alacarte" />
 
                 </TableRow>
@@ -333,7 +330,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/seafood" />
 
                     <CheckBox
@@ -342,7 +338,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/steak" />
                 </TableRow>
 
@@ -356,7 +351,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/iceCream" />
 
                     <CheckBox
@@ -365,7 +359,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/bakery_cake" />
                 </TableRow>
 
@@ -379,7 +372,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/bbq" />
 
                     <CheckBox
@@ -388,7 +380,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/shabu" />
                 </TableRow>
 
@@ -402,7 +393,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/buffet" />
 
                     <CheckBox
@@ -411,7 +401,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/cleanFood" />
                 </TableRow>
 
@@ -425,7 +414,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/thai_bbq" />
 
                     <CheckBox
@@ -434,7 +422,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/pizza" />
                 </TableRow>
 
@@ -448,7 +435,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/sushi" />
 
                     <CheckBox
@@ -457,7 +443,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/burger" />
 
                 </TableRow>
@@ -472,7 +457,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/ramen" />
 
                     <CheckBox
@@ -481,7 +465,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/dimsum" />
                 </TableRow>
 
@@ -495,7 +478,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/vegan" />
 
                     <CheckBox
@@ -504,7 +486,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/vegeterian" />
                 </TableRow>
             </TableLayout>
@@ -522,7 +503,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:fontFamily="sans-serif-medium"
                     android:gravity="left"
                     android:text="@string/atmosphere_type"
                     android:textSize="18sp"
@@ -546,7 +527,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/original" />
 
                     <CheckBox
@@ -555,7 +535,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/bar" />
                 </TableRow>
 
@@ -569,7 +548,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/outdoor" />
 
                     <CheckBox
@@ -578,7 +556,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/cozy" />
                 </TableRow>
 
@@ -592,7 +569,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/family" />
 
                     <CheckBox
@@ -601,7 +577,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/minimal" />
                 </TableRow>
 
@@ -615,7 +590,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/warm" />
 
                     <CheckBox
@@ -624,7 +598,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/child" />
                 </TableRow>
 

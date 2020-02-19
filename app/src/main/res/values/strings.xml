@@ -71,4 +71,6 @@
     <string name="name_title">Name :</string>
     <string name="email">Email</string>
     <string name="email_title">Email :</string>
+    <string name="manage_calendar">Manage calendar</string>
+    <string name="import_calendar">import calendar event</string>
 </resources>

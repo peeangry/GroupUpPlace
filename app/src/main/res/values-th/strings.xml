@@ -71,4 +71,6 @@
     <string name="name_title">ชื่อ :</string>
     <string name="email">อีเมล</string>
     <string name="email_title">อีเมล :</string>
+    <string name="manage_calendar">จัดการปฏิทิน</string>
+    <string name="import_calendar">นำเข้าข้อมูลจากปฏิทิน</string>
 </resources>

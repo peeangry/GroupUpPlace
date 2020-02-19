@@ -47,6 +47,10 @@ public class placeHome extends AppCompatActivity implements NavigationView.OnNav
                 goToManageAccount();
                 Log.d(TAG, "onNavigationItemSelected account: " + item.getTitle());
                 break;
+            case R.id.menu_calendar:
+                goToManageCalendar();
+                Log.d(TAG,"onNavigationItemSelected calendar: " + item.getTitle());
+                break;
             case R.id.menu_signout:
                 Log.d(TAG, "onNavigationItemSelected signout: " + item.getTitle());
                 break;
@@ -56,6 +60,11 @@ public class placeHome extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void goToManageAccount() {
+        Intent intent = new Intent(placeHome.this,register.class);
+        startActivity(intent);
+    }
+
+    public void goToManageCalendar() {
         Intent intent = new Intent(placeHome.this,register.class);
         startActivity(intent);
     }

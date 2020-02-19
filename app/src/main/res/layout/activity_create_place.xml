@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="8"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:fontFamily="sans-serif"
                     android:hint="@string/name"
                     android:inputType="textPersonName" />
 
@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="8"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:fontFamily="sans-serif"
                     android:gravity="start|top"
                     android:hint="@string/details"
                     android:inputType="textMultiLine" />
@@ -136,9 +136,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:backgroundTint="@color/blueWhite"
-                    android:fontFamily="@font/pridi_extralight"
-                    android:text="@string/select_theme"
-                    android:onClick="selectThemePlace"/>
+                    android:fontFamily="sans-serif-medium"
+                    android:onClick="selectThemePlace"
+                    android:text="@string/select_theme" />
 
             </LinearLayout>
 
@@ -167,7 +167,7 @@
                         android:id="@+id/priceRange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/pridi_extralight"
+                        android:fontFamily="sans-serif"
                         android:text="@string/priceRange" />
                 </LinearLayout>
 
@@ -185,7 +185,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:text="@string/bath" />
 
@@ -213,7 +213,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="8"
-                    android:fontFamily="@font/pridi_extralight"
+                    android:fontFamily="sans-serif"
                     android:hint="@string/phone"
                     android:inputType="phone" />
 
@@ -269,7 +269,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@color/white"
-                android:fontFamily="@font/pridi_extralight"
                 android:text="@string/facility"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -290,7 +289,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/parking"
                         android:textSize="18sp" />
 
@@ -300,7 +298,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/wifi"
                         android:textSize="18sp" />
 
@@ -316,7 +313,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/credit"
                         android:textSize="18sp" />
 
@@ -326,7 +322,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/kids"
                         android:textSize="18sp" />
                 </TableRow>
@@ -341,7 +336,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/air"
                         android:textSize="18sp" />
 
@@ -351,7 +345,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/room"
                         android:textSize="18sp" />
                 </TableRow>
@@ -366,7 +359,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/bts"
                         android:textSize="18sp" />
 
@@ -376,7 +368,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/mrt"
                         android:textSize="18sp" />
                 </TableRow>
@@ -407,7 +398,6 @@
                         android:id="@+id/numberSeats"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/numberOfSeats" />
                 </LinearLayout>
 
@@ -425,7 +415,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:fontFamily="@font/pridi_extralight"
                     android:gravity="center"
                     android:text="@string/seats" />
 
@@ -456,7 +445,6 @@
                         android:id="@+id/deposite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/pridi_extralight"
                         android:text="@string/deposite" />
 
                 </LinearLayout>
@@ -480,8 +468,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
                 android:background="@color/classicBlue"
-                android:fontFamily="@font/pridi_extralight"
                 android:text="@string/btn"
+                android:onClick="backHome"
                 android:textColor="@color/white" />
 
         </LinearLayout>

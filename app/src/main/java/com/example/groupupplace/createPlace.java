@@ -11,7 +11,7 @@ import android.widget.Spinner;
 
 public class createPlace extends AppCompatActivity {
 
-    ImageButton SelectImageGallery;
+    //ImageButton SelectImageGallery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

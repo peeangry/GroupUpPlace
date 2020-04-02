@@ -73,4 +73,9 @@
     <string name="email_title">อีเมล :</string>
     <string name="manage_calendar">จัดการปฏิทิน</string>
     <string name="import_calendar">นำเข้าข้อมูลจากปฏิทิน</string>
+    <string name="custom">กำหนดเอง</string>
+    <string name="namePlace">ชื่อร้าน :</string>
+    <string name="descriptionPlace">รายละเอียด :</string>
+    <string name="rating">ระดับความชื่นชอบ :</string>
+    <string name="modify">แก้ไข</string>
 </resources>

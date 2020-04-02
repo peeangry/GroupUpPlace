@@ -73,4 +73,9 @@
     <string name="email_title">Email :</string>
     <string name="manage_calendar">Manage calendar</string>
     <string name="import_calendar">import calendar event</string>
+    <string name="custom">Custom</string>
+    <string name="namePlace">Name Place :</string>
+    <string name="descriptionPlace">Description :</string>
+    <string name="rating">Rating :</string>
+    <string name="modify">Modiify</string>
 </resources>

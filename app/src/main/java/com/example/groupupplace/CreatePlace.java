@@ -6,10 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 
-public class createPlace extends AppCompatActivity {
+public class CreatePlace extends AppCompatActivity {
 
     //ImageButton SelectImageGallery;
 
@@ -32,12 +31,12 @@ public class createPlace extends AppCompatActivity {
     }
 
     public void backHome(View v){
-        Intent in = new Intent(this,placeHome.class);
+        Intent in = new Intent(this, PlaceHome.class);
         startActivity(in);
     }
 
     public void selectThemePlace(View v){
-        Intent in = new Intent(this,theme.class);
+        Intent in = new Intent(this, Theme.class);
         startActivity(in);
     }
 }

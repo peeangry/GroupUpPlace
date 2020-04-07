@@ -3,7 +3,7 @@
     <string name="newPlace">สร้างสถานที่</string>
     <string name="name">ชื่อ</string>
     <string name="details">รายละเอียด</string>
-    <string name="select_theme">เลือกธีมงาน</string>
+    <string name="select_theme">กำหนดธีมงานสถานที่</string>
     <string name="priceRange">ราคาเฉลี่ยต่อคน</string>
     <string name="bath">บาท</string>
     <string name="phone">เบอร์โทรศัพท์</string>
@@ -78,4 +78,9 @@
     <string name="descriptionPlace">รายละเอียด :</string>
     <string name="rating">ระดับความชื่นชอบ :</string>
     <string name="modify">แก้ไข</string>
+    <string name="group_theme">กลุ่ม :</string>
+    <string name="classic">คลาสสิค</string>
+    <string name="waterFront">ริมแม่น้ำ</string>
+    <string name="sky">บนชั้นดาดฟ้า</string>
+    <string name="forkids">สำหรับเด็ก</string>
 </resources>

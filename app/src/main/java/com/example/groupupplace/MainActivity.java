@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         Snackbar.make(findViewById(R.id.textView), "SIGN OUT Success.", Snackbar.LENGTH_SHORT).show();
     }
     public void skipPlace(View v){
-        Intent in = new Intent(this,placeHome.class);
+        Intent in = new Intent(this, PlaceHome.class);
         startActivity(in);
     }
 }

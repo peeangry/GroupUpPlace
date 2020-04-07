@@ -13,7 +13,7 @@ import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class placeHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class PlaceHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private static final String TAG = "place";
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -25,11 +25,11 @@ public class placeHome extends AppCompatActivity implements NavigationView.OnNav
         setContentView(R.layout.activity_place_home);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.na_view);
-        navigationView.setNavigationItemSelectedListener(placeHome.this);
+        navigationView.setNavigationItemSelectedListener(PlaceHome.this);
         navigationView.bringToFront();
     }
     public void addplace(View v){
-        Intent in = new Intent(this,createPlace.class);
+        Intent in = new Intent(this, CreatePlace.class);
         startActivity(in);
     }
 
@@ -60,12 +60,12 @@ public class placeHome extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void goToManageAccount() {
-        Intent intent = new Intent(placeHome.this,register.class);
+        Intent intent = new Intent(PlaceHome.this, Register.class);
         startActivity(intent);
     }
 
     public void goToManageCalendar() {
-        Intent intent = new Intent(placeHome.this,register.class);
+        Intent intent = new Intent(PlaceHome.this, Register.class);
         startActivity(intent);
     }
 

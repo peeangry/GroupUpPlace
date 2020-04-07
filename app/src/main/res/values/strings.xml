@@ -78,4 +78,9 @@
     <string name="descriptionPlace">Description :</string>
     <string name="rating">Rating :</string>
     <string name="modify">Modiify</string>
+    <string name="group_theme">Group</string>
+    <string name="classic">Classic</string>
+    <string name="waterFront">Waterfront</string>
+    <string name="sky">rooftop</string>
+    <string name="forkids">For Kids</string>
 </resources>

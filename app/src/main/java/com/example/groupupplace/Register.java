@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class register extends AppCompatActivity {
+public class Register extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +15,7 @@ public class register extends AppCompatActivity {
     }
 
     public void backHome(View v){
-        Intent in = new Intent(this,placeHome.class);
+        Intent in = new Intent(this, PlaceHome.class);
         startActivity(in);
     }
 

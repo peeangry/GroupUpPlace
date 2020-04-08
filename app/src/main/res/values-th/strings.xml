@@ -83,4 +83,5 @@
     <string name="waterFront">ริมแม่น้ำ</string>
     <string name="sky">บนชั้นดาดฟ้า</string>
     <string name="forkids">สำหรับเด็ก</string>
+    <string name="alert">การแจ้งเตือน</string>
 </resources>

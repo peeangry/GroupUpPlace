@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void skipPlace(View v){
         Intent in = new Intent(this, PlaceHome.class);
+        in.putExtra("email","thanapatza2011@gmail.com");
         startActivity(in);
     }
 }

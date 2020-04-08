@@ -83,4 +83,6 @@
     <string name="waterFront">Waterfront</string>
     <string name="sky">rooftop</string>
     <string name="forkids">For Kids</string>
+    <string name="alert">Alert</string>
+
 </resources>

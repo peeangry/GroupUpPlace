@@ -110,6 +110,7 @@ public class PlaceHome extends AppCompatActivity implements NavigationView.OnNav
         item.setChecked(true);
         switch (item.getItemId()){
             case R.id.menu_home:
+                startActivity(getIntent());
                 Log.d(TAG, "onNavigationItemSelected home: " + item.getTitle());
                 break;
             case R.id.menu_account:

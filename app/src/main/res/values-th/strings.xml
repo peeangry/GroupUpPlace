@@ -84,4 +84,10 @@
     <string name="sky">บนชั้นดาดฟ้า</string>
     <string name="forkids">สำหรับเด็ก</string>
     <string name="alert">การแจ้งเตือน</string>
+    <string name="getCalen">ดึงข้อมูลจากปฏิทิน</string>
+    <string name="delCalen">ลบข้อมูลปฏิทินทั้งหมด</string>
+    <string name="time_morning">11:00 - 13:59</string>
+    <string name="time_late">14:00 - 16:59</string>
+    <string name="time_afternoon">17:00 - 19:59</string>
+    <string name="time_evening">20:00 - 23:59</string>
 </resources>

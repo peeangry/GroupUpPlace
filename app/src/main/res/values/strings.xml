@@ -84,5 +84,11 @@
     <string name="sky">rooftop</string>
     <string name="forkids">For Kids</string>
     <string name="alert">Alert</string>
+    <string name="getCalen">Get Calendar</string>
+    <string name="delCalen">Delete Calendar All</string>
+    <string name="time_morning">11:00 - 13:59</string>
+    <string name="time_late">14:00 - 16:59</string>
+    <string name="time_afternoon">17:00 - 19:59</string>
+    <string name="time_evening">20:00 - 23:59</string>
 
 </resources>

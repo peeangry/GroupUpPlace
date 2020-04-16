@@ -49,13 +49,15 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
     TextView hEmail;
     String name = "", id = "", email = "";
     ProgressDialog progressDialog ;
-
+    ImageButton btnAlert ,btnCreatePlace;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_home);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.na_view);
+        btnAlert = findViewById(R.id.btn_notification);
+        btnCreatePlace = findViewById(R.id.btn_newGroup);
         navigationView.setNavigationItemSelectedListener(HomePlace.this);
         navigationView.bringToFront();
         View v = navigationView.getHeaderView(0);
@@ -99,6 +101,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
+        Log.d("footer", "email " + email+" name " + name+" id " + id);
 
         //firebase signin
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -106,8 +109,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        ImageButton btnNoti = findViewById(R.id.btn_notification);
-        btnNoti.setOnClickListener(new View.OnClickListener() {
+        btnAlert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(HomePlace.this,HomeAlert.class);
@@ -116,7 +118,22 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 startActivity(in);
             }
         });
+        btnCreatePlace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(HomePlace.this, CreatePlace.class);
+                in.putExtra("id", id + "");
+                in.putExtra("email", email + "");
+                startActivity(in);
+            }
+        });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public void addplace(View v){
         Intent in = new Intent(HomePlace.this, CreatePlace.class);
         in.putExtra("id", id+"");
@@ -154,15 +171,18 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void goToManageAccount() {
-        Intent intent = new Intent(HomePlace.this, Manage_Account.class);
-        intent.putExtra("email", email+"");
-        intent.putExtra("name", name+"");
-        startActivity(intent);
+        Intent in = new Intent(HomePlace.this, Manage_Account.class);
+        in.putExtra("id", id+"");
+        in.putExtra("name", name+"");
+        in.putExtra("email", email+"");
+        startActivity(in);
     }
 
     public void goToManageCalendar() {
-        Intent intent = new Intent(HomePlace.this, ManageCalendar.class);
-        startActivity(intent);
+        Intent in = new Intent(HomePlace.this, ManageCalendar.class);
+        in.putExtra("id", id + "");
+        in.putExtra("email", email + "");
+        startActivity(in);
     }
     public void signout() {
         FirebaseAuth.getInstance().signOut();
@@ -175,7 +195,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         Log.d("footer", "email " + email);
-        String url = "http://www.groupupdb.com/android/getuser.php";
+        String url = "http://www.groupupdb.com/android/getuserplace.php";
         url += "?sEmail=" + email;//รอเอาIdหรือ email จากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -188,7 +208,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
                                 map.put("user_id", c.getString("user_id"));
-                                map.put("user_names", c.getString("user_names"));
+                                map.put("user_name", c.getString("user_name"));
                                 map.put("user_email", c.getString("user_email"));
                                 map.put("user_photo", c.getString("user_photo"));
                                 MyArrList.add(map);
@@ -197,11 +217,13 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
 //                            Log.d("footer", MyArrList.get(0).get("user_id"));
 //                            Log.d("footer", MyArrList.get(0).get("user_names"));
 //                            Log.d("footer", MyArrList.get(0).get("user_email"));
-                            hName.setText(MyArrList.get(0).get("user_names"));
-                            name = MyArrList.get(0).get("user_names");
                             id = MyArrList.get(0).get("user_id");
-                            hEmail.setText(MyArrList.get(0).get("user_email"));
+                            email = MyArrList.get(0).get("user_email");
+                            name =MyArrList.get(0).get("user_name");
+                            hName.setText(name);
+                            hEmail.setText(email);
 //                            writeFile(id,name,email);
+                            Log.d("footer", "email " + email+" name " + name+" id " + id);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

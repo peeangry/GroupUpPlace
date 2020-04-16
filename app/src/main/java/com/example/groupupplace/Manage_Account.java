@@ -22,6 +22,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -45,8 +52,10 @@ public class Manage_Account extends AppCompatActivity {
     Bitmap bitmap;
     boolean check = true;
     ProgressDialog progressDialog ;
-    String ServerUploadPath ="http://www.groupupdb.com/android/registerwithimages.php" ;
-    String name ,email;
+    String ServerUploadPath ="http://www.groupupdb.com/android/manageaccountplace.php" ;
+    String name ,email,id;
+    Button btn_con;
+    EditText txtName,txtEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +63,11 @@ public class Manage_Account extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         name = getIntent().getStringExtra("name");
         email =getIntent().getStringExtra("email");
+        id = getIntent().getStringExtra("id");
+        txtEmail = findViewById(R.id.email);
+        txtName = findViewById(R.id.name);
         SelectImageGallery = findViewById(R.id.addPicture);
+        btn_con = findViewById(R.id.account_confirm);
         SelectImageGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,14 +94,17 @@ public class Manage_Account extends AppCompatActivity {
         edt_email.setFocusable(false);
         edt_email.setEnabled(false);
 
-        final Button bcon = (Button)findViewById(R.id.account_confirm);
-        bcon.setOnClickListener(new View.OnClickListener() {
+
+        btn_con.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                ImageUploadToServerFunction();
-                Intent intent = new Intent(Manage_Account.this, HomePlace.class);
-                intent.putExtra("email", email+"");
-                startActivity(intent);
+                ImageUploadToServerFunction();
+                Intent in = new Intent(Manage_Account.this, HomePlace.class);
+                in.putExtra("id", id+"");
+                in.putExtra("name", name+"");
+                in.putExtra("email", email+"");
+                startActivity(in);
+
             }
         });
     }
@@ -173,61 +189,97 @@ public class Manage_Account extends AppCompatActivity {
 
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+        if (bitmap==null){
+            class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
 
-        byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
+                @Override
+                protected void onPreExecute() {
 
-        final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
+                    super.onPreExecute();
 
+                    progressDialog = ProgressDialog.show(Manage_Account.this,"Image is Uploading","Please Wait",false,false);
+                }
 
-        class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
-            final EditText txtName = findViewById(R.id.name);
-            final EditText txtEmail = findViewById(R.id.email);
-            String name =txtName.getText().toString();
-            String email =txtEmail.getText().toString();
-            @Override
-            protected void onPreExecute() {
+                @Override
+                protected void onPostExecute(String string1) {
 
-                super.onPreExecute();
+                    super.onPostExecute(string1);
 
-                progressDialog = ProgressDialog.show(Manage_Account.this,"Image is Uploading","Please Wait",false,false);
+                    // Dismiss the progress dialog after done uploading.
+                    progressDialog.dismiss();
+
+                    // Printing uploading success message coming from server on android app.
+                    Toast.makeText(Manage_Account.this,string1,Toast.LENGTH_LONG).show();
+
+                    // Setting image as transparent after done uploading.
+                    SelectImageGallery.setImageResource(android.R.color.transparent);
+
+                }
+
+                @Override
+                protected String doInBackground(Void... params) {
+                    String name =txtName.getText().toString();
+                    updateNoimage(name);
+                    return "finish update name";
+                }
             }
+            AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+            AsyncTaskUploadClassOBJ.execute();
 
-            @Override
-            protected void onPostExecute(String string1) {
+        }else {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+            byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
+            final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
+            class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+                final EditText txtName = findViewById(R.id.name);
+                final EditText txtEmail = findViewById(R.id.email);
+                String name =txtName.getText().toString();
+                String email =txtEmail.getText().toString();
+                @Override
+                protected void onPreExecute() {
 
-                super.onPostExecute(string1);
+                    super.onPreExecute();
 
-                // Dismiss the progress dialog after done uploading.
-                progressDialog.dismiss();
+                    progressDialog = ProgressDialog.show(Manage_Account.this,"Image is Uploading","Please Wait",false,false);
+                }
 
-                // Printing uploading success message coming from server on android app.
-                Toast.makeText(Manage_Account.this,string1,Toast.LENGTH_LONG).show();
+                @Override
+                protected void onPostExecute(String string1) {
 
-                // Setting image as transparent after done uploading.
-                SelectImageGallery.setImageResource(android.R.color.transparent);
+                    super.onPostExecute(string1);
 
+                    // Dismiss the progress dialog after done uploading.
+                    progressDialog.dismiss();
+
+                    // Printing uploading success message coming from server on android app.
+                    Toast.makeText(Manage_Account.this,string1,Toast.LENGTH_LONG).show();
+
+                    // Setting image as transparent after done uploading.
+                    SelectImageGallery.setImageResource(android.R.color.transparent);
+
+                }
+
+                @Override
+                protected String doInBackground(Void... params) {
+
+                    ImageProcessClass imageProcessClass = new ImageProcessClass();
+
+                    HashMap<String,String> HashMapParams = new HashMap<String,String>();
+                    HashMapParams.put("name", name);
+                    HashMapParams.put("email", email);
+                    HashMapParams.put("photo", ConvertImage);
+                    Log.d("hashmap",HashMapParams.toString());
+
+                    String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
+
+                    return FinalData;
+                }
             }
-
-            @Override
-            protected String doInBackground(Void... params) {
-
-                ImageProcessClass imageProcessClass = new ImageProcessClass();
-
-                HashMap<String,String> HashMapParams = new HashMap<String,String>();
-                HashMapParams.put("name", name);
-                HashMapParams.put("email", email);
-                HashMapParams.put("photo", ConvertImage);
-                Log.d("hashmap",HashMapParams.toString());
-
-                String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
-
-                return FinalData;
-            }
+            AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+            AsyncTaskUploadClassOBJ.execute();
         }
-        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
 
-        AsyncTaskUploadClassOBJ.execute();
+
     }
 
     public class ImageProcessClass{
@@ -323,8 +375,31 @@ public class Manage_Account extends AppCompatActivity {
 
     public void backHome(View v){
         Intent in = new Intent(this, HomePlace.class);
+        in.putExtra("id", id+"");
+        in.putExtra("name", name+"");
         in.putExtra("email", email+"");
         startActivity(in);
+
+    }
+    public void updateNoimage(String name) {
+        String url = "http://www.groupupdb.com/android/managefriendplacenoimage.php";
+        url += "?name=" + name;
+        url += "&email=" + email;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Toast.makeText(HomeHead_Appointment.this, "Add Friend Complete", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 
 }

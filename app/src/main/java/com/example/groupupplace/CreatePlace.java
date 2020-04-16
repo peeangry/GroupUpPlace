@@ -9,14 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class CreatePlace extends AppCompatActivity {
-
-    //ImageButton SelectImageGallery;
-
+    String id="",email="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_place);
-
+        email = getIntent().getStringExtra("email");
+        id = getIntent().getStringExtra("id");
         Spinner sp  = findViewById(R.id.spin_priceRange);
         ArrayAdapter<CharSequence> adp = ArrayAdapter.createFromResource(this,R.array.priceRange,android.R.layout.simple_spinner_item);
         adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -31,12 +30,16 @@ public class CreatePlace extends AppCompatActivity {
     }
 
     public void backHome(View v){
-        Intent in = new Intent(this, HomePlace.class);
+        Intent in = new Intent(CreatePlace.this, HomePlace .class);
+        in.putExtra("id", id + "");
+        in.putExtra("email", email + "");
         startActivity(in);
     }
 
     public void selectThemePlace(View v){
-        Intent in = new Intent(this, Theme.class);
+        Intent in = new Intent(CreatePlace.this, HomePlace .class);
+        in.putExtra("id", id + "");
+        in.putExtra("email", email + "");
         startActivity(in);
     }
 }

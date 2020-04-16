@@ -12,11 +12,13 @@ public class HomeAlert extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_alert);
+        email = getIntent().getStringExtra("email");
+        id = getIntent().getStringExtra("id");
     }
     public void backHome(View v) {
-        Intent in = new Intent(this, HomePlace.class);
-        in.putExtra("email", email+"");
+        Intent in = new Intent(HomeAlert.this, HomePlace .class);
+        in.putExtra("id", id + "");
+        in.putExtra("email", email + "");
         startActivity(in);
-//        addNotification();
     }
 }

@@ -14,6 +14,7 @@ public class HomeAlert extends AppCompatActivity {
         setContentView(R.layout.activity_home_alert);
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
+        Extend_MyHelper.checkInternetLost(this);
     }
     public void backHome(View v) {
         Intent in = new Intent(HomeAlert.this, HomePlace .class);

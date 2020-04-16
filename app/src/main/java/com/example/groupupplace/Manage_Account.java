@@ -68,6 +68,7 @@ public class Manage_Account extends AppCompatActivity {
         txtName = findViewById(R.id.name);
         SelectImageGallery = findViewById(R.id.addPicture);
         btn_con = findViewById(R.id.account_confirm);
+        Extend_MyHelper.checkInternetLost(this);
         SelectImageGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

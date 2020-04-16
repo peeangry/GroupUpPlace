@@ -129,6 +129,7 @@ public class ManageCalendar extends AppCompatActivity {
         cbLate = findViewById(R.id.cb_time2);
         cbAfternoon = findViewById(R.id.cb_time3);
         cbEvening = findViewById(R.id.cb_time4);
+        Extend_MyHelper.checkInternetLost(this);
         cbMorninig.setText(R.string.time_morning);
         cbLate.setText(R.string.time_late);
         cbAfternoon.setText(R.string.time_afternoon);

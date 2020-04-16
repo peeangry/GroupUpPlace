@@ -1,10 +1,5 @@
 package com.example.groupupplace;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +9,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -64,6 +63,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
         email = getIntent().getStringExtra("email");
+        Extend_MyHelper.checkInternetLost(this);
         progressDialog = new ProgressDialog(HomePlace.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");

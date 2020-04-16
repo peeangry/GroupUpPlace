@@ -51,6 +51,7 @@ public class Theme extends AppCompatActivity {
         nameE = getIntent().getStringExtra("nameEvent");
         monS = getIntent().getStringExtra("mStart");
         monE = getIntent().getStringExtra("mEnd");
+        Extend_MyHelper.checkInternetLost(this);
         lShort =findViewById(R.id.linear_shortcut);
         lCus =findViewById(R.id.linear_custom);
         b = findViewById(R.id.btn_customTheme);

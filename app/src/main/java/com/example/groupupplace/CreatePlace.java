@@ -84,12 +84,11 @@ public class CreatePlace extends AppCompatActivity {
         btn_img3 = findViewById(R.id.image3);
         btn_img4 = findViewById(R.id.image4);
         btn_img5 = findViewById(R.id.image5);
-
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
         name = getIntent().getStringExtra("name");
         factlity = new ArrayList<>();
-
+        Extend_MyHelper.checkInternetLost(this);
         ArrayAdapter<CharSequence> adp = ArrayAdapter.createFromResource(this, R.array.priceRange, android.R.layout.simple_spinner_item);
         adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_price.setAdapter(adp);
@@ -739,6 +738,7 @@ public class CreatePlace extends AppCompatActivity {
     public void addPlaceToDB() {
         Log.d("cb", factlity.toString());
     }
+
     public void createNoImage() {
         Log.d("cb", factlity.toString());
     }

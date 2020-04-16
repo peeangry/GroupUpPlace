@@ -90,4 +90,8 @@
     <string name="time_late">14:00 - 16:59</string>
     <string name="time_afternoon">17:00 - 19:59</string>
     <string name="time_evening">20:00 - 23:59</string>
+    <string name="msg_subscribe_failed">Subscribe To failed</string>
+    <string name="msg_subscribed">Subscribed to weather topic</string>
+    <string name="default_notification_channel_name">Channel ID</string>
+    <string name="fcm_message">fcm_message</string>
 </resources>

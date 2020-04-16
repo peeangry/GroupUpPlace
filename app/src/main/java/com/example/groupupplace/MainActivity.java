@@ -3,12 +3,22 @@ package com.example.groupupplace;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -23,6 +33,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -30,39 +43,62 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
     String customer;
-    TextView txt;
     SignInButton signInButton;
+    String name ="",email="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txt = findViewById(R.id.textView2);
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-
-
-        mAuth = FirebaseAuth.getInstance();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
         signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create channel to show notifications.
+            String channelId  = getString(R.string.default_notification_channel_id);
+            String channelName = getString(R.string.default_notification_channel_name);
+            NotificationManager notificationManager =
+                    getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(new NotificationChannel(channelId,
+                    channelName, NotificationManager.IMPORTANCE_LOW));
+        }
+        // [START handle_data_extras]
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                Log.d(TAG, "Key: " + key + " Value: " + value);
             }
-        });
-    }
-    public void onClick(View v) {
-        switch (v.getId()) {
+        }
+        // [END handle_data_extras]
+        if (mAuth.getCurrentUser()!= null){
+//            Log.d("footer",mAuth.getCurrentUser().getEmail());
+            Intent intent = new Intent(MainActivity.this, PlaceHome.class);
+            intent.putExtra("email",mAuth.getCurrentUser().getEmail()+"");
+            startActivity(intent);
+        }else {
+            signInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mAuth.getCurrentUser()!= null){
+//                        startSubscribe();
+//                        getTokenRetieve();
+                        Intent intent = new Intent(MainActivity.this, PlaceHome.class);
+                        intent.putExtra("email",mAuth.getCurrentUser().getEmail()+"");
+                        startActivity(intent);
+                    }else {
+                        signIn();
+                    }
 
-            case R.id.sign_out_button:
-                signout();
-                break;
+                }
+            });
         }
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -74,9 +110,6 @@ public class MainActivity extends AppCompatActivity {
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
-//        Intent intent = new Intent(MainActivity.this,ConnectDB.class);
-//        intent.putExtra("data",customer);
-//        startActivity(intent);
 
     }
 
@@ -118,40 +151,47 @@ public class MainActivity extends AppCompatActivity {
                             customer = user.getUid() + " " + user.getEmail() + " " + user.getDisplayName() + " " + user.getProviderId() + " ";
 //                            customer = user.getDisplayName()+"/"+user.getEmail()+"/"+user.getPhoneNumber()+"/"+user.getUid();
 //                            txt.setText(customer);
-                            updateUI(customer);
+                            name = user.getDisplayName();
+                            email = user.getEmail();
+                            saveData();
+//                            updateUI(customer);
+                            Intent intent = new Intent(MainActivity.this, PlaceHome.class);
+                            intent.putExtra("email",email);
+                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.textView), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI(null);
+//                            updateUI(null);
                         }
                     }
                 });
     }
 
-    private void updateUI(String account) {
-        if (account != null) {
-//            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-
-//                Intent intent = new Intent(MainActivity.this, ConnectDB.class);
-            Snackbar.make(findViewById(R.id.textView), "account pass", Snackbar.LENGTH_SHORT).show();
-            txt.setText(account);
-//                intent.putExtra("data", customer);
-//                startActivity(intent);
-
-//            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
-        } else {
-//            mStatusTextView.setText(R.string.signed_out);
-            Snackbar.make(findViewById(R.id.textView), "account = null", Snackbar.LENGTH_SHORT).show();
-//            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-
-//            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
-        }
+    public boolean saveData() {
+        String url = "http://www.groupupdb.com/android/createuserplace.php";
+        url += "?sName=" + name;
+        url += "&sEmail=" + email;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("Log", "Volley::onResponse():" + response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+        return true;
     }
 
     public void signout() {
         FirebaseAuth.getInstance().signOut();
-        txt.setText("");
         mGoogleSignInClient.revokeAccess();
         Snackbar.make(findViewById(R.id.textView), "SIGN OUT Success.", Snackbar.LENGTH_SHORT).show();
     }
@@ -159,5 +199,45 @@ public class MainActivity extends AppCompatActivity {
         Intent in = new Intent(this, PlaceHome.class);
         in.putExtra("email","thanapatza2011@gmail.com");
         startActivity(in);
+    }
+    public void startSubscribe(){
+        Log.d(TAG, "Subscribing to weather topic");
+        // [START subscribe_topics]
+        FirebaseMessaging.getInstance().subscribeToTopic("weather")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = getString(R.string.msg_subscribed);
+                        if (!task.isSuccessful()) {
+                            msg = getString(R.string.msg_subscribe_failed);
+                        }
+                        Log.d(TAG, msg);
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+        // [END subscribe_topics]
+    }
+    public void getTokenRetieve(){
+        // Get token
+        // [START retrieve_current_token]
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d(TAG, msg);
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+        // [END retrieve_current_token]
     }
 }

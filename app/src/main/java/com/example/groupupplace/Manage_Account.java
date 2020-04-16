@@ -1,9 +1,5 @@
 package com.example.groupupplace;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -21,6 +17,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -47,22 +47,22 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class Manage_Account extends AppCompatActivity {
     final int PIC_CROP = 1;
-    final int READ_EXTERNAL_PERMISSION_CODE =1;
+    final int READ_EXTERNAL_PERMISSION_CODE = 1;
     ImageButton SelectImageGallery;
     Bitmap bitmap;
     boolean check = true;
-    ProgressDialog progressDialog ;
-    String ServerUploadPath ="http://www.groupupdb.com/android/manageaccountplace.php" ;
-    String name ,email,id;
+    ProgressDialog progressDialog;
+    String ServerUploadPath = "http://www.groupupdb.com/android/manageaccountplace.php";
+    String name, email, id;
     Button btn_con;
-    EditText txtName,txtEmail;
+    EditText txtName, txtEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         name = getIntent().getStringExtra("name");
-        email =getIntent().getStringExtra("email");
+        email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
         txtEmail = findViewById(R.id.email);
         txtName = findViewById(R.id.name);
@@ -74,7 +74,7 @@ public class Manage_Account extends AppCompatActivity {
                 if (ContextCompat.checkSelfPermission(Manage_Account.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(Manage_Account.this, "You have already permission access gallery", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
-                    intent.putExtra("email", email+"");
+                    intent.putExtra("email", email + "");
                     intent.setType("image/*");
                     intent.setAction(Intent.ACTION_GET_CONTENT);
                     startActivityForResult(Intent.createChooser(intent, "Select Image From Gallery"), 1);
@@ -100,9 +100,9 @@ public class Manage_Account extends AppCompatActivity {
             public void onClick(View view) {
                 ImageUploadToServerFunction();
                 Intent in = new Intent(Manage_Account.this, HomePlace.class);
-                in.putExtra("id", id+"");
-                in.putExtra("name", name+"");
-                in.putExtra("email", email+"");
+                in.putExtra("id", id + "");
+                in.putExtra("name", name + "");
+                in.putExtra("email", email + "");
                 startActivity(in);
 
             }
@@ -123,27 +123,27 @@ public class Manage_Account extends AppCompatActivity {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 Bitmap dstBmp;
-                if (bitmap.getWidth() >= bitmap.getHeight()){
+                if (bitmap.getWidth() >= bitmap.getHeight()) {
 
                     dstBmp = Bitmap.createBitmap(
                             bitmap,
-                            bitmap.getWidth()/2 - bitmap.getHeight()/2,
+                            bitmap.getWidth() / 2 - bitmap.getHeight() / 2,
                             0,
                             bitmap.getHeight(),
                             bitmap.getHeight()
                     );
 
-                }else{
+                } else {
 
                     dstBmp = Bitmap.createBitmap(
                             bitmap,
                             0,
-                            bitmap.getHeight()/2 - bitmap.getWidth()/2,
+                            bitmap.getHeight() / 2 - bitmap.getWidth() / 2,
                             bitmap.getWidth(),
                             bitmap.getWidth()
                     );
                 }
-                Bitmap lbp =scaleDown(dstBmp,375,false);
+                Bitmap lbp = scaleDown(dstBmp, 375, false);
 
                 SelectImageGallery.setImageBitmap(lbp);
 //                SelectImageGallery.setAlpha(0.5f);
@@ -183,21 +183,21 @@ public class Manage_Account extends AppCompatActivity {
         }
     }
 
-    public void ImageUploadToServerFunction(){
+    public void ImageUploadToServerFunction() {
 
-        ByteArrayOutputStream byteArrayOutputStreamObject ;
+        ByteArrayOutputStream byteArrayOutputStreamObject;
 
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
 
-        if (bitmap==null){
-            class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+        if (bitmap == null) {
+            class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
 
                 @Override
                 protected void onPreExecute() {
 
                     super.onPreExecute();
-
-                    progressDialog = ProgressDialog.show(Manage_Account.this,"Image is Uploading","Please Wait",false,false);
+                    name = txtName.getText().toString();
+                    progressDialog = ProgressDialog.show(Manage_Account.this, "Image is Uploading", "Please Wait", false, false);
                 }
 
                 @Override
@@ -209,7 +209,7 @@ public class Manage_Account extends AppCompatActivity {
                     progressDialog.dismiss();
 
                     // Printing uploading success message coming from server on android app.
-                    Toast.makeText(Manage_Account.this,string1,Toast.LENGTH_LONG).show();
+                    Toast.makeText(Manage_Account.this, string1, Toast.LENGTH_LONG).show();
 
                     // Setting image as transparent after done uploading.
                     SelectImageGallery.setImageResource(android.R.color.transparent);
@@ -218,7 +218,7 @@ public class Manage_Account extends AppCompatActivity {
 
                 @Override
                 protected String doInBackground(Void... params) {
-                    String name =txtName.getText().toString();
+
                     updateNoimage(name);
                     return "finish update name";
                 }
@@ -226,21 +226,22 @@ public class Manage_Account extends AppCompatActivity {
             AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
             AsyncTaskUploadClassOBJ.execute();
 
-        }else {
+        } else {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
             byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
             final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
-            class AsyncTaskUploadClass extends AsyncTask<Void,Void,String> {
+            class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
                 final EditText txtName = findViewById(R.id.name);
                 final EditText txtEmail = findViewById(R.id.email);
-                String name =txtName.getText().toString();
-                String email =txtEmail.getText().toString();
+                String name = txtName.getText().toString();
+                String email = txtEmail.getText().toString();
+
                 @Override
                 protected void onPreExecute() {
 
                     super.onPreExecute();
 
-                    progressDialog = ProgressDialog.show(Manage_Account.this,"Image is Uploading","Please Wait",false,false);
+                    progressDialog = ProgressDialog.show(Manage_Account.this, "Image is Uploading", "Please Wait", false, false);
                 }
 
                 @Override
@@ -252,7 +253,7 @@ public class Manage_Account extends AppCompatActivity {
                     progressDialog.dismiss();
 
                     // Printing uploading success message coming from server on android app.
-                    Toast.makeText(Manage_Account.this,string1,Toast.LENGTH_LONG).show();
+                    Toast.makeText(Manage_Account.this, string1, Toast.LENGTH_LONG).show();
 
                     // Setting image as transparent after done uploading.
                     SelectImageGallery.setImageResource(android.R.color.transparent);
@@ -264,11 +265,11 @@ public class Manage_Account extends AppCompatActivity {
 
                     ImageProcessClass imageProcessClass = new ImageProcessClass();
 
-                    HashMap<String,String> HashMapParams = new HashMap<String,String>();
+                    HashMap<String, String> HashMapParams = new HashMap<String, String>();
                     HashMapParams.put("name", name);
                     HashMapParams.put("email", email);
                     HashMapParams.put("photo", ConvertImage);
-                    Log.d("hashmap",HashMapParams.toString());
+                    Log.d("hashmap", HashMapParams.toString());
 
                     String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
 
@@ -282,20 +283,20 @@ public class Manage_Account extends AppCompatActivity {
 
     }
 
-    public class ImageProcessClass{
+    public class ImageProcessClass {
 
-        public String ImageHttpRequest(String requestURL,HashMap<String, String> PData) {
+        public String ImageHttpRequest(String requestURL, HashMap<String, String> PData) {
 
             StringBuilder stringBuilder = new StringBuilder();
 
             try {
 
                 URL url;
-                HttpURLConnection httpURLConnectionObject ;
+                HttpURLConnection httpURLConnectionObject;
                 OutputStream OutPutStream;
-                BufferedWriter bufferedWriterObject ;
-                BufferedReader bufferedReaderObject ;
-                int RC ;
+                BufferedWriter bufferedWriterObject;
+                BufferedReader bufferedReaderObject;
+                int RC;
 
                 url = new URL(requestURL);
 
@@ -335,7 +336,7 @@ public class Manage_Account extends AppCompatActivity {
 
                     String RC2;
 
-                    while ((RC2 = bufferedReaderObject.readLine()) != null){
+                    while ((RC2 = bufferedReaderObject.readLine()) != null) {
 
                         stringBuilder.append(RC2);
                     }
@@ -373,14 +374,15 @@ public class Manage_Account extends AppCompatActivity {
 
     }
 
-    public void backHome(View v){
+    public void backHome(View v) {
         Intent in = new Intent(this, HomePlace.class);
-        in.putExtra("id", id+"");
-        in.putExtra("name", name+"");
-        in.putExtra("email", email+"");
+        in.putExtra("id", id + "");
+        in.putExtra("name", name + "");
+        in.putExtra("email", email + "");
         startActivity(in);
 
     }
+
     public void updateNoimage(String name) {
         String url = "http://www.groupupdb.com/android/managefriendplacenoimage.php";
         url += "?name=" + name;

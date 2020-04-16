@@ -83,7 +83,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, msg);
-                        Toast.makeText(HomePlace.this, msg, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(HomePlace.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         new Thread(new Runnable() {
@@ -124,6 +124,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 Intent in = new Intent(HomePlace.this, CreatePlace.class);
                 in.putExtra("id", id + "");
                 in.putExtra("email", email + "");
+                in.putExtra("name", name+"");
                 startActivity(in);
             }
         });
@@ -134,13 +135,6 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         super.onResume();
     }
 
-    public void addplace(View v){
-        Intent in = new Intent(HomePlace.this, CreatePlace.class);
-        in.putExtra("id", id+"");
-        in.putExtra("name", name+"");
-        in.putExtra("email", email+"");
-        startActivity(in);
-    }
 
     public void menuHambergerPlace(View v){
         drawerLayout.openDrawer(GravityCompat.START);

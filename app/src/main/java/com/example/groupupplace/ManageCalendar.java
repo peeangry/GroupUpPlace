@@ -393,7 +393,7 @@ public class ManageCalendar extends AppCompatActivity {
                                 progressDialog.dismiss();
                                 // Printing uploading success message coming from server on android app.
                                 Toast.makeText(ManageCalendar.this, string1, Toast.LENGTH_LONG).show();
-                                Intent in = new Intent(ManageCalendar.this, PlaceHome.class);
+                                Intent in = new Intent(ManageCalendar.this, HomePlace.class);
                                 in.putExtra("email", email + "");
                                 in.putExtra("id", uid + "");
 //                                Manage_calendar.this.finish();
@@ -760,7 +760,7 @@ public class ManageCalendar extends AppCompatActivity {
     }
 
     public void backHome(View v) {
-        Intent in = new Intent(this, PlaceHome.class);
+        Intent in = new Intent(this, HomePlace.class);
         in.putExtra("email", email + "");
 //        Manage_calendar.this.finish();
         startActivity(in);

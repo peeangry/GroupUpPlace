@@ -31,7 +31,7 @@ public class CreatePlace extends AppCompatActivity {
     }
 
     public void backHome(View v){
-        Intent in = new Intent(this, PlaceHome.class);
+        Intent in = new Intent(this, HomePlace.class);
         startActivity(in);
     }
 

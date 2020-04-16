@@ -10,7 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -37,7 +36,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "SignInActivity";
@@ -77,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         // [END handle_data_extras]
         if (mAuth.getCurrentUser()!= null){
 //            Log.d("footer",mAuth.getCurrentUser().getEmail());
-            Intent intent = new Intent(MainActivity.this, PlaceHome.class);
+            Intent intent = new Intent(Login.this, HomePlace.class);
             intent.putExtra("email",mAuth.getCurrentUser().getEmail()+"");
             startActivity(intent);
         }else {
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     if (mAuth.getCurrentUser()!= null){
 //                        startSubscribe();
 //                        getTokenRetieve();
-                        Intent intent = new Intent(MainActivity.this, PlaceHome.class);
+                        Intent intent = new Intent(Login.this, HomePlace.class);
                         intent.putExtra("email",mAuth.getCurrentUser().getEmail()+"");
                         startActivity(intent);
                     }else {
@@ -155,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                             email = user.getEmail();
                             saveData();
 //                            updateUI(customer);
-                            Intent intent = new Intent(MainActivity.this, PlaceHome.class);
+                            Intent intent = new Intent(Login.this, HomePlace.class);
                             intent.putExtra("email",email);
                             startActivity(intent);
                         } else {
@@ -196,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
         Snackbar.make(findViewById(R.id.textView), "SIGN OUT Success.", Snackbar.LENGTH_SHORT).show();
     }
     public void skipPlace(View v){
-        Intent in = new Intent(this, PlaceHome.class);
+        Intent in = new Intent(this, HomePlace.class);
         in.putExtra("email","thanapatza2011@gmail.com");
         startActivity(in);
     }
@@ -212,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
                             msg = getString(R.string.msg_subscribe_failed);
                         }
                         Log.d(TAG, msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         // [END subscribe_topics]
@@ -235,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         // [END retrieve_current_token]

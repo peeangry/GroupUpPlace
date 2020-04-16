@@ -38,7 +38,7 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class Register extends AppCompatActivity {
+public class Manage_Account extends AppCompatActivity {
     final int PIC_CROP = 1;
     final int READ_EXTERNAL_PERMISSION_CODE =1;
     ImageButton SelectImageGallery;
@@ -58,8 +58,8 @@ public class Register extends AppCompatActivity {
         SelectImageGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(Register.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(Register.this, "You have already permission access gallery", Toast.LENGTH_SHORT).show();
+                if (ContextCompat.checkSelfPermission(Manage_Account.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(Manage_Account.this, "You have already permission access gallery", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
                     intent.putExtra("email", email+"");
                     intent.setType("image/*");
@@ -86,7 +86,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                ImageUploadToServerFunction();
-                Intent intent = new Intent(Register.this, PlaceHome.class);
+                Intent intent = new Intent(Manage_Account.this, HomePlace.class);
                 intent.putExtra("email", email+"");
                 startActivity(intent);
             }
@@ -159,7 +159,7 @@ public class Register extends AppCompatActivity {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(Register.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_PERMISSION_CODE);
+                            ActivityCompat.requestPermissions(Manage_Account.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_PERMISSION_CODE);
                         }
                     }).create().show();
         } else {
@@ -190,7 +190,7 @@ public class Register extends AppCompatActivity {
 
                 super.onPreExecute();
 
-                progressDialog = ProgressDialog.show(Register.this,"Image is Uploading","Please Wait",false,false);
+                progressDialog = ProgressDialog.show(Manage_Account.this,"Image is Uploading","Please Wait",false,false);
             }
 
             @Override
@@ -202,7 +202,7 @@ public class Register extends AppCompatActivity {
                 progressDialog.dismiss();
 
                 // Printing uploading success message coming from server on android app.
-                Toast.makeText(Register.this,string1,Toast.LENGTH_LONG).show();
+                Toast.makeText(Manage_Account.this,string1,Toast.LENGTH_LONG).show();
 
                 // Setting image as transparent after done uploading.
                 SelectImageGallery.setImageResource(android.R.color.transparent);
@@ -322,7 +322,7 @@ public class Register extends AppCompatActivity {
     }
 
     public void backHome(View v){
-        Intent in = new Intent(this, PlaceHome.class);
+        Intent in = new Intent(this, HomePlace.class);
         in.putExtra("email", email+"");
         startActivity(in);
     }

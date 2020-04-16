@@ -39,7 +39,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PlaceHome extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class HomePlace extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private static final String TAG = "place";
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -56,13 +56,13 @@ public class PlaceHome extends AppCompatActivity implements NavigationView.OnNav
         setContentView(R.layout.activity_place_home);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.na_view);
-        navigationView.setNavigationItemSelectedListener(PlaceHome.this);
+        navigationView.setNavigationItemSelectedListener(HomePlace.this);
         navigationView.bringToFront();
         View v = navigationView.getHeaderView(0);
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
         email = getIntent().getStringExtra("email");
-        progressDialog = new ProgressDialog(PlaceHome.this);
+        progressDialog = new ProgressDialog(HomePlace.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");
         progressDialog.show();
@@ -81,7 +81,7 @@ public class PlaceHome extends AppCompatActivity implements NavigationView.OnNav
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, msg);
-                        Toast.makeText(PlaceHome.this, msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomePlace.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         new Thread(new Runnable() {
@@ -110,7 +110,7 @@ public class PlaceHome extends AppCompatActivity implements NavigationView.OnNav
         btnNoti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(PlaceHome.this,HomeAlert.class);
+                Intent in = new Intent(HomePlace.this,HomeAlert.class);
                 in.putExtra("id", id+"");
                 in.putExtra("email", email+"");
                 startActivity(in);
@@ -118,7 +118,7 @@ public class PlaceHome extends AppCompatActivity implements NavigationView.OnNav
         });
     }
     public void addplace(View v){
-        Intent in = new Intent(PlaceHome.this, CreatePlace.class);
+        Intent in = new Intent(HomePlace.this, CreatePlace.class);
         in.putExtra("id", id+"");
         in.putExtra("name", name+"");
         in.putExtra("email", email+"");
@@ -154,20 +154,20 @@ public class PlaceHome extends AppCompatActivity implements NavigationView.OnNav
     }
 
     public void goToManageAccount() {
-        Intent intent = new Intent(PlaceHome.this, Register.class);
+        Intent intent = new Intent(HomePlace.this, Manage_Account.class);
         intent.putExtra("email", email+"");
         intent.putExtra("name", name+"");
         startActivity(intent);
     }
 
     public void goToManageCalendar() {
-        Intent intent = new Intent(PlaceHome.this, ManageCalendar.class);
+        Intent intent = new Intent(HomePlace.this, ManageCalendar.class);
         startActivity(intent);
     }
     public void signout() {
         FirebaseAuth.getInstance().signOut();
         mGoogleSignInClient.revokeAccess();
-        Intent intent = new Intent(PlaceHome.this, MainActivity.class);
+        Intent intent = new Intent(HomePlace.this, Login.class);
         startActivity(intent);
     }
     public void getUser() {

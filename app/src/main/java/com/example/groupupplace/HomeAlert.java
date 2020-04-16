@@ -14,7 +14,7 @@ public class HomeAlert extends AppCompatActivity {
         setContentView(R.layout.activity_home_alert);
     }
     public void backHome(View v) {
-        Intent in = new Intent(this, PlaceHome.class);
+        Intent in = new Intent(this, HomePlace.class);
         in.putExtra("email", email+"");
         startActivity(in);
 //        addNotification();

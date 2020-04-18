@@ -168,7 +168,7 @@ public class CreatePlace extends AppCompatActivity {
     }
 
     public void selectThemePlace(View v) {
-        Intent in = new Intent(CreatePlace.this, HomePlace.class);
+        Intent in = new Intent(CreatePlace.this, Theme.class);
         in.putExtra("id", id + "");
         in.putExtra("email", email + "");
         startActivity(in);

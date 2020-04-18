@@ -96,5 +96,6 @@
     <string name="default_notification_channel_name">Channel ID</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="fcm_message">fcm_message</string>
+    <string name="btn_cancle">cancle</string>
 
 </resources>

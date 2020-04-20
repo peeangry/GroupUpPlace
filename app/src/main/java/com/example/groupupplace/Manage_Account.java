@@ -53,7 +53,7 @@ public class Manage_Account extends AppCompatActivity {
     boolean check = true;
     ProgressDialog progressDialog;
     String ServerUploadPath = "http://www.groupupdb.com/android/manageaccountplace.php";
-    String name, email, id;
+    String name, email, id,photo;
     Button btn_con;
     EditText txtName, txtEmail;
 
@@ -64,11 +64,13 @@ public class Manage_Account extends AppCompatActivity {
         name = getIntent().getStringExtra("name");
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
+        photo = getIntent().getStringExtra("photo");
         txtEmail = findViewById(R.id.email);
         txtName = findViewById(R.id.name);
         SelectImageGallery = findViewById(R.id.addPicture);
         btn_con = findViewById(R.id.account_confirm);
         Extend_MyHelper.checkInternetLost(this);
+        new Extend_MyHelper.SendHttpRequestTask(photo,SelectImageGallery,400).execute();
         SelectImageGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,6 +106,7 @@ public class Manage_Account extends AppCompatActivity {
                 in.putExtra("id", id + "");
                 in.putExtra("name", name + "");
                 in.putExtra("email", email + "");
+                in.putExtra("photo", "http://www.groupupdb.com/android/images/"+id);
                 startActivity(in);
 
             }

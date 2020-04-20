@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,9 +47,11 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
     ResponseStr responseStr = new ResponseStr();
     TextView hName;
     TextView hEmail;
-    String name = "", id = "", email = "";
+    String name = "", id = "", email = "",photo="";
+
     ProgressDialog progressDialog ;
     ImageButton btnAlert ,btnCreatePlace;
+    ImageView imgAccount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,11 +62,15 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         btnCreatePlace = findViewById(R.id.btn_newGroup);
         navigationView.setNavigationItemSelectedListener(HomePlace.this);
         navigationView.bringToFront();
+
         View v = navigationView.getHeaderView(0);
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
+        imgAccount = v.findViewById(R.id.imageUser);
         email = getIntent().getStringExtra("email");
+        photo = getIntent().getStringExtra("photo");
         Extend_MyHelper.checkInternetLost(this);
+        new Extend_MyHelper.SendHttpRequestTask(photo,imgAccount,250).execute();
         progressDialog = new ProgressDialog(HomePlace.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");
@@ -169,6 +176,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         in.putExtra("id", id+"");
         in.putExtra("name", name+"");
         in.putExtra("email", email+"");
+        in.putExtra("photo", photo+"");
         startActivity(in);
     }
 
@@ -214,8 +222,10 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                             id = MyArrList.get(0).get("user_id");
                             email = MyArrList.get(0).get("user_email");
                             name =MyArrList.get(0).get("user_name");
+                            photo =MyArrList.get(0).get("user_photo");
                             hName.setText(name);
                             hEmail.setText(email);
+                            new Extend_MyHelper.SendHttpRequestTask(photo,imgAccount,250).execute();
 //                            writeFile(id,name,email);
                             Log.d("footer", "email " + email+" name " + name+" id " + id);
                         } catch (JSONException e) {

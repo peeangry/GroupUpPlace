@@ -3,6 +3,8 @@
     android: thickness = "18dp"
     android: shape = "rectangle">
 
+    <corners android:radius="8dp"/>
+
     <stroke android:width="3dp"
         android:color="#BCD0ED"
         android:layout_marginLeft="10dp"

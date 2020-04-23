@@ -79,8 +79,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:backgroundTint="#FFFFFF"
                     android:ems="8"
-                    android:fontFamily="sans-serif"
                     android:hint="@string/name"
                     android:inputType="textPersonName" />
 
@@ -106,8 +106,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:backgroundTint="#FFFFFF"
                     android:ems="8"
-                    android:fontFamily="sans-serif"
                     android:gravity="start|top"
                     android:hint="@string/details"
                     android:inputType="textMultiLine" />
@@ -134,9 +134,9 @@
                     android:id="@+id/newGroup_selectTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="2"
                     android:backgroundTint="@color/blueWhite"
-                    android:fontFamily="sans-serif-medium"
                     android:onClick="selectThemePlace"
                     android:text="@string/select_theme" />
 
@@ -167,7 +167,6 @@
                         android:id="@+id/priceRange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
                         android:text="@string/priceRange" />
                 </LinearLayout>
 
@@ -185,7 +184,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:fontFamily="sans-serif"
                     android:gravity="center"
                     android:text="@string/bath" />
 
@@ -212,10 +210,50 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:backgroundTint="#FFFFFF"
                     android:ems="8"
-                    android:fontFamily="sans-serif"
                     android:hint="@string/phone"
                     android:inputType="phone" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/ic_access_time_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/select_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="2"
+                    android:backgroundTint="@color/blueWhite"
+                    android:text="@string/select_time" />
 
             </LinearLayout>
 
@@ -267,6 +305,7 @@
                 android:id="@+id/facility"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="20dp"
                 android:background="@color/white"
                 android:text="@string/facility"

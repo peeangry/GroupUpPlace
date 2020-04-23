@@ -1,7 +1,9 @@
 package com.example.groupupplace;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +42,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +54,7 @@ public class CreatePlace extends AppCompatActivity {
     ArrayList<String> factlity;
     EditText edt_name, edt_detail, edt_phone;
     Spinner sp_price, spin_numseat;
-    Button btn_con;
+    Button btn_con,btn_time;
     Switch sw_depo;
     Bitmap bitmap;
     boolean check = true;
@@ -70,6 +74,7 @@ public class CreatePlace extends AppCompatActivity {
         edt_detail = findViewById(R.id.details);
         edt_phone = findViewById(R.id.phone);
         btn_con = findViewById(R.id.newPlace_confirm);
+        btn_time = findViewById(R.id.select_time);
         sw_depo = findViewById(R.id.sw_deposit);
         parking = findViewById(R.id.parking);
         wifi = findViewById(R.id.wifi);
@@ -158,6 +163,14 @@ public class CreatePlace extends AppCompatActivity {
                 getImage(5);
             }
         });
+
+
+        btn_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePicker();
+            }
+        });
     }
 
     public void backHome(View v) {
@@ -173,6 +186,8 @@ public class CreatePlace extends AppCompatActivity {
         in.putExtra("email", email + "");
         startActivity(in);
     }
+
+
 
     @Override
     protected void onActivityResult(int RC, int RQC, Intent I) {
@@ -741,6 +756,55 @@ public class CreatePlace extends AppCompatActivity {
 
     public void createNoImage() {
         Log.d("cb", factlity.toString());
+    }
+
+    public void timePicker(){
+        final AlertDialog viewTime = new AlertDialog.Builder(CreatePlace.this).create();
+        View mView = getLayoutInflater().inflate(R.layout.layout_showtimeopen_dialog,null);
+        final EditText edt_timeOne = mView.findViewById(R.id.edt_timeOne);
+        final EditText edt_timeTwo = mView.findViewById(R.id.edt_timeTwo);
+        edt_timeOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(CreatePlace.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        edt_timeOne.setText( selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+        viewTime.setView(mView);
+        viewTime.show();
+
+        edt_timeTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(CreatePlace.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        edt_timeTwo.setText( selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+        viewTime.setView(mView);
+        viewTime.show();
+
     }
 
 }

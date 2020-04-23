@@ -97,5 +97,19 @@
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="fcm_message">fcm_message</string>
     <string name="btn_cancle">cancle</string>
+    <string name="time">Opening hours</string>
+    <string name="date">Opening date</string>
+    <string name="select_time">Select Time</string>
+    <string name="to">To</string>
+    <string name="everyday">Everyday</string>
+    <string name="monfri">Mon - Fri</string>
+    <string name="satsun">Sat - Sun</string>
+    <string name="sun">Sun</string>
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
 
 </resources>

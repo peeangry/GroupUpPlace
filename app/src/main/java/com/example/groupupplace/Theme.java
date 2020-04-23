@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
@@ -135,6 +136,7 @@ public class Theme extends AppCompatActivity {
                 for (int i = 0; i < themeSelect.size(); i++) {
                     sentInviteToFriend(themeSelect.get(i).toString(), eid);
                 }
+                backCreatrPlace();
                 Log.d("themeSelect", "Remove : " + themeSelect.toString());
             }
         });
@@ -783,6 +785,20 @@ public class Theme extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void backCreatrPlace() {
+        Intent intent = new Intent(Theme.this, CreatePlace.class);
+        intent.putExtra("id", id + "");
+        intent.putExtra("email", email + "");
+        intent.putExtra("nEvent", nameE + "");
+        intent.putExtra("mStart", monS + "");
+        intent.putExtra("mEnd", monE + "");
+        intent.putExtra("eid", eid + "");
+        intent.putExtra("tab", 0 + "");
+        startActivity(intent);
+    }
+
+
+
     public void visibleLinear() {
         if (checkVisible) {//show custom
             lCus.setVisibility(View.VISIBLE);
@@ -855,6 +871,7 @@ public class Theme extends AppCompatActivity {
                 final TextView headTheme = mView.findViewById(R.id.nameTheme);
                 final TextView detailTheme = mView.findViewById(R.id.detailTheme);
                 final TextView typeTheme = mView.findViewById(R.id.typeTheme);
+                final ImageView imgTheme = mView.findViewById(R.id.imageTheme);
                 final Button btn_cancle = mView.findViewById(R.id.btn_cancleTheme);
                 final Button btn_custom = mView.findViewById(R.id.btn_customTheme);
                 final Button btn_confirm = mView.findViewById(R.id.btn_confirmTheme);
@@ -865,6 +882,7 @@ public class Theme extends AppCompatActivity {
                 typeTheme.setText(s);
                 headTheme.setText(head);
                 detailTheme.setText(showDetail(tyid));
+                imgTheme.setImageResource(imageDetail(tyid));
                 btn_cancle.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -881,6 +899,7 @@ public class Theme extends AppCompatActivity {
                         checkVisible = false;
                         Log.d("idType", idType.toString());
                         checkCustomTheme(tyid);
+                        viewDetail.dismiss();
                     }
                 });
                 btn_confirm.setOnClickListener(new View.OnClickListener() {
@@ -889,6 +908,7 @@ public class Theme extends AppCompatActivity {
                         for (int i = 0; i < idType.size(); i++) {
                             sentInviteToFriend(idType.get(i), eid);
                         }
+                        backCreatrPlace();
                     }
                 });
                 viewDetail.setView(mView);
@@ -1047,19 +1067,39 @@ public class Theme extends AppCompatActivity {
         }
     }
 
+    public int imageDetail(String idType) {
+        Log.d("Typeid", idType.toString());
+        if (idType.equals("21")) {
+            return R.drawable.icon_theme_minimal;
+        } else if (idType.equals("22")) {
+            return R.drawable.icon_theme_classic;
+        } else if (idType.equals("36")) {
+            return R.drawable.icon_theme_water;
+        } else if (idType.equals("15")) {
+            return R.drawable.icon_theme_buffe;
+        } else if (idType.equals("3")) {
+            return R.drawable.icon_theme_karaoke;
+        } else if (idType.equals("23")) {
+            return R.drawable.icon_theme_rooftop;
+        } else if (idType.equals("8")) {
+            return R.drawable.icon_theme_kids;
+        }
+        return R.drawable.icon_theme_minimal;
+    }
+
     public String showDetail(String idType) {
         Log.d("Typeid", idType.toString());
         if (idType.equals("21")) {
             String detail ="ร้านสไตล์มินิมอลเป็นร้านแนวคาเฟ่เบเกอร์รี่ที่มีบรรยากาศสบายๆมีมุมถ่ายรูปมากมายเน้นพบปะพูดคุยกันในหมู่เพื่อนๆ";
             return detail;
         } else if (idType.equals("22")) {
-            String detail ="ร้านอาหารแนวคลาสสิคเป็นร้านอาหารที่เน้นอาหารในเชิงสุขภาพและมีบรรยากาศที่เป็นกันเองโดยเสามารถพบปะพูดคุยทางการหรือเล่นๆก็ได้";
+            String detail ="ร้านอาหารแนวคลาสสิคเป็นร้านอาหารที่เน้นอาหารในเชิงสุขภาพและมีบรรยากาศที่เป็นกันเองโดยสามารถพบปะพูดคุยทางการหรือเล่นๆก็ได้";
             return detail;
         } else if (idType.equals("36")) {
             String detail ="ร้านอาหารริมแม่น้ำเป็นร้านอาหารที่ให้บรรยากาศอบอุ่นและโรแมนติกในที่เดียวกันให้ความรู้สึกเป็นแบบครอบครัวเพื่อการพักผ่อนโดยเฉพาะ";
             return detail;
         } else if (idType.equals("15")) {
-            String detail ="ร้านอาหารสไตล์บุฟเฟ่เป็นร้านอาหารที่เน้นความคุ้มค่าและความอร่อยไปในที่เดียวกันโดยจะให้บรรยากาศเพลิดเพลินและได้รับประทาหลากหลายไปในที่เดียวกัน";
+            String detail ="ร้านอาหารสไตล์บุฟเฟ่ห์เป็นร้านอาหารที่เน้นความคุ้มค่าและความอร่อยไปในที่เดียวกันโดยจะให้บรรยากาศเพลิดเพลินและได้รับประทานอาหารหลากหลายไปในที่เดียวกัน";
             return detail;
         } else if (idType.equals("3")) {
             String detail ="ร้านอาหารแนวคาราโอเกะเป็นร้านอาหารแนวสนุกสนานให้ความผ่อนคลายเพลิดเพลินและสนุกไปในที่เดียวกันโดยเน้นการพบปะมากกว่าการรับประทานอาหารแบบจริงจัง";
@@ -1115,5 +1155,7 @@ public class Theme extends AppCompatActivity {
         iceCream.setChecked(false);
         burger.setChecked(false);
     }
+
+
 
 }

@@ -95,4 +95,18 @@
     <string name="default_notification_channel_name">Channel ID</string>
     <string name="fcm_message">fcm_message</string>
     <string name="btn_cancle">ยกเลิก</string>
+    <string name="time">เวลาเปิด-ปิด</string>
+    <string name="date">วันที่เปิด-ปิด</string>
+    <string name="select_time">เลือกเวลา</string>
+    <string name="to">ถึง</string>
+    <string name="everyday">ทุกวัน</string>
+    <string name="monfri">จันทร์ - ศุกร์</string>
+    <string name="satsun">เสาร์ - อาทิตย์</string>
+    <string name="sun">อาทิตย์</string>
+    <string name="mon">จันทร์</string>
+    <string name="tue">อังคาร</string>
+    <string name="wed">พุธ</string>
+    <string name="thu">พฤหัสบดี</string>
+    <string name="fri">ศุกร์</string>
+    <string name="sat">เสาร์</string>
 </resources>

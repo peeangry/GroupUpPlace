@@ -119,7 +119,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:background="@color/classicBlue"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/button"
                 android:text="@string/custom"
                 android:textColor="#FFFFFF" />
 
@@ -632,7 +633,7 @@
                 android:id="@+id/btn_confirmCustom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button"
+                android:background="@color/classicBlue"
                 android:text="@string/btn"
                 android:textColor="@color/white" />
 

@@ -49,20 +49,21 @@ import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 
 public class CreatePlace extends AppCompatActivity {
-    String id = "", email = "", name = "";
+    String id = "", email = "", name = "", detail = "", price = "", time = "", phone = "", deposit = "",people="";
     String placename, placeDetail, placeprice, placephone, placenumofseat, placedeposit;
     ArrayList<String> factlity;
     EditText edt_name, edt_detail, edt_phone;
     Spinner sp_price, spin_numseat;
-    Button btn_con,btn_time;
+    Button btn_con, btn_time;
     Switch sw_depo;
-    Bitmap bitmap;
+    Bitmap bitmap, bitmap2, bitmap3, bitmap4, bitmap5;
     boolean check = true;
     CheckBox parking, wifi, creditCard, kid, air, privateRoom, bts, mrt;
     ImageButton btn_img1, btn_img2, btn_img3, btn_img4, btn_img5;
     final int READ_EXTERNAL_PERMISSION_CODE = 1;
     ProgressDialog progressDialog;
     String ServerUploadPath = "http://www.groupupdb.com/android/createplace.php";
+    ArrayList<String> theme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +90,30 @@ public class CreatePlace extends AppCompatActivity {
         btn_img3 = findViewById(R.id.image3);
         btn_img4 = findViewById(R.id.image4);
         btn_img5 = findViewById(R.id.image5);
+        theme = new ArrayList<>();
         email = getIntent().getStringExtra("email");
         id = getIntent().getStringExtra("id");
         name = getIntent().getStringExtra("name");
+        detail = getIntent().getStringExtra("detail");
+        price = getIntent().getStringExtra("price");
+        phone = getIntent().getStringExtra("phone");
+        deposit = getIntent().getStringExtra("deposit");
+        time = getIntent().getStringExtra("time");
+        people = getIntent().getStringExtra("people");
+
+        String create = getIntent().getStringExtra("create");
+        edt_name.setText(name);
+        if (create.equalsIgnoreCase("create")) {
+
+        } else {
+            theme = (ArrayList<String>) getIntent().getSerializableExtra("themeSelect");
+            factlity= (ArrayList<String>) getIntent().getSerializableExtra("factlity");
+            Log.d("themeSelect", "theme : " + theme.toString());
+        }
+
+//        theme = (ArrayList<String>)getIntent().getSerializableExtra("themeSelect");
+//        theme.add("Last");
+
         factlity = new ArrayList<>();
         Extend_MyHelper.checkInternetLost(this);
         ArrayAdapter<CharSequence> adp = ArrayAdapter.createFromResource(this, R.array.priceRange, android.R.layout.simple_spinner_item);
@@ -163,8 +185,6 @@ public class CreatePlace extends AppCompatActivity {
                 getImage(5);
             }
         });
-
-
         btn_time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,10 +204,15 @@ public class CreatePlace extends AppCompatActivity {
         Intent in = new Intent(CreatePlace.this, Theme.class);
         in.putExtra("id", id + "");
         in.putExtra("email", email + "");
+        in.putExtra("name", name + "");
+        in.putExtra("detail", detail + "");
+        in.putExtra("price", price + "");
+        in.putExtra("phone", phone + "");
+        in.putExtra("deposit", deposit + "");
+        in.putExtra("time", time + "");
+        in.putExtra("people", people + "");
         startActivity(in);
     }
-
-
 
     @Override
     protected void onActivityResult(int RC, int RQC, Intent I) {
@@ -239,27 +264,27 @@ public class CreatePlace extends AppCompatActivity {
 
             try {
 
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                bitmap2 = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 Bitmap dstBmp;
-                if (bitmap.getWidth() >= bitmap.getHeight()) {
+                if (bitmap2.getWidth() >= bitmap2.getHeight()) {
 
                     dstBmp = Bitmap.createBitmap(
-                            bitmap,
-                            bitmap.getWidth() / 2 - bitmap.getHeight() / 2,
+                            bitmap2,
+                            bitmap2.getWidth() / 2 - bitmap2.getHeight() / 2,
                             0,
-                            bitmap.getHeight(),
-                            bitmap.getHeight()
+                            bitmap2.getHeight(),
+                            bitmap2.getHeight()
                     );
 
                 } else {
 
                     dstBmp = Bitmap.createBitmap(
-                            bitmap,
+                            bitmap2,
                             0,
-                            bitmap.getHeight() / 2 - bitmap.getWidth() / 2,
-                            bitmap.getWidth(),
-                            bitmap.getWidth()
+                            bitmap2.getHeight() / 2 - bitmap2.getWidth() / 2,
+                            bitmap2.getWidth(),
+                            bitmap2.getWidth()
                     );
                 }
                 Bitmap lbp = scaleDown(dstBmp, 375, false);
@@ -278,27 +303,27 @@ public class CreatePlace extends AppCompatActivity {
 
             try {
 
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                bitmap3 = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 Bitmap dstBmp;
-                if (bitmap.getWidth() >= bitmap.getHeight()) {
+                if (bitmap3.getWidth() >= bitmap3.getHeight()) {
 
                     dstBmp = Bitmap.createBitmap(
-                            bitmap,
-                            bitmap.getWidth() / 2 - bitmap.getHeight() / 2,
+                            bitmap3,
+                            bitmap3.getWidth() / 2 - bitmap3.getHeight() / 2,
                             0,
-                            bitmap.getHeight(),
-                            bitmap.getHeight()
+                            bitmap3.getHeight(),
+                            bitmap3.getHeight()
                     );
 
                 } else {
 
                     dstBmp = Bitmap.createBitmap(
-                            bitmap,
+                            bitmap3,
                             0,
-                            bitmap.getHeight() / 2 - bitmap.getWidth() / 2,
-                            bitmap.getWidth(),
-                            bitmap.getWidth()
+                            bitmap3.getHeight() / 2 - bitmap3.getWidth() / 2,
+                            bitmap3.getWidth(),
+                            bitmap3.getWidth()
                     );
                 }
                 Bitmap lbp = scaleDown(dstBmp, 375, false);
@@ -317,27 +342,27 @@ public class CreatePlace extends AppCompatActivity {
 
             try {
 
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                bitmap4 = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 Bitmap dstBmp;
-                if (bitmap.getWidth() >= bitmap.getHeight()) {
+                if (bitmap4.getWidth() >= bitmap4.getHeight()) {
 
                     dstBmp = Bitmap.createBitmap(
-                            bitmap,
-                            bitmap.getWidth() / 2 - bitmap.getHeight() / 2,
+                            bitmap4,
+                            bitmap4.getWidth() / 2 - bitmap4.getHeight() / 2,
                             0,
-                            bitmap.getHeight(),
-                            bitmap.getHeight()
+                            bitmap4.getHeight(),
+                            bitmap4.getHeight()
                     );
 
                 } else {
 
                     dstBmp = Bitmap.createBitmap(
-                            bitmap,
+                            bitmap4,
                             0,
-                            bitmap.getHeight() / 2 - bitmap.getWidth() / 2,
-                            bitmap.getWidth(),
-                            bitmap.getWidth()
+                            bitmap4.getHeight() / 2 - bitmap4.getWidth() / 2,
+                            bitmap4.getWidth(),
+                            bitmap4.getWidth()
                     );
                 }
                 Bitmap lbp = scaleDown(dstBmp, 375, false);
@@ -356,27 +381,27 @@ public class CreatePlace extends AppCompatActivity {
 
             try {
 
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                bitmap5 = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                 Bitmap dstBmp;
-                if (bitmap.getWidth() >= bitmap.getHeight()) {
+                if (bitmap5.getWidth() >= bitmap5.getHeight()) {
 
                     dstBmp = Bitmap.createBitmap(
-                            bitmap,
-                            bitmap.getWidth() / 2 - bitmap.getHeight() / 2,
+                            bitmap5,
+                            bitmap5.getWidth() / 2 - bitmap5.getHeight() / 2,
                             0,
-                            bitmap.getHeight(),
-                            bitmap.getHeight()
+                            bitmap5.getHeight(),
+                            bitmap5.getHeight()
                     );
 
                 } else {
 
                     dstBmp = Bitmap.createBitmap(
-                            bitmap,
+                            bitmap5,
                             0,
-                            bitmap.getHeight() / 2 - bitmap.getWidth() / 2,
-                            bitmap.getWidth(),
-                            bitmap.getWidth()
+                            bitmap5.getHeight() / 2 - bitmap5.getWidth() / 2,
+                            bitmap5.getWidth(),
+                            bitmap5.getWidth()
                     );
                 }
                 Bitmap lbp = scaleDown(dstBmp, 375, false);
@@ -562,9 +587,12 @@ public class CreatePlace extends AppCompatActivity {
 
     public void ImageUploadToServerFunction() {
 
-        ByteArrayOutputStream byteArrayOutputStreamObject;
-
+        ByteArrayOutputStream byteArrayOutputStreamObject, byteArrayOutputStreamObject2, byteArrayOutputStreamObject3, byteArrayOutputStreamObject4, byteArrayOutputStreamObject5;
         byteArrayOutputStreamObject = new ByteArrayOutputStream();
+        byteArrayOutputStreamObject2 = new ByteArrayOutputStream();
+        byteArrayOutputStreamObject3 = new ByteArrayOutputStream();
+        byteArrayOutputStreamObject4 = new ByteArrayOutputStream();
+        byteArrayOutputStreamObject5 = new ByteArrayOutputStream();
         if (bitmap == null) {
             class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
 
@@ -608,13 +636,44 @@ public class CreatePlace extends AppCompatActivity {
 
         } else {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+            if (bitmap2 != null) {
+                bitmap2.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject2);
+            }
+            if (bitmap3 != null) {
+                bitmap3.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject3);
+            }
+            if (bitmap4 != null) {
+                bitmap4.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject4);
+            }
+            if (bitmap5 != null) {
+                bitmap5.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject5);
+            }
             byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
+            byte[] byteArrayVar2 = byteArrayOutputStreamObject2.toByteArray();
+            byte[] byteArrayVar3 = byteArrayOutputStreamObject3.toByteArray();
+            byte[] byteArrayVar4 = byteArrayOutputStreamObject4.toByteArray();
+            byte[] byteArrayVar5 = byteArrayOutputStreamObject5.toByteArray();
+
             final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
+            final String ConvertImage2 = Base64.encodeToString(byteArrayVar2, Base64.DEFAULT);
+            final String ConvertImage3 = Base64.encodeToString(byteArrayVar3, Base64.DEFAULT);
+            final String ConvertImage4 = Base64.encodeToString(byteArrayVar4, Base64.DEFAULT);
+            final String ConvertImage5 = Base64.encodeToString(byteArrayVar5, Base64.DEFAULT);
+
+
             class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
 
                 @Override
                 protected void onPreExecute() {
-
+                    String name = edt_name.getText().toString();
+                    String detail = edt_detail.getText().toString();
+                    String price = sp_price.getSelectedItem().toString();
+                    String cal = edt_phone.getText().toString();
+                    String theme;
+                    String time;
+                    String facility;
+                    String people = spin_numseat.getSelectedItem().toString();
+                    String depo = placedeposit;
                     super.onPreExecute();
 
                     progressDialog = ProgressDialog.show(CreatePlace.this, "Image is Uploading", "Please Wait", false, false);
@@ -648,6 +707,10 @@ public class CreatePlace extends AppCompatActivity {
 //                    HashMapParams.put("name", name);
 //                    HashMapParams.put("email", email);
                     HashMapParams.put("photo", ConvertImage);
+                    HashMapParams.put("photo2", ConvertImage2);
+                    HashMapParams.put("photo3", ConvertImage3);
+                    HashMapParams.put("photo4", ConvertImage4);
+                    HashMapParams.put("photo5", ConvertImage5);
                     Log.d("hashmap", HashMapParams.toString());
                     String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
                     return FinalData;
@@ -758,9 +821,9 @@ public class CreatePlace extends AppCompatActivity {
         Log.d("cb", factlity.toString());
     }
 
-    public void timePicker(){
+    public void timePicker() {
         final AlertDialog viewTime = new AlertDialog.Builder(CreatePlace.this).create();
-        View mView = getLayoutInflater().inflate(R.layout.layout_showtimeopen_dialog,null);
+        View mView = getLayoutInflater().inflate(R.layout.layout_showtimeopen_dialog, null);
         final EditText edt_timeOne = mView.findViewById(R.id.edt_timeOne);
         final EditText edt_timeTwo = mView.findViewById(R.id.edt_timeTwo);
         edt_timeOne.setOnClickListener(new View.OnClickListener() {
@@ -774,7 +837,7 @@ public class CreatePlace extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(CreatePlace.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        edt_timeOne.setText( selectedHour + ":" + selectedMinute);
+                        edt_timeOne.setText(selectedHour + ":" + selectedMinute);
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -795,7 +858,7 @@ public class CreatePlace extends AppCompatActivity {
                 mTimePicker = new TimePickerDialog(CreatePlace.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        edt_timeTwo.setText( selectedHour + ":" + selectedMinute);
+                        edt_timeTwo.setText(selectedHour + ":" + selectedMinute);
                     }
                 }, hour, minute, true);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
@@ -807,4 +870,7 @@ public class CreatePlace extends AppCompatActivity {
 
     }
 
+    public void intentPage() {
+
+    }
 }

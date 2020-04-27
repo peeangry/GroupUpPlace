@@ -131,7 +131,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 Intent in = new Intent(HomePlace.this, CreatePlace.class);
                 in.putExtra("id", id + "");
                 in.putExtra("email", email + "");
-                in.putExtra("name", name+"");
+                in.putExtra("create", "create");
                 startActivity(in);
             }
         });

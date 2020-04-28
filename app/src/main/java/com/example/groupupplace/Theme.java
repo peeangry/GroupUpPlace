@@ -56,9 +56,8 @@ public class Theme extends AppCompatActivity {
         detail = getIntent().getStringExtra("detail");
         price = getIntent().getStringExtra("price");
         phone = getIntent().getStringExtra("phone");
-        deposit = getIntent().getStringExtra("deposit");
-        time = getIntent().getStringExtra("time");
         people = getIntent().getStringExtra("people");
+        Log.d("checkTheme","Theme  "+email+" : "+id+" : "+name+" : "+detail+" : "+price+" : "+phone+" : "+deposit+" : "+time +" : "+people);
         Extend_MyHelper.checkInternetLost(this);
         lShort =findViewById(R.id.linear_shortcut);
         lCus =findViewById(R.id.linear_custom);
@@ -778,13 +777,7 @@ public class Theme extends AppCompatActivity {
 
 
     public void backCreatrPlace(View v) {
-        intentPage("create");
-//        Intent in = new Intent(Theme.this, CreatePlace.class);
-//        in.putExtra("id", id + "");
-//        in.putExtra("email", email + "");
-//        in.putExtra("name", name + "");
-//        in.putExtra("create", "create");
-//        startActivity(in);
+        finish();
     }
 
 
@@ -897,17 +890,6 @@ public class Theme extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         intentPage("themeSelect");
-//                        Intent in = new Intent(Theme.this, CreatePlace.class);
-//                        in.putExtra("themeSelect", idType+"");
-//                        in.putExtra("id", id + "");
-//                        in.putExtra("email", email + "");
-//                        in.putExtra("name", name + "");
-//                        in.putExtra("create", "theme");
-//                        startActivity(in);
-//                        for (int i = 0; i < idType.size(); i++) {
-//                            sentInviteToFriend(idType.get(i), eid);
-//                        }
-//                        backCreatrPlace();
                     }
                 });
                 viewDetail.setView(mView);
@@ -1154,8 +1136,10 @@ public class Theme extends AppCompatActivity {
         iceCream.setChecked(false);
         burger.setChecked(false);
     }
-        public void intentPage(String s){
-            Intent in = new Intent(Theme.this,CreatePlace.class);
+    public void intentPage(String s){
+        Log.d("checkTheme","Theme  intent "+email+" : "+id+" : "+name+" : "+detail+" : "+price+" : "+phone+" : "+deposit+" : "+time +" : "+people);
+
+        Intent in = new Intent(Theme.this,CreatePlace.class);
             in.putExtra("themeSelect", idType);
             in.putExtra("id", id + "");
             in.putExtra("email", email + "");
@@ -1163,8 +1147,6 @@ public class Theme extends AppCompatActivity {
             in.putExtra("detail", detail + "");
             in.putExtra("price", price + "");
             in.putExtra("phone", phone + "");
-            in.putExtra("deposit", deposit + "");
-            in.putExtra("time", time + "");
             in.putExtra("people", people + "");
             in.putExtra("create", s+"");
             startActivity(in);

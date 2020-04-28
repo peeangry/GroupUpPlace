@@ -3,7 +3,7 @@
     <string name="newPlace">สร้างสถานที่</string>
     <string name="name">ชื่อ</string>
     <string name="details">รายละเอียด</string>
-    <string name="select_theme">กำหนดธีมงานสถานที่</string>
+    <string name="select_theme">กำหนดรูปแบบสถานที่</string>
     <string name="priceRange">ราคาเฉลี่ยต่อคน</string>
     <string name="bath">บาท</string>
     <string name="phone">เบอร์โทรศัพท์</string>

@@ -137,7 +137,6 @@
                     android:layout_marginRight="10dp"
                     android:layout_weight="2"
                     android:backgroundTint="@color/blueWhite"
-                    android:onClick="selectThemePlace"
                     android:text="@string/select_theme" />
 
             </LinearLayout>
@@ -254,6 +253,14 @@
                     android:layout_weight="2"
                     android:backgroundTint="@color/blueWhite"
                     android:text="@string/select_time" />
+
+                <TextView
+                    android:id="@+id/show_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="TextView" />
 
             </LinearLayout>
 

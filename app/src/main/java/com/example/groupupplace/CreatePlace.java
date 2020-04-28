@@ -32,6 +32,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -649,54 +656,7 @@ public class CreatePlace extends AppCompatActivity {
         byteArrayOutputStreamObject4 = new ByteArrayOutputStream();
         byteArrayOutputStreamObject5 = new ByteArrayOutputStream();
         if (bitmap == null) {
-            class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-
-                @Override
-                protected void onPreExecute() {
-
-                    super.onPreExecute();
-                    progressDialog = ProgressDialog.show(CreatePlace.this, "Image is Uploading", "Please Wait", false, false);
-                    name = edt_name.getText().toString();
-                    detail = edt_detail.getText().toString();
-                    priceID = sp_price.getSelectedItemPosition() + "";
-                    price = sp_price.getSelectedItem() + "";
-                    people = spin_numseat.getSelectedItem() + "";
-                    phone = edt_phone.getText().toString();
-                    peopleId = spin_numseat.getSelectedItemPosition() + "";
-                    deposit = placedeposit;
-                }
-
-                @Override
-                protected void onPostExecute(String string1) {
-
-                    super.onPostExecute(string1);
-
-                    // Dismiss the progress dialog after done uploading.
-                    progressDialog.dismiss();
-
-
-                    // Printing uploading success message coming from server on android app.
-                    Toast.makeText(CreatePlace.this, string1, Toast.LENGTH_LONG).show();
-
-                    // Setting image as transparent after done uploading.
-                    btn_img1.setImageResource(android.R.color.transparent);
-                    btn_img2.setImageResource(android.R.color.transparent);
-                    btn_img3.setImageResource(android.R.color.transparent);
-                    btn_img4.setImageResource(android.R.color.transparent);
-                    btn_img5.setImageResource(android.R.color.transparent);
-
-
-                }
-
-                @Override
-                protected String doInBackground(Void... params) {
-                    createNoImage();
-                    return "finish update name";
-                }
-            }
-            AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-            AsyncTaskUploadClassOBJ.execute();
-
+            createNoImage();
         } else {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
             if (bitmap2 != null) {
@@ -746,7 +706,8 @@ public class CreatePlace extends AppCompatActivity {
                 } else {
                     facility += factlity.get(i) + ":";
                 }
-            }for (int i = 0; i < theme.size(); i++) {
+            }
+            for (int i = 0; i < theme.size(); i++) {
                 if (i == theme.size() - 1) {
                     themeString += theme.get(i);
                 } else {
@@ -763,7 +724,7 @@ public class CreatePlace extends AppCompatActivity {
                 protected void onPreExecute() {
                     super.onPreExecute();
 
-                    progressDialog = ProgressDialog.show(CreatePlace.this, "place is Uploading", "Please Wait", false, false);
+                    progressDialog = ProgressDialog.show(CreatePlace.this, "place is creating", "Please Wait", false, false);
                 }
 
                 @Override
@@ -792,7 +753,7 @@ public class CreatePlace extends AppCompatActivity {
 
                 @Override
                 protected String doInBackground(Void... params) {
-                    Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility+ " : "+ finalThemeString);
+                    Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility + " : " + finalThemeString);
                     Log.d("datatodb", theme.toString());
                     ImageProcessClass imageProcessClass = new ImageProcessClass();
                     HashMap<String, String> HashMapParams = new HashMap<String, String>();
@@ -814,6 +775,7 @@ public class CreatePlace extends AppCompatActivity {
                     HashMapParams.put("photo3", ConvertImage3);
                     HashMapParams.put("photo4", ConvertImage4);
                     HashMapParams.put("photo5", ConvertImage5);
+
                     Log.d("hashmap", HashMapParams.size() + "");
                     Log.d("hashmap", HashMapParams.toString());
                     String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
@@ -917,12 +879,159 @@ public class CreatePlace extends AppCompatActivity {
 
     }
 
-    public void addPlaceToDB() {
-        Log.d("cb", factlity.toString());
-    }
 
     public void createNoImage() {
-        Log.d("cb", factlity.toString());
+//        final String name = edt_name.getText().toString();
+//        final String detail = edt_detail.getText().toString();
+//        final String price = sp_price.getSelectedItem().toString();
+//        final String phone = edt_phone.getText().toString();
+//        final String people = spin_numseat.getSelectedItem().toString();
+//        final String depo = placedeposit;
+//        final String dt_timeS = dt_timeOpen;
+//        final String dt_timeE = dt_timeEnd;
+//        String dateopen = "";
+//        String facility = "";
+//        String themeString = "";
+//        for (int i = 0; i < date.size(); i++) {
+//            if (i == date.size() - 1) {
+//                dateopen += date.get(i);
+//            } else {
+//                dateopen += date.get(i) + ":";
+//            }
+//        }
+//        for (int i = 0; i < factlity.size(); i++) {
+//            if (i == factlity.size() - 1) {
+//                facility += factlity.get(i);
+//            } else {
+//                facility += factlity.get(i) + ":";
+//            }
+//        }
+//        for (int i = 0; i < theme.size(); i++) {
+//            if (i == theme.size() - 1) {
+//                themeString += theme.get(i);
+//            } else {
+//                themeString += theme.get(i) + ":";
+//            }
+//        }
+//        String url = ServerUploadPath;
+//        url += "?name=" + name;
+//        url += "&id=" + id;
+//        url += "&email=" + detail;
+//        url += "&phone=" + phone;
+//        url += "&people=" + people;
+//        url += "&depo=" + depo;
+//        url += "&date=" + dateopen;
+//        url += "&timeS=" + dt_timeS;
+//        url += "&timeE=" + dt_timeE;
+//        url += "&facility=" + facility;
+//        url += "&theme=" + themeString;
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Log.e("Log", "Volley::onResponse():" + response);
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+//                    }
+//                });
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
+        final String name = edt_name.getText().toString();
+        final String detail = edt_detail.getText().toString();
+        final String price = sp_price.getSelectedItem().toString();
+        final String phone = edt_phone.getText().toString();
+        final String people = spin_numseat.getSelectedItem().toString();
+        final String depo = placedeposit;
+        final String dt_timeS = dt_timeOpen;
+        final String dt_timeE = dt_timeEnd;
+        String dateopen = "";
+        String facility = "";
+        String themeString = "";
+        for (int i = 0; i < date.size(); i++) {
+            if (i == date.size() - 1) {
+                dateopen += date.get(i);
+            } else {
+                dateopen += date.get(i) + ":";
+            }
+        }
+        for (int i = 0; i < factlity.size(); i++) {
+            if (i == factlity.size() - 1) {
+                facility += factlity.get(i);
+            } else {
+                facility += factlity.get(i) + ":";
+            }
+        }
+        for (int i = 0; i < theme.size(); i++) {
+            if (i == theme.size() - 1) {
+                themeString += theme.get(i);
+            } else {
+                themeString += theme.get(i) + ":";
+            }
+        }
+
+        final String finalFacility = facility;
+        final String finalDateopen = dateopen;
+        final String finalThemeString = themeString;
+        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                progressDialog = ProgressDialog.show(CreatePlace.this, "place is creating", "Please Wait", false, false);
+            }
+
+            @Override
+            protected void onPostExecute(String string1) {
+
+                super.onPostExecute(string1);
+
+                // Dismiss the progress dialog after done uploading.
+                progressDialog.dismiss();
+
+                // Printing uploading success message coming from server on android app.
+                Toast.makeText(CreatePlace.this, string1, Toast.LENGTH_LONG).show();
+
+                // Setting image as transparent after done uploading.
+                Intent in = new Intent(CreatePlace.this, HomePlace.class);
+                in.putExtra("id", id + "");
+                in.putExtra("email", email + "");
+                startActivity(in);
+
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility + " : " + finalThemeString);
+                Log.d("datatodb", theme.toString());
+                ImageProcessClass imageProcessClass = new ImageProcessClass();
+                HashMap<String, String> HashMapParams = new HashMap<String, String>();
+                HashMapParams.put("name", name);
+                HashMapParams.put("id", id);
+                HashMapParams.put("email", email);
+                HashMapParams.put("detail", detail);
+                HashMapParams.put("price", price);
+                HashMapParams.put("phone", phone);
+                HashMapParams.put("people", people);
+                HashMapParams.put("depo", depo);
+                HashMapParams.put("date", finalDateopen);
+                HashMapParams.put("timeS", dt_timeS);
+                HashMapParams.put("timeE", dt_timeE);
+                HashMapParams.put("facility", finalFacility);
+                HashMapParams.put("theme", finalThemeString);
+
+                Log.d("hashmap", HashMapParams.size() + "");
+                Log.d("hashmap", HashMapParams.toString());
+                String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
+                return FinalData;
+            }
+        }
+        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+        AsyncTaskUploadClassOBJ.execute();
     }
 
     public void timePicker() {
@@ -1177,7 +1286,7 @@ public class CreatePlace extends AppCompatActivity {
                 showTime.setVisibility(View.VISIBLE);
                 dt_timeOpen = edt_timeOne.getText().toString();
                 dt_timeEnd = edt_timeTwo.getText().toString();
-                showTime.setText(showStringDay(date)+"เวลา "+dt_timeOpen +" - "+dt_timeEnd);
+                showTime.setText(showStringDay(date) + "เวลา " + dt_timeOpen + " - " + dt_timeEnd);
                 viewTime.dismiss();
                 btn_time.setVisibility(View.GONE);
             }

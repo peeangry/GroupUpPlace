@@ -732,6 +732,7 @@ public class CreatePlace extends AppCompatActivity {
             final String dt_timeE = dt_timeEnd;
             String dateopen = "";
             String facility = "";
+            String themeString = "";
             for (int i = 0; i < date.size(); i++) {
                 if (i == date.size() - 1) {
                     dateopen += date.get(i);
@@ -745,17 +746,24 @@ public class CreatePlace extends AppCompatActivity {
                 } else {
                     facility += factlity.get(i) + ":";
                 }
+            }for (int i = 0; i < theme.size(); i++) {
+                if (i == theme.size() - 1) {
+                    themeString += theme.get(i);
+                } else {
+                    themeString += theme.get(i) + ":";
+                }
             }
 
             final String finalFacility = facility;
             final String finalDateopen = dateopen;
+            final String finalThemeString = themeString;
             class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
 
                 @Override
                 protected void onPreExecute() {
                     super.onPreExecute();
 
-                    progressDialog = ProgressDialog.show(CreatePlace.this, "Image is Uploading", "Please Wait", false, false);
+                    progressDialog = ProgressDialog.show(CreatePlace.this, "place is Uploading", "Please Wait", false, false);
                 }
 
                 @Override
@@ -775,17 +783,32 @@ public class CreatePlace extends AppCompatActivity {
                     btn_img3.setImageResource(android.R.color.transparent);
                     btn_img4.setImageResource(android.R.color.transparent);
                     btn_img5.setImageResource(android.R.color.transparent);
+                    Intent in = new Intent(CreatePlace.this, HomePlace.class);
+                    in.putExtra("id", id + "");
+                    in.putExtra("email", email + "");
+                    startActivity(in);
 
                 }
 
                 @Override
                 protected String doInBackground(Void... params) {
-                    Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility);
+                    Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility+ " : "+ finalThemeString);
                     Log.d("datatodb", theme.toString());
                     ImageProcessClass imageProcessClass = new ImageProcessClass();
                     HashMap<String, String> HashMapParams = new HashMap<String, String>();
-//                    HashMapParams.put("name", name);
-//                    HashMapParams.put("email", email);
+                    HashMapParams.put("name", name);
+                    HashMapParams.put("id", id);
+                    HashMapParams.put("email", email);
+                    HashMapParams.put("detail", detail);
+                    HashMapParams.put("price", price);
+                    HashMapParams.put("phone", phone);
+                    HashMapParams.put("people", people);
+                    HashMapParams.put("depo", depo);
+                    HashMapParams.put("date", finalDateopen);
+                    HashMapParams.put("timeS", dt_timeS);
+                    HashMapParams.put("timeE", dt_timeE);
+                    HashMapParams.put("facility", finalFacility);
+                    HashMapParams.put("theme", finalThemeString);
                     HashMapParams.put("photo", ConvertImage);
                     HashMapParams.put("photo2", ConvertImage2);
                     HashMapParams.put("photo3", ConvertImage3);
@@ -793,8 +816,8 @@ public class CreatePlace extends AppCompatActivity {
                     HashMapParams.put("photo5", ConvertImage5);
                     Log.d("hashmap", HashMapParams.size() + "");
                     Log.d("hashmap", HashMapParams.toString());
-//                    String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
-                    return "FinalData";
+                    String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
+                    return FinalData;
                 }
             }
             AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
@@ -822,9 +845,9 @@ public class CreatePlace extends AppCompatActivity {
 
                 httpURLConnectionObject = (HttpURLConnection) url.openConnection();
 
-                httpURLConnectionObject.setReadTimeout(19000);
+                httpURLConnectionObject.setReadTimeout(60000);
 
-                httpURLConnectionObject.setConnectTimeout(19000);
+                httpURLConnectionObject.setConnectTimeout(60000);
 
                 httpURLConnectionObject.setRequestMethod("POST");
 

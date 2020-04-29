@@ -31,9 +31,9 @@ import java.util.HashMap;
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class Extend_MyHelper {
-    public static void checkInternetLost(Context context){
+    public static void checkInternetLost(Context context) {
         //////////////////////check status internet///////////////////////
-        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
@@ -45,6 +45,7 @@ public class Extend_MyHelper {
         }
         //////////////////////check status internet///////////////////////
     }
+
     public static ArrayList getEventStatusPriorty(String uid, String eid, String pri, Context context) {
         final ArrayList allId = new ArrayList(); //format = eid:statusid:priority->0:1:2
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -117,20 +118,24 @@ public class Extend_MyHelper {
             return false;
         }
     }
+
     public static class SendHttpRequestTask extends AsyncTask<String, Void, Bitmap> {
-        String urlImg ;
+        String urlImg;
         ImageView imb;
         float imgSize;
-        public SendHttpRequestTask(String url ,ImageView image,float size){
-            urlImg=url;
-            imb=image;
-            imgSize =size;
+
+        public SendHttpRequestTask(String url, ImageView image, float size) {
+            urlImg = url;
+            imb = image;
+            imgSize = size;
         }
+
         @Override
         protected Bitmap doInBackground(String... params) {
 
             try {
                 URL url = new URL(urlImg);
+                Log.d("http123", url.toString());
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setDoInput(true);
                 connection.connect();
@@ -151,6 +156,7 @@ public class Extend_MyHelper {
             imb.setImageBitmap(result);
         }
     }
+
     public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
         float ratio = Math.min(
                 (float) maxImageSize / realImage.getWidth(),
@@ -162,5 +168,6 @@ public class Extend_MyHelper {
                 height, filter);
         return newBitmap;
     }
+
 
 }

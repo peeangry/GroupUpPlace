@@ -300,7 +300,7 @@ public class CreatePlace extends AppCompatActivity {
                             bitmap.getWidth()
                     );
                 }
-                Bitmap lbp = scaleDown(dstBmp, 375, false);
+                Bitmap lbp = scaleDown(dstBmp, 275, false);
 
                 btn_img1.setImageBitmap(lbp);
 
@@ -339,7 +339,7 @@ public class CreatePlace extends AppCompatActivity {
                             bitmap2.getWidth()
                     );
                 }
-                Bitmap lbp = scaleDown(dstBmp, 375, false);
+                Bitmap lbp = scaleDown(dstBmp, 275, false);
 
                 btn_img2.setImageBitmap(lbp);
 
@@ -378,7 +378,7 @@ public class CreatePlace extends AppCompatActivity {
                             bitmap3.getWidth()
                     );
                 }
-                Bitmap lbp = scaleDown(dstBmp, 375, false);
+                Bitmap lbp = scaleDown(dstBmp, 275, false);
 
                 btn_img3.setImageBitmap(lbp);
 
@@ -417,7 +417,7 @@ public class CreatePlace extends AppCompatActivity {
                             bitmap4.getWidth()
                     );
                 }
-                Bitmap lbp = scaleDown(dstBmp, 375, false);
+                Bitmap lbp = scaleDown(dstBmp, 275, false);
 
                 btn_img4.setImageBitmap(lbp);
 
@@ -456,7 +456,7 @@ public class CreatePlace extends AppCompatActivity {
                             bitmap5.getWidth()
                     );
                 }
-                Bitmap lbp = scaleDown(dstBmp, 375, false);
+                Bitmap lbp = scaleDown(dstBmp, 275, false);
 
                 btn_img5.setImageBitmap(lbp);
 
@@ -757,24 +757,24 @@ public class CreatePlace extends AppCompatActivity {
                     Log.d("datatodb", theme.toString());
                     ImageProcessClass imageProcessClass = new ImageProcessClass();
                     HashMap<String, String> HashMapParams = new HashMap<String, String>();
-                    HashMapParams.put("name", name);
-                    HashMapParams.put("id", id);
-                    HashMapParams.put("email", email);
-                    HashMapParams.put("detail", detail);
-                    HashMapParams.put("price", price);
-                    HashMapParams.put("phone", phone);
-                    HashMapParams.put("people", people);
-                    HashMapParams.put("depo", depo);
-                    HashMapParams.put("date", finalDateopen);
-                    HashMapParams.put("timeS", dt_timeS);
-                    HashMapParams.put("timeE", dt_timeE);
-                    HashMapParams.put("facility", finalFacility);
-                    HashMapParams.put("theme", finalThemeString);
-                    HashMapParams.put("photo", ConvertImage);
-                    HashMapParams.put("photo2", ConvertImage2);
-                    HashMapParams.put("photo3", ConvertImage3);
-                    HashMapParams.put("photo4", ConvertImage4);
-                    HashMapParams.put("photo5", ConvertImage5);
+                    HashMapParams.put("name", name.toString());
+                    HashMapParams.put("id", id.toString());
+                    HashMapParams.put("email", email.toString());
+                    HashMapParams.put("detail", detail.toString());
+                    HashMapParams.put("price", price.toString());
+                    HashMapParams.put("phone", phone.toString());
+                    HashMapParams.put("people", people.toString());
+                    HashMapParams.put("depo", depo.toString());
+                    HashMapParams.put("date", finalDateopen.toString());
+                    HashMapParams.put("timeS", dt_timeS.toString());
+                    HashMapParams.put("timeE", dt_timeE.toString());
+                    HashMapParams.put("facility", finalFacility.toString());
+                    HashMapParams.put("theme", finalThemeString.toString());
+                    HashMapParams.put("photo", ConvertImage.toString());
+                    HashMapParams.put("photo2", ConvertImage2.toString());
+                    HashMapParams.put("photo3", ConvertImage3.toString());
+                    HashMapParams.put("photo4", ConvertImage4.toString());
+                    HashMapParams.put("photo5", ConvertImage5.toString());
 
                     Log.d("hashmap", HashMapParams.size() + "");
                     Log.d("hashmap", HashMapParams.toString());
@@ -804,12 +804,12 @@ public class CreatePlace extends AppCompatActivity {
                 int RC;
 
                 url = new URL(requestURL);
-
+                Log.d("hashmap","url : "+ url.toString());
                 httpURLConnectionObject = (HttpURLConnection) url.openConnection();
 
-                httpURLConnectionObject.setReadTimeout(60000);
+                httpURLConnectionObject.setReadTimeout(240000);
 
-                httpURLConnectionObject.setConnectTimeout(60000);
+                httpURLConnectionObject.setConnectTimeout(240000);
 
                 httpURLConnectionObject.setRequestMethod("POST");
 
@@ -832,7 +832,7 @@ public class CreatePlace extends AppCompatActivity {
                 OutPutStream.close();
 
                 RC = httpURLConnectionObject.getResponseCode();
-
+                Log.d("hashmap","url : "+ RC);
                 if (RC == HttpsURLConnection.HTTP_OK) {
 
                     bufferedReaderObject = new BufferedReader(new InputStreamReader(httpURLConnectionObject.getInputStream()));

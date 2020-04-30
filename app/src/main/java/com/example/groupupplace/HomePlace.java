@@ -163,6 +163,8 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_home);
+        Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.deleteCache(this);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.na_view);
         btnAlert = findViewById(R.id.btn_notification);

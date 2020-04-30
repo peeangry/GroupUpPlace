@@ -1052,7 +1052,7 @@ public class ManageCalendar extends AppCompatActivity {
             }
         }
         Log.d("simpledate", "dateCheckformatStart : " + dateCheckformatStart + "--" + dateCheckformatEnd);
-        String url = "http://www.groupupdb.com/android/addcalendar.php";
+        String url = "http://www.groupupdb.com/android/addcalendarplace.php";
         url += "?sId=" + uid;
         url += "&sdt=" + startDate;
         url += "&edt=" + endDate;
@@ -1078,7 +1078,7 @@ public class ManageCalendar extends AppCompatActivity {
 
     public void sentCalendarDiffToDB(String startDate, String endDate) {
         Log.d("simpledate", "startDate : " + startDate);
-        String url = "http://www.groupupdb.com/android/addcalendar.php";
+        String url = "http://www.groupupdb.com/android/addcalendarplace.php";
         url += "?sId=" + uid;
         url += "&sdt=" + startDate;
         url += "&edt=" + endDate;
@@ -1105,7 +1105,7 @@ public class ManageCalendar extends AppCompatActivity {
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
-        String url = "http://www.groupupdb.com/android/getcalendar.php";
+        String url = "http://www.groupupdb.com/android/getcalendarplace.php";
         url += "?sId=" + uid;//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -1117,8 +1117,8 @@ public class ManageCalendar extends AppCompatActivity {
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
-                                map.put("usercalendar_id", c.getString("usercalendar_id"));
-                                map.put("user_id", c.getString("user_id"));
+                                map.put("placecalendar_id", c.getString("placecalendar_id"));
+                                map.put("place_id", c.getString("place_id"));
                                 map.put("startdatetime", c.getString("startdatetime"));
                                 map.put("enddatetime", c.getString("enddatetime"));
                                 //map.put("events_wait", c.getString("events_wait"));
@@ -1162,7 +1162,7 @@ public class ManageCalendar extends AppCompatActivity {
         String dateCheckformat = simpledate.format(d) + "";
         Log.d("simpledate", "sentDateToDB : " + dateCheckformat);
         Log.d("checkDB ", "dateCheck : " + dateCheck);
-        String url = "http://www.groupupdb.com/android/adddate.php";
+        String url = "http://www.groupupdb.com/android/adddateplace.php";
         url += "?sId=" + uid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
@@ -1192,7 +1192,7 @@ public class ManageCalendar extends AppCompatActivity {
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
-        String url = "http://www.groupupdb.com/android/getdate.php";
+        String url = "http://www.groupupdb.com/android/getdateplace.php";
         url += "?sId=" + uid;//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -1204,8 +1204,8 @@ public class ManageCalendar extends AppCompatActivity {
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
-                                map.put("userdateid", c.getString("userdateid"));
-                                map.put("user_id", c.getString("user_id"));
+                                map.put("placedateid", c.getString("placedateid"));
+                                map.put("place_id", c.getString("place_id"));
                                 map.put("date", c.getString("date"));
                                 map.put("datelast", c.getString("datelast"));
 
@@ -1245,7 +1245,7 @@ public class ManageCalendar extends AppCompatActivity {
         String dateCheck = simpleHour.format(d) + "";
         String dateCheckformat = simpledate.format(d) + "";
         Log.d("simpledate", "getDateFromDB : " + dateCheckformat);
-        String url = "http://www.groupupdb.com/android/adddatediff.php";
+        String url = "http://www.groupupdb.com/android/adddatediffplace.php";
         url += "?sId=" + uid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
@@ -1275,7 +1275,7 @@ public class ManageCalendar extends AppCompatActivity {
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
-        String url = "http://www.groupupdb.com/android/getdatediff.php";
+        String url = "http://www.groupupdb.com/android/getdatediffplace.php";
         url += "?sId=" + uid;//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -1287,8 +1287,8 @@ public class ManageCalendar extends AppCompatActivity {
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject c = data.getJSONObject(i);
                                 map = new HashMap<String, String>();
-                                map.put("udfid", c.getString("udfid"));
-                                map.put("user_id", c.getString("user_id"));
+                                map.put("pdfid", c.getString("pdfid"));
+                                map.put("place_id", c.getString("place_id"));
                                 map.put("datediff", c.getString("datediff"));
                                 map.put("datediffend", c.getString("datediffend"));
 
@@ -1461,7 +1461,7 @@ public class ManageCalendar extends AppCompatActivity {
 
     public void sentCustomDateToCalendar(String startDate, String endDate) {
         Log.d("simpledate", "startDate : " + startDate);
-        String url = "http://www.groupupdb.com/android/addcustomcalendar.php";
+        String url = "http://www.groupupdb.com/android/addcustomcalendarplace.php";
         url += "?sId=" + uid;
         url += "&sdt=" + startDate;
         url += "&edt=" + endDate;
@@ -1484,7 +1484,7 @@ public class ManageCalendar extends AppCompatActivity {
 
     public void sentDelCustomDateToCalendar(String startDate, String endDate) {
         Log.d("simpledate", "startDate : " + startDate);
-        String url = "http://www.groupupdb.com/android/removedbcalendar.php";
+        String url = "http://www.groupupdb.com/android/removedbcalendarplace.php";
         url += "?sId=" + uid;
         url += "&sdt=" + startDate;
         url += "&edt=" + endDate;
@@ -1507,7 +1507,7 @@ public class ManageCalendar extends AppCompatActivity {
 
     public void deleteDateInDb() {
         responseStr = new ManageCalendar.ResponseStr();
-        String url = "http://www.groupupdb.com/android/deletedatebyuser.php";
+        String url = "http://www.groupupdb.com/android/deletedatebyplace.php";
         url += "?sId=" + uid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -1540,7 +1540,7 @@ public class ManageCalendar extends AppCompatActivity {
         String dateCheckformat = simpledate.format(d) + "";
         Log.d("simpledate", "sentDateToDB : " + dateCheckformat);
         Log.d("checkDB ", "dateCheck : " + dateCheck);
-        String url = "http://www.groupupdb.com/android/adddateforcal.php";
+        String url = "http://www.groupupdb.com/android/adddateforcalplace.php";
         url += "?sId=" + uid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
@@ -1584,7 +1584,7 @@ public class ManageCalendar extends AppCompatActivity {
         String dateCheckformat = simpledate.format(d) + "";
         Log.d("simpledate", "sentDateToDB : " + dateCheckformat);
         Log.d("checkDB ", "dateCheck : " + dateCheck);
-        String url = "http://www.groupupdb.com/android/removedbdateforcal.php";
+        String url = "http://www.groupupdb.com/android/removedbdateforcalplace.php";
         url += "?sId=" + uid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;

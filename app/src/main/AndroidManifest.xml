@@ -17,6 +17,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Edit_place"></activity>
+
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -32,7 +34,8 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-        <activity android:name=".HomeAlert"></activity>
+
+        <activity android:name=".HomeAlert" />
         <activity android:name=".ManageCalendar" />
         <activity android:name=".Manage_Account" />
         <activity android:name=".HomePlace" />
@@ -49,6 +52,7 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
         <service
             android:name=".Extend_MyFirebaseMessagingService"
             android:exported="false">

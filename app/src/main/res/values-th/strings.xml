@@ -109,4 +109,6 @@
     <string name="thu">พฤหัสบดี</string>
     <string name="fri">ศุกร์</string>
     <string name="sat">เสาร์</string>
+    <string name="manage_place">จัดการสถานที่</string>
+    <string name="edit_theme">แก้ไขธีมสถานที่</string>
 </resources>

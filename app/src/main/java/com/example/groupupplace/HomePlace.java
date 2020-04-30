@@ -18,6 +18,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -55,19 +56,37 @@ import java.util.List;
 public class HomePlace extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //*******************************TextView with checkbox******************************************//
     public class Item {
+        String ItemId;
         String ItemDrawable;
         String ItemName;
         String ItemDest;
         String ItemFaci;
         float Rating;
-
+        String ItemUserId;
+        String ItemPrice;
+        String ItemPhone;
+        String ItemSeat;
+        String ItemDeposite;
+        String ItemDay;
+        String ItemStartTime;
+        String ItemEndTime;
+//        upid,pPrice,pPhone,pSeat,pDepo,pDate,pStartTime,pEndTime
         //        Item(ImageView drawable, String t, boolean b){
-        Item(String name, String desc, String faci, float rating, String drawable) {
+        Item(String id,String name, String desc, String faci, float rating, String drawable,String uid,String price,String phone,String seat,String deposit,String day,String sTime ,String eTime) {
+            ItemId = id;
             ItemDrawable = drawable;
             ItemName = name;
             ItemDest = desc;
             ItemFaci = faci;
             Rating = rating;
+            ItemUserId = uid;
+            ItemPrice = price;
+            ItemPhone = phone;
+            ItemSeat = seat;
+            ItemDeposite = deposit;
+            ItemDay = day;
+            ItemStartTime = sTime;
+            ItemEndTime = eTime;
         }
 
     }
@@ -78,6 +97,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         TextView description;
         TextView facility;
         RatingBar rating;
+        Button confirm;
     }
 
     public class ItemsListAdapter extends BaseAdapter {
@@ -121,6 +141,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 viewHolder.description = rowView.findViewById(R.id.rowDescription);
                 viewHolder.facility = rowView.findViewById(R.id.rowFacility);
                 viewHolder.rating = rowView.findViewById(R.id.rowRatingBar2);
+                viewHolder.confirm = rowView.findViewById(R.id.btn_managePlace);
 
                 rowView.setTag(viewHolder);
             } else {
@@ -128,15 +149,47 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
             }
             new Extend_MyHelper.SendHttpRequestTask(list.get(position).ItemDrawable, viewHolder.icon, 250).execute();
 
-            final String itemStr = list.get(position).ItemName;
-            final String itemDes = list.get(position).ItemDest;
-            final String itemFaci = list.get(position).ItemFaci;
-            final float itemRating = list.get(position).Rating;
-            viewHolder.text.setText(itemStr);
-            viewHolder.rating.setRating(itemRating);
-            viewHolder.description.setText(itemDes);
-            viewHolder.facility.setText(itemFaci);
+            final String ItemName = list.get(position).ItemName;
+            final String ItemDest = list.get(position).ItemDest;
+            final String ItemFaci = list.get(position).ItemFaci;
+            final float ItemRating = list.get(position).Rating;
+            final String ItemId = list.get(position).ItemId;
+            final String ItemUserId = list.get(position).ItemUserId;
+            final String ItemPrice = list.get(position).ItemPrice;
+            final String ItemPhone = list.get(position).ItemPhone;
+            final String ItemSeat = list.get(position).ItemSeat;
+            final String ItemDeposite = list.get(position).ItemDeposite;
+            final String ItemDay = list.get(position).ItemDay;
+            final String ItemStartTime = list.get(position).ItemStartTime;
+            final String ItemEndTime = list.get(position).ItemEndTime;
 
+            viewHolder.text.setText(ItemName);
+            viewHolder.rating.setRating(ItemRating);
+            viewHolder.description.setText(ItemDest);
+            viewHolder.facility.setText(ItemFaci);
+            viewHolder.confirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    ItemId,ItemDrawable,ItemName,ItemDest,ItemFaci,Rating,ItemUserId,ItemPrice,ItemPhone,ItemSeat,ItemDeposite,ItemDay,ItemStartTime,ItemEndTime,
+                    Intent in =  new Intent(HomePlace.this,Edit_place.class);
+                    in.putExtra("ItemId",ItemId+"");
+                    in.putExtra("ItemName",ItemName+"");
+                    in.putExtra("ItemDest",ItemDest+"");
+                    in.putExtra("ItemFaci",ItemFaci+"");
+                    in.putExtra("Rating",ItemRating+"");
+                    in.putExtra("ItemUserId",ItemUserId+"");
+                    in.putExtra("ItemPrice",ItemPrice+"");
+                    in.putExtra("ItemPhone",ItemPhone+"");
+                    in.putExtra("ItemSeat",ItemSeat+"");
+                    in.putExtra("ItemDeposite",ItemDeposite+"");
+                    in.putExtra("ItemDay",ItemDay+"");
+                    in.putExtra("ItemStartTime",ItemStartTime+"");
+                    in.putExtra("ItemEndTime",ItemEndTime+"");
+                    startActivity(in);
+
+                    Log.d("listclick",position+"  "+ItemId);
+                }
+            });
             return rowView;
         }
     }
@@ -205,13 +258,26 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
 //                        Toast.makeText(HomePlace.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
-        getUser();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
+                getUserThread();
                 deleteDateOldDay();
             }
         }).start();
+        new CountDownTimer(300, 300) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                getUser();
+            }
+        }.start();
+
 
 //        new CountDownTimer(2000, 1000) {
 //            public void onFinish() {
@@ -384,7 +450,6 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        progressDialog.dismiss();
         new CountDownTimer(500,500){
 
             @Override
@@ -398,7 +463,6 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                     @Override
                     protected void onPreExecute() {
                         super.onPreExecute();
-                        progressDialog = ProgressDialog.show(HomePlace.this, "Dowloading Place", "Please Wait", false, false);
                     }
 
                     @Override
@@ -423,7 +487,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
 
                     @Override
                     protected String doInBackground(Void... params) {
-                        getEventInvitation();
+                        getplace();
                         getPlacePhoto();
                         getPlaceTheme();
                         return "successful!!!";
@@ -433,6 +497,57 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 AsyncTaskUploadClassOBJ.execute();
             }
         }.start();
+    }
+    public void getUserThread() {
+        responseStr = new ResponseStr();
+
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        Log.d("footer", "email " + email);
+        String url = "http://www.groupupdb.com/android/getuserplace.php";
+        url += "?sEmail=" + email;//รอเอาIdหรือ email จากfirebase
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("user_id", c.getString("user_id"));
+                                map.put("user_name", c.getString("user_name"));
+                                map.put("user_email", c.getString("user_email"));
+                                map.put("user_photo", c.getString("user_photo"));
+                                MyArrList.add(map);
+                            }
+                            //set Header menu name email
+//                            Log.d("footer", MyArrList.get(0).get("user_id"));
+//                            Log.d("footer", MyArrList.get(0).get("user_names"));
+//                            Log.d("footer", MyArrList.get(0).get("user_email"));
+                            id = MyArrList.get(0).get("user_id");
+                            email = MyArrList.get(0).get("user_email");
+                            name = MyArrList.get(0).get("user_name");
+                            photo = MyArrList.get(0).get("user_photo");
+                            hName.setText(name);
+                            hEmail.setText(email);
+                            new Extend_MyHelper.SendHttpRequestTask(photo, imgAccount, 250).execute();
+//                            writeFile(id,name,email);
+                            Log.d("footer", "email " + email + " name " + name + " id " + id);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 
     public class ResponseStr {
@@ -468,114 +583,6 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
     public void setItemsListView() {
         myItemsListAdapter = new HomePlace.ItemsListAdapter(this, items);
         placeList.setAdapter(myItemsListAdapter);
-//        placeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
-//                final AlertDialog viewDetail = new AlertDialog.Builder(Home_Alert.this).create();
-//                View mView = getLayoutInflater().inflate(R.layout.layout_showalert_dialog, null);
-//                final TextView title = mView.findViewById(R.id.alt_title_Invite);
-//                final TextView detail = mView.findViewById(R.id.alt_detail_Invite);
-//                final ImageView imgF = mView.findViewById(R.id.alt_image_invite);
-//                final TextView nameE = mView.findViewById(R.id.alt_name_invite);
-//                final TextView startEnd = mView.findViewById(R.id.alt_start_end);
-//                final TextView state = mView.findViewById(R.id.alt_state_invite);
-//                final String tid = placeArray.get(position).get("trans_id").toString();
-//                final String eid = placeArray.get(position).get("events_id").toString();
-//                final String ename = placeArray.get(position).get("events_name").toString();
-//                String sSta = placeArray.get(position).get("events_month_start").toString();
-//                String sEnd = placeArray.get(position).get("events_month_end").toString();
-//                String sPrId = placeArray.get(position).get("pri_id").toString();
-//                String priName = placeArray.get(position).get("pri_name").toString();
-//                String event_creater = placeArray.get(position).get("event_creater").toString();
-//                String user_photo = placeArray.get(position).get("user_photo").toString();
-//                String events_detail = placeArray.get(position).get("events_detail").toString();
-//                title.setText(ename);
-//                detail.setText(events_detail);
-//                nameE.setText(event_creater);
-//                startEnd.setText(some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)]);
-//                state.setText(priName);
-//                Log.d("pathimage", placeArray.toString());
-//                new Extend_MyHelper.SendHttpRequestTask(user_photo, imgF, 250).execute();
-//                Button btn_join = mView.findViewById(R.id.btn_invite_join);
-//                Button btn_notJoin = mView.findViewById(R.id.btn_invite_notjoin);
-//                Button btn_later = mView.findViewById(R.id.btn_invite_later);
-//
-//                btn_join.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-//                            @Override
-//                            protected void onPreExecute() {
-//                                super.onPreExecute();
-//                            }
-//
-//                            @Override
-//                            protected void onPostExecute(String string1) {
-//                                super.onPostExecute(string1);
-//                                Intent intent = new Intent(Home_Alert.this, MainAttendent.class);
-//                                intent.putExtra("id", id + "");
-//                                intent.putExtra("eid", eid + "");
-//                                intent.putExtra("nameEvent", ename + "");
-//                                intent.putExtra("email", email);
-//                                intent.putExtra("tab", 0 + "");
-//                                startActivity(intent);
-//                                viewDetail.dismiss();
-//                                Toast.makeText(Home_Alert.this, string1, Toast.LENGTH_SHORT).show();
-//
-//                            }
-//
-//                            @Override
-//                            protected String doInBackground(Void... params) {
-//                                addEventFriend(uid, eid, ename);
-//                                Extend_MyHelper.UpdateStateToDb(tid, 3 + "", Home_Alert.this);
-//                                return "join successful!!!";
-//                            }
-//                        }
-//                        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-//                        AsyncTaskUploadClassOBJ.execute();
-//                    }
-//                });
-//                btn_notJoin.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-//                            @Override
-//                            protected void onPreExecute() {
-//                                super.onPreExecute();
-//                            }
-//
-//                            @Override
-//                            protected void onPostExecute(String string1) {
-//                                super.onPostExecute(string1);
-//                                viewDetail.dismiss();
-//                                startActivity(getIntent());
-//                                Toast.makeText(Home_Alert.this, string1, Toast.LENGTH_SHORT).show();
-//
-//                            }
-//
-//                            @Override
-//                            protected String doInBackground(Void... params) {
-//                                deletetransID(tid);
-//
-//                                return "deete successful!!!";
-//                            }
-//                        }
-//                        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-//                        AsyncTaskUploadClassOBJ.execute();
-//                    }
-//                });
-//                btn_later.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        viewDetail.dismiss();
-//                    }
-//                });
-//
-//                viewDetail.setView(mView);
-//                viewDetail.show();
-//            }
-//        });
-
         Log.d("friend", "size" + myItemsListAdapter.getCount() + "");
     }
 
@@ -603,14 +610,14 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
 //            String mystring = getResources().getString(R.string.mystring);
 //            String s = event_creater + "ได้เชิญคุณเข้าร่วม " + ename + " เป็น " + priName + " โดยมีช่วงเวลาระหว่างเดือน " + some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)];
             Log.d("pathimage","item Home : "+ pName+" / "+ pDetail+" / "+ pFacility+" / "+ pScore+" / "+ pImage);
-            HomePlace.Item item = new HomePlace.Item(pName,pDetail,pFacility,Float.parseFloat(pScore),pImage);
+            HomePlace.Item item = new HomePlace.Item(pid,pName,pDetail,pFacility,Float.parseFloat(pScore),pImage,upid,pPrice,pPhone,pSeat,pDepo,pDate,pStartTime,pEndTime);
             items.add(item);
             Log.d("pathimage","item : "+ items.toString());
         }
 
     }
 
-    public void getEventInvitation() {
+    public void getplace() {
         responseStr = new HomePlace.ResponseStr();
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -746,5 +753,31 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+//    public void myClickHandler(View v)
+//    {
+//
+//        //reset all the listView items background colours
+//        //before we set the clicked one..
+//
+//        ListView lvItems = getListView();
+//        for (int i=0; i < lvItems.getChildCount(); i++)
+//        {
+//            lvItems.getChildAt(i).setBackgroundColor(Color.BLUE);
+//        }
+//
+//
+//        //get the row the clicked button is in
+//        LinearLayout vwParentRow = (LinearLayout)v.getParent();
+//
+//        TextView child = (TextView)vwParentRow.getChildAt(0);
+//        Button btnChild = (Button)vwParentRow.getChildAt(1);
+//        btnChild.setText(child.getText());
+//        btnChild.setText("I've been clicked!");
+//
+//        int c = Color.CYAN;
+//
+//        vwParentRow.setBackgroundColor(c);
+//        vwParentRow.refreshDrawableState();
+//    }
 
 }

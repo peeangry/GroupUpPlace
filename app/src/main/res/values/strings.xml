@@ -111,5 +111,7 @@
     <string name="thu">Thu</string>
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
+    <string name="manage_place">Manage Place</string>
+    <string name="edit_theme">Edit Theme</string>
 
 </resources>

@@ -120,7 +120,7 @@
                     </LinearLayout>
 
                     <Button
-                        android:id="@+id/button"
+                        android:id="@+id/btn_managePlace"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
@@ -128,7 +128,7 @@
                         android:layout_marginRight="30dp"
                         android:layout_marginBottom="10dp"
                         android:background="@color/classicBlue"
-                        android:text="@string/modify"
+                        android:text="@string/manage_place"
                         android:textColor="#FFFFFF" />
 
                     <LinearLayout

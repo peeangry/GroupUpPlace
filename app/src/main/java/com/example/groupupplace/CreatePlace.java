@@ -684,9 +684,9 @@ public class CreatePlace extends AppCompatActivity {
             final String ConvertImage5 = Base64.encodeToString(byteArrayVar5, Base64.DEFAULT);
             final String name = edt_name.getText().toString();
             final String detail = edt_detail.getText().toString();
-            final String price = sp_price.getSelectedItem().toString();
+            final String price = sp_price.getSelectedItemPosition()+"";
             final String phone = edt_phone.getText().toString();
-            final String people = spin_numseat.getSelectedItem().toString();
+            final String people = spin_numseat.getSelectedItemPosition()+"";
             final String depo = placedeposit;
             final String dt_timeS = dt_timeOpen;
             final String dt_timeE = dt_timeEnd;
@@ -695,7 +695,7 @@ public class CreatePlace extends AppCompatActivity {
             String themeString = "";
             for (int i = 0; i < date.size(); i++) {
                 if (i == date.size() - 1) {
-                    dateopen += date.get(i);
+//                    dateopen += date.get(i);
                 } else {
                     dateopen += date.get(i) + ":";
                 }
@@ -718,6 +718,9 @@ public class CreatePlace extends AppCompatActivity {
             final String finalFacility = facility;
             final String finalDateopen = dateopen;
             final String finalThemeString = themeString;
+            Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility + " : " + finalThemeString);
+            Log.d("datatodb", theme.toString());
+
             class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
 
                 @Override
@@ -881,70 +884,11 @@ public class CreatePlace extends AppCompatActivity {
 
 
     public void createNoImage() {
-//        final String name = edt_name.getText().toString();
-//        final String detail = edt_detail.getText().toString();
-//        final String price = sp_price.getSelectedItem().toString();
-//        final String phone = edt_phone.getText().toString();
-//        final String people = spin_numseat.getSelectedItem().toString();
-//        final String depo = placedeposit;
-//        final String dt_timeS = dt_timeOpen;
-//        final String dt_timeE = dt_timeEnd;
-//        String dateopen = "";
-//        String facility = "";
-//        String themeString = "";
-//        for (int i = 0; i < date.size(); i++) {
-//            if (i == date.size() - 1) {
-//                dateopen += date.get(i);
-//            } else {
-//                dateopen += date.get(i) + ":";
-//            }
-//        }
-//        for (int i = 0; i < factlity.size(); i++) {
-//            if (i == factlity.size() - 1) {
-//                facility += factlity.get(i);
-//            } else {
-//                facility += factlity.get(i) + ":";
-//            }
-//        }
-//        for (int i = 0; i < theme.size(); i++) {
-//            if (i == theme.size() - 1) {
-//                themeString += theme.get(i);
-//            } else {
-//                themeString += theme.get(i) + ":";
-//            }
-//        }
-//        String url = ServerUploadPath;
-//        url += "?name=" + name;
-//        url += "&id=" + id;
-//        url += "&email=" + detail;
-//        url += "&phone=" + phone;
-//        url += "&people=" + people;
-//        url += "&depo=" + depo;
-//        url += "&date=" + dateopen;
-//        url += "&timeS=" + dt_timeS;
-//        url += "&timeE=" + dt_timeE;
-//        url += "&facility=" + facility;
-//        url += "&theme=" + themeString;
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Log.e("Log", "Volley::onResponse():" + response);
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-//                    }
-//                });
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
         final String name = edt_name.getText().toString();
         final String detail = edt_detail.getText().toString();
-        final String price = sp_price.getSelectedItem().toString();
+        final String price = sp_price.getSelectedItemPosition()+"";
         final String phone = edt_phone.getText().toString();
-        final String people = spin_numseat.getSelectedItem().toString();
+        final String people = spin_numseat.getSelectedItemPosition()+"";
         final String depo = placedeposit;
         final String dt_timeS = dt_timeOpen;
         final String dt_timeE = dt_timeEnd;
@@ -976,6 +920,8 @@ public class CreatePlace extends AppCompatActivity {
         final String finalFacility = facility;
         final String finalDateopen = dateopen;
         final String finalThemeString = themeString;
+        Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility + " : " + finalThemeString);
+        Log.d("datatodb", theme.toString());
         class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
 
             @Override

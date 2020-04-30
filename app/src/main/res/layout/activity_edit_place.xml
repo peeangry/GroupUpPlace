@@ -126,8 +126,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_restaurant_menu_black_24dp" />
+                    android:layout_weight="1.5"
+                    app:srcCompat="@drawable/ic_date_range_black_24dp" />
 
                 <Button
                     android:id="@+id/btn_editCalen"

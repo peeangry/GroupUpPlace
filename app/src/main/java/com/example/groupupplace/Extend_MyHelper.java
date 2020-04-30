@@ -27,6 +27,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
@@ -167,6 +169,12 @@ public class Extend_MyHelper {
         Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
                 height, filter);
         return newBitmap;
+    }
+    public static ArrayList removeDuplicateValue(ArrayList theme){
+        Set<String> set = new HashSet<>(theme);
+        theme.clear();
+        theme.addAll(set);
+        return theme;
     }
 
 

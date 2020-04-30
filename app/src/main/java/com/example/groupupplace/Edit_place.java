@@ -1,5 +1,8 @@
 package com.example.groupupplace;
 
+import android.app.AlertDialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -7,11 +10,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,11 +32,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class Edit_place extends AppCompatActivity {
-    String pId = "", Name = "", Dest = "", Faci = "", Rating = "", UserId = "", Price = "", Phone = "", Seat = "", Deposite = "", Day = "", StartTime = "", EndTime = "";
+    String pId = "", Name = "", Dest = "", Faci = "", Rating = "", UserId = "", Price = "", Phone = "", Seat = "", Deposite = "", Day = "", StartTime = "", EndTime = "",email="";
     Edit_place.ResponseStr responseStr = new Edit_place.ResponseStr();
     ArrayList<HashMap<String, String>> placeImage, placeTheme;
     EditText edtName, edtDetail, edtPhone;
@@ -41,12 +47,18 @@ public class Edit_place extends AppCompatActivity {
     CheckBox cb_park, cb_wifi, cb_Credit, cb_kid, cb_air, cb_priRoom, cb_bts, cb_mrt;
     TextView showTime;
     Switch sw_depo;
+    ArrayList<String> facility;
+    ArrayList<String> theme ;
     String[] some_array;
+    ArrayList<String> date;
+    String dt_timeOpen, dt_timeEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_place);
+        Extend_MyHelper.checkInternetLost(this);
+        Extend_MyHelper.deleteCache(this);
         edtName = findViewById(R.id.edt_editname);
         edtDetail = findViewById(R.id.edt_editdetails);
         edtPhone = findViewById(R.id.edt_editphone);
@@ -71,6 +83,11 @@ public class Edit_place extends AppCompatActivity {
         sp_seat = findViewById(R.id.spin_EditnumberOfSeats);
         sw_depo = findViewById(R.id.sw_editdeposit);
         some_array = getResources().getStringArray(R.array.day);
+        placeImage = new ArrayList<>();
+        placeTheme = new ArrayList<>();
+        date = new ArrayList<>();
+        facility = new ArrayList<>();
+        theme = new ArrayList<>();
         pId = getIntent().getStringExtra("ItemId");
         Name = getIntent().getStringExtra("ItemName");
         Dest = getIntent().getStringExtra("ItemDest");
@@ -84,15 +101,25 @@ public class Edit_place extends AppCompatActivity {
         Day = getIntent().getStringExtra("ItemDay");//
         StartTime = getIntent().getStringExtra("ItemStartTime");
         EndTime = getIntent().getStringExtra("ItemEndTime");
-        placeImage = new ArrayList<>();
-        placeTheme = new ArrayList<>();
+        email = getIntent().getStringExtra("ItemUserEmail");
+        theme = (ArrayList<String>) getIntent().getSerializableExtra("theme");
+       if (theme!=null){
+           Log.d("theme", "back select theme "+theme.toString()); // theme use for db
+       }else{
+           getPlaceTheme();
+       }
+
+        dt_timeOpen = "";
+        dt_timeEnd = "";
         Log.d("editplce", pId + " : " + Name + " : " + Dest + " : " + Faci + " : " + Rating + " : " + UserId + " : " + Price + " : " + Phone + " : " + Seat + " : " + Deposite + " : " + Day + " : " + StartTime + " : " + EndTime);
         getPlacePhotoPid();
-        getPlaceTheme();
+
         edtName.setText(Name);
         edtDetail.setText(Dest);
         edtPhone.setText(Phone);
+        Log.d("facility124", Faci);
         String day = "";
+        checkFacility();
         StringTokenizer stD = new StringTokenizer(Day, ":");
         while (stD.hasMoreTokens()) {
             day += checkDay(stD.nextToken()) + " ";
@@ -117,13 +144,324 @@ public class Edit_place extends AppCompatActivity {
             sw_depo.setChecked(false);
         }
 
-
+        btn_calendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(Edit_place.this,ManageCalendar.class);
+                in.putExtra("id",UserId+"");
+                in.putExtra("email",email+"");
+                in.putExtra("pid",pId+"");
+                startActivity(in);
+            }
+        });
+        btn_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timePicker();
+            }
+        });
+        btn_theme.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectThemePlace();
+            }
+        });
     }
+    public void selectThemePlace() {
+        Log.d("theme", theme.toString());//off
+        Intent in = new Intent(Edit_place.this, Edit_theme.class);
+        in.putExtra("ItemId", pId + "");
+        in.putExtra("ItemName", Name + "");
+        in.putExtra("ItemDest", Dest + "");
+        in.putExtra("ItemFaci", Faci + "");
+        in.putExtra("Rating", Rating + "");
+        in.putExtra("ItemUserId", UserId + "");
+        in.putExtra("ItemPrice", Price + "");
+        in.putExtra("ItemPhone", Phone + "");
+        in.putExtra("ItemSeat", Seat + "");
+        in.putExtra("ItemDay", Day + "");
+        in.putExtra("ItemDeposite", Deposite + "");
+        in.putExtra("ItemStartTime", StartTime + "");
+        in.putExtra("ItemEndTime", EndTime + "");
+        in.putExtra("ItemUserEmail", email + "");
+        in.putExtra("theme",theme);
+        Log.d("editplce", pId + " : " + Name + " : " + Dest + " : " + Faci + " : " + Rating + " : " + UserId + " : " + Price + " : " + Phone + " : " + Seat + " : " + Deposite + " : " + Day + " : " + StartTime + " : " + EndTime);
 
+        startActivity(in);
+        //ตอนส่งกลับใช้ finish
+    }
     public void backHome(View v) {
         finish();
     }
 
+    public void timePicker() {
+        final AlertDialog viewTime = new AlertDialog.Builder(Edit_place.this).create();
+        View mView = getLayoutInflater().inflate(R.layout.layout_showtimeopen_dialog, null);
+        final EditText edt_timeOne = mView.findViewById(R.id.edt_timeOne);
+        final EditText edt_timeTwo = mView.findViewById(R.id.edt_timeTwo);
+        final Button btn_condate = mView.findViewById(R.id.btn_confirmdate);
+        final CheckBox everyday = mView.findViewById(R.id.everyday);
+        final CheckBox monfri = mView.findViewById(R.id.monFri);
+        final CheckBox satsun = mView.findViewById(R.id.satSun);
+        final CheckBox mon = mView.findViewById(R.id.mon);
+        final CheckBox tue = mView.findViewById(R.id.tue);
+        final CheckBox wed = mView.findViewById(R.id.wed);
+        final CheckBox thu = mView.findViewById(R.id.thu);
+        final CheckBox fri = mView.findViewById(R.id.fri);
+        final CheckBox sat = mView.findViewById(R.id.sat);
+        final CheckBox sun = mView.findViewById(R.id.sun);
+        edt_timeOne.setFocusable(false);
+        edt_timeTwo.setFocusable(false);
+        edt_timeOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(Edit_place.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        edt_timeOne.setText(selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
+        edt_timeTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(Edit_place.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        edt_timeTwo.setText(selectedHour + ":" + selectedMinute);
+                    }
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+        viewTime.setView(mView);
+        viewTime.show();
+        everyday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (everyday.isChecked()) {
+                    everyday.setBackgroundResource(R.color.blueWhite);
+                    date.add("10");
+                    enableCheckBox(mon, tue, wed, thu, fri, sat, sun, monfri, satsun, false);
+                } else {
+                    everyday.setBackgroundResource(R.drawable.my_style);
+                    removeDate("10");
+                    enableCheckBox(mon, tue, wed, thu, fri, sat, sun, monfri, satsun, true);
+                }
+
+            }
+        });
+        monfri.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (monfri.isChecked()) {
+                    monfri.setBackgroundResource(R.color.blueWhite);
+                    date.add("9");
+                    enableCheckBox(mon, tue, wed, thu, fri, sat, sun, everyday, satsun, false);
+                } else {
+                    monfri.setBackgroundResource(R.drawable.my_style);
+                    removeDate("9");
+                    enableCheckBox(mon, tue, wed, thu, fri, sat, sun, everyday, satsun, true);
+                }
+
+            }
+        });
+        satsun.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (satsun.isChecked()) {
+                    satsun.setBackgroundResource(R.color.blueWhite);
+                    date.add("8");
+                    enableCheckBox(mon, tue, wed, thu, fri, sat, sun, everyday, monfri, false);
+                } else {
+                    satsun.setBackgroundResource(R.drawable.my_style);
+                    removeDate("8");
+                    enableCheckBox(mon, tue, wed, thu, fri, sat, sun, everyday, monfri, true);
+                }
+
+            }
+        });
+        mon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (mon.isChecked()) {
+                    mon.setBackgroundResource(R.color.blueWhite);
+                    date.add("1");
+                    enableCheckBox(everyday, monfri, satsun, false);
+                } else {
+                    mon.setBackgroundResource(R.drawable.my_style);
+                    removeDate("1");
+                    if (date.isEmpty()) {
+                        enableCheckBox(everyday, monfri, satsun, true);
+                    } else {
+
+                    }
+                }
+
+            }
+        });
+        tue.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (tue.isChecked()) {
+                    tue.setBackgroundResource(R.color.blueWhite);
+                    date.add("2");
+                    enableCheckBox(everyday, monfri, satsun, false);
+                } else {
+                    tue.setBackgroundResource(R.drawable.my_style);
+                    removeDate("2");
+                    if (date.isEmpty()) {
+                        enableCheckBox(everyday, monfri, satsun, true);
+                    } else {
+
+                    }
+                }
+
+            }
+        });
+        wed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (wed.isChecked()) {
+                    wed.setBackgroundResource(R.color.blueWhite);
+                    date.add("3");
+                    enableCheckBox(everyday, monfri, satsun, false);
+                } else {
+                    wed.setBackgroundResource(R.drawable.my_style);
+                    removeDate("3");
+                    if (date.isEmpty()) {
+                        enableCheckBox(everyday, monfri, satsun, true);
+                    } else {
+
+                    }
+                }
+
+            }
+        });
+        thu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (thu.isChecked()) {
+                    thu.setBackgroundResource(R.color.blueWhite);
+                    date.add("4");
+                    enableCheckBox(everyday, monfri, satsun, false);
+                } else {
+                    thu.setBackgroundResource(R.drawable.my_style);
+                    removeDate("4");
+                    if (date.isEmpty()) {
+                        enableCheckBox(everyday, monfri, satsun, true);
+                    } else {
+
+                    }
+                }
+
+            }
+        });
+        fri.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (fri.isChecked()) {
+                    fri.setBackgroundResource(R.color.blueWhite);
+                    date.add("5");
+                    enableCheckBox(everyday, monfri, satsun, false);
+                } else {
+                    fri.setBackgroundResource(R.drawable.my_style);
+                    removeDate("5");
+                    if (date.isEmpty()) {
+                        enableCheckBox(everyday, monfri, satsun, true);
+                    } else {
+
+                    }
+                }
+
+            }
+        });
+        sat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (sat.isChecked()) {
+                    sat.setBackgroundResource(R.color.blueWhite);
+                    date.add("6");
+                    enableCheckBox(everyday, monfri, satsun, false);
+                } else {
+                    sat.setBackgroundResource(R.drawable.my_style);
+                    removeDate("6");
+                    if (date.isEmpty()) {
+                        enableCheckBox(everyday, monfri, satsun, true);
+                    } else {
+
+                    }
+                }
+
+            }
+        });
+        sun.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (sun.isChecked()) {
+                    sun.setBackgroundResource(R.color.blueWhite);
+                    date.add("7");
+                    enableCheckBox(everyday, monfri, satsun, false);
+                } else {
+                    sun.setBackgroundResource(R.drawable.my_style);
+                    removeDate("7");
+                    if (date.isEmpty()) {
+                        enableCheckBox(everyday, monfri, satsun, true);
+                    } else {
+
+                    }
+
+                }
+
+            }
+        });
+        btn_condate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTime.setVisibility(View.VISIBLE);
+                dt_timeOpen = edt_timeOne.getText().toString();
+                dt_timeEnd = edt_timeTwo.getText().toString();
+                showTime.setText(showStringDay(date) + "เวลา " + dt_timeOpen + " - " + dt_timeEnd);
+                viewTime.dismiss();
+                btn_time.setVisibility(View.GONE);
+            }
+        });
+
+    }
+    public void removeDate(String id) {
+        String number = "";
+        for (int i = 0; i < date.size(); i++) {
+            if (id.equals(date.get(i))) {
+                number = i + "";
+            }
+        }
+        date.remove(Integer.parseInt(number));
+    }
     public void getPlacePhotoPid() {
         responseStr = new Edit_place.ResponseStr();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -170,16 +508,21 @@ public class Edit_place extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                new Extend_MyHelper.SendHttpRequestTask(placeImage.get(0).get("photoplace_path"), img1, 350).execute();
-                new Extend_MyHelper.SendHttpRequestTask(placeImage.get(1).get("photoplace_path"), img2, 350).execute();
-                new Extend_MyHelper.SendHttpRequestTask(placeImage.get(2).get("photoplace_path"), img3, 350).execute();
-                new Extend_MyHelper.SendHttpRequestTask(placeImage.get(3).get("photoplace_path"), img4, 350).execute();
-                new Extend_MyHelper.SendHttpRequestTask(placeImage.get(4).get("photoplace_path"), img5, 350).execute();
+                if (placeImage.size()==0){
+
+                }else {
+                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(0).get("photoplace_path"), img1, 350).execute();
+                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(1).get("photoplace_path"), img2, 350).execute();
+                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(2).get("photoplace_path"), img3, 350).execute();
+                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(3).get("photoplace_path"), img4, 350).execute();
+                    new Extend_MyHelper.SendHttpRequestTask(placeImage.get(4).get("photoplace_path"), img5, 350).execute();
+                }
             }
         }.start();
     }
 
     public void getPlaceTheme() {
+        theme = new ArrayList<>();
         responseStr = new Edit_place.ResponseStr();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getplaceThemebypid.php";
@@ -202,6 +545,7 @@ public class Edit_place extends AppCompatActivity {
                                 MyArrList.add(map);
                                 placeTheme.add(map);
                             }
+
 //                            Log.d("position", MyArrList.size() + "");
                             Log.d("placeHome", "get placeTheme " + placeTheme.toString());
                         } catch (JSONException e) {
@@ -217,6 +561,20 @@ public class Edit_place extends AppCompatActivity {
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+        new CountDownTimer(300, 300) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                for (int i =0;i<placeTheme.size();i++){
+                    theme.add(placeTheme.get(i).get("theme_id").toString());
+                }
+                Log.d("placeHome", "theme " + theme.toString());
+            }
+        }.start();
     }
 
     public String checkDay(String d) {
@@ -224,30 +582,34 @@ public class Edit_place extends AppCompatActivity {
         day = some_array[Integer.parseInt(d)];
         return day;
     }
+
     public void showFacilityDay(String d) {
-        StringTokenizer st = new StringTokenizer(d,":");
-        while (st.hasMoreTokens()){
-            String s="";
-            s=st.nextToken();
-            if (Integer.parseInt(s)==1){
+        StringTokenizer st = new StringTokenizer(d, ":");
+        while (st.hasMoreTokens()) {
+            String s = st.nextToken();
+//            facility.add(s);
+            if (Integer.parseInt(s) == 1) {
                 cb_park.setChecked(true);
-            }else if (Integer.parseInt(s)==2){
+            } else if (Integer.parseInt(s) == 2) {
                 cb_wifi.setChecked(true);
-            }else if (Integer.parseInt(s)==3){
+            } else if (Integer.parseInt(s) == 3) {
                 cb_Credit.setChecked(true);
-            }else if (Integer.parseInt(s)==4){
+            } else if (Integer.parseInt(s) == 4) {
                 cb_kid.setChecked(true);
-            }else if (Integer.parseInt(s)==5){
+            } else if (Integer.parseInt(s) == 5) {
                 cb_air.setChecked(true);
-            }else if (Integer.parseInt(s)==6){
+            } else if (Integer.parseInt(s) == 6) {
                 cb_priRoom.setChecked(true);
-            }else if (Integer.parseInt(s)==7){
+            } else if (Integer.parseInt(s) == 7) {
                 cb_bts.setChecked(true);
-            }else if (Integer.parseInt(s)==8){
+            } else if (Integer.parseInt(s) == 8) {
                 cb_mrt.setChecked(true);
             }
-
         }
+        while (st.hasMoreTokens()) {
+            facility.add(st.nextToken());
+        }
+        Log.d("facility124", "start : "+facility.toString());
     }
 
     public class ResponseStr {
@@ -259,4 +621,176 @@ public class Edit_place extends AppCompatActivity {
         }
 
     }
+
+    public void checkFacility() {
+        cb_park.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (cb_park.isChecked()) {
+                    cb_park.setBackgroundResource(R.color.blueWhite);
+                    facility.add("1");
+                } else {
+                    cb_park.setBackgroundResource(R.drawable.my_style);
+                    removeFacility("1");
+                }
+
+            }
+        });
+        cb_wifi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (cb_wifi.isChecked()) {
+                    cb_wifi.setBackgroundResource(R.color.blueWhite);
+                    facility.add("2");
+                } else {
+                    cb_wifi.setBackgroundResource(R.drawable.my_style);
+                    removeFacility("2");
+                }
+
+            }
+        });
+        cb_Credit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (cb_Credit.isChecked()) {
+                    cb_Credit.setBackgroundResource(R.color.blueWhite);
+                    facility.add("3");
+                } else {
+                    cb_Credit.setBackgroundResource(R.drawable.my_style);
+                    removeFacility("3");
+                }
+
+            }
+        });
+        cb_kid.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (cb_kid.isChecked()) {
+                    cb_kid.setBackgroundResource(R.color.blueWhite);
+                    facility.add("4");
+                } else {
+                    cb_kid.setBackgroundResource(R.drawable.my_style);
+                    removeFacility("4");
+                }
+
+            }
+        });
+        cb_air.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (cb_air.isChecked()) {
+                    cb_air.setBackgroundResource(R.color.blueWhite);
+                    facility.add("5");
+                } else {
+                    cb_air.setBackgroundResource(R.drawable.my_style);
+                    removeFacility("5");
+                }
+
+            }
+        });
+        cb_priRoom.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (cb_priRoom.isChecked()) {
+                    cb_priRoom.setBackgroundResource(R.color.blueWhite);
+                    facility.add("6");
+                } else {
+                    cb_priRoom.setBackgroundResource(R.drawable.my_style);
+                    removeFacility("6");
+                }
+
+            }
+        });
+        cb_bts.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (cb_bts.isChecked()) {
+                    cb_bts.setBackgroundResource(R.color.blueWhite);
+                    facility.add("7");
+                } else {
+                    cb_bts.setBackgroundResource(R.drawable.my_style);
+                    removeFacility("7");
+                }
+            }
+        });
+        cb_mrt.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                if (cb_mrt.isChecked()) {
+                    cb_mrt.setBackgroundResource(R.color.blueWhite);
+                    facility.add("8");
+                } else {
+                    cb_mrt.setBackgroundResource(R.drawable.my_style);
+                    removeFacility("8");
+                }
+            }
+        });
+
+    }
+
+    public void removeFacility(String id) {
+        String number = "";
+        for (int i = 0; i < facility.size(); i++) {
+            if (id.equals(facility.get(i))) {
+                number = i + "";
+            }
+        }
+        facility.remove(Integer.parseInt(number));
+        Log.d("facility124", facility.toString());
+    }
+    public void enableCheckBox(CheckBox cb, CheckBox cb1, CheckBox cb2, CheckBox cb3, CheckBox cb4, CheckBox cb5, CheckBox cb6, CheckBox cb7, CheckBox cb8, boolean b) {
+        cb.setEnabled(b);
+        cb1.setEnabled(b);
+        cb2.setEnabled(b);
+        cb3.setEnabled(b);
+        cb4.setEnabled(b);
+        cb5.setEnabled(b);
+        cb6.setEnabled(b);
+        cb7.setEnabled(b);
+        cb8.setEnabled(b);
+
+    }
+
+    public void enableCheckBox(CheckBox cb, CheckBox cb1, CheckBox cb2, boolean b) {
+        cb.setEnabled(b);
+        cb1.setEnabled(b);
+        cb2.setEnabled(b);
+    }
+    public String showStringDay(ArrayList<String> date) {
+        String day = "";
+        for (int i = 0; i < date.size(); i++) {
+            if (Integer.parseInt(date.get(i)) == 1) {
+                day += "จันทร์ ";
+
+            } else if (Integer.parseInt(date.get(i)) == 2) {
+                day += "อังคาร ";
+            } else if (Integer.parseInt(date.get(i)) == 3) {
+                day += "พุธ ";
+            } else if (Integer.parseInt(date.get(i)) == 4) {
+                day += "พฤหัสบดี ";
+            } else if (Integer.parseInt(date.get(i)) == 5) {
+                day += "ศุกร์ ";
+            } else if (Integer.parseInt(date.get(i)) == 6) {
+                day += "เสาร์ ";
+            } else if (Integer.parseInt(date.get(i)) == 7) {
+                day += "อาทิตย์ ";
+            } else if (Integer.parseInt(date.get(i)) == 8) {
+                day += "วันเสาร์อาทิตย์ ";
+            } else if (Integer.parseInt(date.get(i)) == 9) {
+                day += "จันทร์ - ศุกร์ ";
+            } else if (Integer.parseInt(date.get(i)) == 10) {
+                day += "ทุกวัน ";
+            }
+        }
+        return day;
+    }
+
 }

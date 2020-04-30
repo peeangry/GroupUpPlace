@@ -187,6 +187,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                     in.putExtra("ItemDay",ItemDay+"");
                     in.putExtra("ItemStartTime",ItemStartTime+"");
                     in.putExtra("ItemEndTime",ItemEndTime+"");
+                    in.putExtra("ItemUserEmail",email+"");
                     startActivity(in);
 
                     Log.d("listclick",position+"  "+ItemId);

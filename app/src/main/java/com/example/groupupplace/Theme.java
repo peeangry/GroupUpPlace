@@ -825,6 +825,7 @@ public class Theme extends AppCompatActivity {
                             for (int i = 0; i < MyArrList.size(); i++) {
                                 nameType.add(MyArrList.get(i).get("theme_name") + "\n");
                                 idType.add(MyArrList.get(i).get("theme_id") + "\n");
+                                themeSelect.add(MyArrList.get(i).get("theme_id") + "\n");
                             }
 //                            Log.d("themeSelect","myarr : "+MyArrList.toString());
                         } catch (JSONException e) {
@@ -880,6 +881,7 @@ public class Theme extends AppCompatActivity {
                         lCus.setVisibility(View.VISIBLE);
                         btn_con.setVisibility(View.VISIBLE);
                         b.setText(R.string.group_theme);
+                        themeSelect.clear();
                         checkVisible = false;
                         Log.d("idType", idType.toString());
                         checkCustomTheme(tyid);
@@ -1137,10 +1139,10 @@ public class Theme extends AppCompatActivity {
         burger.setChecked(false);
     }
     public void intentPage(String s){
-        Log.d("checkTheme","Theme  intent "+email+" : "+id+" : "+name+" : "+detail+" : "+price+" : "+phone+" : "+deposit+" : "+time +" : "+people);
-
+        Log.d("themeSelect","Theme  intent "+email+" : "+id+" : "+name+" : "+detail+" : "+price+" : "+phone+" : "+deposit+" : "+time +" : "+people);
+        Log.d("themeSelect", themeSelect.toString());
         Intent in = new Intent(Theme.this,CreatePlace.class);
-            in.putExtra("themeSelect", idType);
+            in.putExtra("themeSelect", themeSelect);
             in.putExtra("id", id + "");
             in.putExtra("email", email + "");
             in.putExtra("name", name + "");

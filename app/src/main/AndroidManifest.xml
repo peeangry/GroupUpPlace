@@ -17,7 +17,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Edit_place"></activity>
+        <activity android:name=".Edit_theme"></activity>
+        <activity android:name=".Edit_place" />
 
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"

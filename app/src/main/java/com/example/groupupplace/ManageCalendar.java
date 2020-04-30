@@ -85,7 +85,7 @@ public class ManageCalendar extends AppCompatActivity {
     ArrayList<String> dateForDB = new ArrayList<>();
     //Array for 1 year
     static ArrayList<String> dateInYear; // real Tue Sep 01 20:44:10 GMT+07:00 2020
-    String uid, email;
+    String pid, email,uid;
     String date1, date2;
     //checkbox
     LinearLayout linearCheckbox;
@@ -107,8 +107,9 @@ public class ManageCalendar extends AppCompatActivity {
         btnConfirmCalendar = findViewById(R.id.btn_confirmCalendar);
         btnDelCalendar = findViewById(R.id.btnDelCalendar);
         dateInYear = new ArrayList<>();
-        uid = getIntent().getStringExtra("id");
+        pid = getIntent().getStringExtra("pid");
         email = getIntent().getStringExtra("email");
+        uid =getIntent().getStringExtra("id");
         //checkbox
         linearCheckbox.setVisibility(View.GONE);
         checkVisible = true;//close custom
@@ -761,10 +762,11 @@ public class ManageCalendar extends AppCompatActivity {
     }
 
     public void backHome(View v) {
-        Intent in = new Intent(this, HomePlace.class);
-        in.putExtra("email", email + "");
-//        Manage_calendar.this.finish();
-        startActivity(in);
+        finish();
+//        Intent in = new Intent(this, HomePlace.class);
+//        in.putExtra("email", email + "");
+////        Manage_calendar.this.finish();
+//        startActivity(in);
     }
 
     public void requestCalendarPermission() {
@@ -1053,7 +1055,7 @@ public class ManageCalendar extends AppCompatActivity {
         }
         Log.d("simpledate", "dateCheckformatStart : " + dateCheckformatStart + "--" + dateCheckformatEnd);
         String url = "http://www.groupupdb.com/android/addcalendarplace.php";
-        url += "?sId=" + uid;
+        url += "?sId=" + pid;
         url += "&sdt=" + startDate;
         url += "&edt=" + endDate;
         url += "&dcfs=" + dateCheckformatStart + "";
@@ -1079,7 +1081,7 @@ public class ManageCalendar extends AppCompatActivity {
     public void sentCalendarDiffToDB(String startDate, String endDate) {
         Log.d("simpledate", "startDate : " + startDate);
         String url = "http://www.groupupdb.com/android/addcalendarplace.php";
-        url += "?sId=" + uid;
+        url += "?sId=" + pid;
         url += "&sdt=" + startDate;
         url += "&edt=" + endDate;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -1106,7 +1108,7 @@ public class ManageCalendar extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/getcalendarplace.php";
-        url += "?sId=" + uid;//รอเอาIdจากfirebase
+        url += "?sId=" + pid;//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -1163,7 +1165,7 @@ public class ManageCalendar extends AppCompatActivity {
         Log.d("simpledate", "sentDateToDB : " + dateCheckformat);
         Log.d("checkDB ", "dateCheck : " + dateCheck);
         String url = "http://www.groupupdb.com/android/adddateplace.php";
-        url += "?sId=" + uid;
+        url += "?sId=" + pid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
         url += "&sdc=" + dateCheck + "";
@@ -1193,7 +1195,7 @@ public class ManageCalendar extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/getdateplace.php";
-        url += "?sId=" + uid;//รอเอาIdจากfirebase
+        url += "?sId=" + pid;//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -1246,7 +1248,7 @@ public class ManageCalendar extends AppCompatActivity {
         String dateCheckformat = simpledate.format(d) + "";
         Log.d("simpledate", "getDateFromDB : " + dateCheckformat);
         String url = "http://www.groupupdb.com/android/adddatediffplace.php";
-        url += "?sId=" + uid;
+        url += "?sId=" + pid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
         url += "&sdc=" + dateCheck + "";
@@ -1276,7 +1278,7 @@ public class ManageCalendar extends AppCompatActivity {
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
 
         String url = "http://www.groupupdb.com/android/getdatediffplace.php";
-        url += "?sId=" + uid;//รอเอาIdจากfirebase
+        url += "?sId=" + pid;//รอเอาIdจากfirebase
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -1462,7 +1464,7 @@ public class ManageCalendar extends AppCompatActivity {
     public void sentCustomDateToCalendar(String startDate, String endDate) {
         Log.d("simpledate", "startDate : " + startDate);
         String url = "http://www.groupupdb.com/android/addcustomcalendarplace.php";
-        url += "?sId=" + uid;
+        url += "?sId=" + pid;
         url += "&sdt=" + startDate;
         url += "&edt=" + endDate;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -1485,7 +1487,7 @@ public class ManageCalendar extends AppCompatActivity {
     public void sentDelCustomDateToCalendar(String startDate, String endDate) {
         Log.d("simpledate", "startDate : " + startDate);
         String url = "http://www.groupupdb.com/android/removedbcalendarplace.php";
-        url += "?sId=" + uid;
+        url += "?sId=" + pid;
         url += "&sdt=" + startDate;
         url += "&edt=" + endDate;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -1508,7 +1510,7 @@ public class ManageCalendar extends AppCompatActivity {
     public void deleteDateInDb() {
         responseStr = new ManageCalendar.ResponseStr();
         String url = "http://www.groupupdb.com/android/deletedatebyplace.php";
-        url += "?sId=" + uid;
+        url += "?sId=" + pid;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -1541,7 +1543,7 @@ public class ManageCalendar extends AppCompatActivity {
         Log.d("simpledate", "sentDateToDB : " + dateCheckformat);
         Log.d("checkDB ", "dateCheck : " + dateCheck);
         String url = "http://www.groupupdb.com/android/adddateforcalplace.php";
-        url += "?sId=" + uid;
+        url += "?sId=" + pid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
         url += "&sdc=" + dateCheck + "";
@@ -1585,7 +1587,7 @@ public class ManageCalendar extends AppCompatActivity {
         Log.d("simpledate", "sentDateToDB : " + dateCheckformat);
         Log.d("checkDB ", "dateCheck : " + dateCheck);
         String url = "http://www.groupupdb.com/android/removedbdateforcalplace.php";
-        url += "?sId=" + uid;
+        url += "?sId=" + pid;
         url += "&sdt=" + date1;
         url += "&sdtl=" + date2;
         url += "&sdc=" + dateCheck + "";

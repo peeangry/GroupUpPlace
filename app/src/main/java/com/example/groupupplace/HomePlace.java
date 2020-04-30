@@ -52,6 +52,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class HomePlace extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //*******************************TextView with checkbox******************************************//
@@ -166,7 +167,8 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
             viewHolder.text.setText(ItemName);
             viewHolder.rating.setRating(ItemRating);
             viewHolder.description.setText(ItemDest);
-            viewHolder.facility.setText(ItemFaci);
+
+            viewHolder.facility.setText(showFacility(ItemFaci));
             viewHolder.confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -211,6 +213,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
     ProgressDialog progressDialog;
     ImageButton btnAlert, btnCreatePlace;
     ImageView imgAccount;
+    String[] some_array;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,6 +231,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         placeArray = new ArrayList<>();
         placeTheme = new ArrayList<>();
         placeImage = new ArrayList<>();
+        some_array = getResources().getStringArray(R.array.facility);
         View v = navigationView.getHeaderView(0);
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
@@ -488,8 +492,8 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                     @Override
                     protected String doInBackground(Void... params) {
                         getplace();
-                        getPlacePhoto();
-                        getPlaceTheme();
+//                        getPlacePhoto();
+//                        getPlaceTheme();
                         return "successful!!!";
                     }
                 }
@@ -529,11 +533,8 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                             email = MyArrList.get(0).get("user_email");
                             name = MyArrList.get(0).get("user_name");
                             photo = MyArrList.get(0).get("user_photo");
-                            hName.setText(name);
-                            hEmail.setText(email);
-                            new Extend_MyHelper.SendHttpRequestTask(photo, imgAccount, 250).execute();
 //                            writeFile(id,name,email);
-                            Log.d("footer", "email " + email + " name " + name + " id " + id);
+                            Log.d("footer", "thread email " + email + " name " + name + " id " + id);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -675,83 +676,99 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         initItems();
         setItemsListView();
     }
-    public void getPlaceTheme() {
-        responseStr = new HomePlace.ResponseStr();
-        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        String url = "http://www.groupupdb.com/android/getplacetheme.php";
-        url += "?sId=" + id;
-        Log.d("position", "stringRequest  " + url);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("placetheme_id", c.getString("placetheme_id"));
-                                map.put("theme_id", c.getString("theme_id"));
-                                map.put("place_id", c.getString("place_id"));
-                                map.put("place_upid", c.getString("place_upid"));
-                                MyArrList.add(map);
-                                placeTheme.add(map);
-                            }
-//                            Log.d("position", MyArrList.size() + "");
-                            Log.d("placeHome", "get placeTheme " + placeTheme.toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
-    }
-    public void getPlacePhoto() {
-        responseStr = new HomePlace.ResponseStr();
-        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-        String url = "http://www.groupupdb.com/android/getplacephoto.php";
-        url += "?sId=" + id;
-        Log.d("position", "stringRequest  " + url);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            HashMap<String, String> map;
-                            JSONArray data = new JSONArray(response.toString());
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject c = data.getJSONObject(i);
-                                map = new HashMap<String, String>();
-                                map.put("photoplace_id", c.getString("photoplace_id"));
-                                map.put("place_id", c.getString("place_id"));
-                                map.put("photoplace_path", c.getString("photoplace_path"));
-                                map.put("place_upid", c.getString("place_upid"));
-                                MyArrList.add(map);
-                                placeImage.add(map);
-                            }
-//                            Log.d("position", MyArrList.size() + "");
-                            Log.d("placeHome", "get placeImage " + placeImage.toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(stringRequest);
+//    public void getPlaceTheme() {
+//        responseStr = new HomePlace.ResponseStr();
+//        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+//        String url = "http://www.groupupdb.com/android/getplacetheme.php";
+//        url += "?sId=" + id;
+//        Log.d("position", "stringRequest  " + url);
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try {
+//                            HashMap<String, String> map;
+//                            JSONArray data = new JSONArray(response.toString());
+//                            for (int i = 0; i < data.length(); i++) {
+//                                JSONObject c = data.getJSONObject(i);
+//                                map = new HashMap<String, String>();
+//                                map.put("placetheme_id", c.getString("placetheme_id"));
+//                                map.put("theme_id", c.getString("theme_id"));
+//                                map.put("place_id", c.getString("place_id"));
+//                                map.put("place_upid", c.getString("place_upid"));
+//                                MyArrList.add(map);
+//                                placeTheme.add(map);
+//                            }
+////                            Log.d("position", MyArrList.size() + "");
+//                            Log.d("placeHome", "get placeTheme " + placeTheme.toString());
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+//                    }
+//                });
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
+//    }
+//    public void getPlacePhoto() {
+//        responseStr = new HomePlace.ResponseStr();
+//        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+//        String url = "http://www.groupupdb.com/android/getplacephoto.php";
+//        url += "?sId=" + id;
+//        Log.d("position", "stringRequest  " + url);
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try {
+//                            HashMap<String, String> map;
+//                            JSONArray data = new JSONArray(response.toString());
+//                            for (int i = 0; i < data.length(); i++) {
+//                                JSONObject c = data.getJSONObject(i);
+//                                map = new HashMap<String, String>();
+//                                map.put("photoplace_id", c.getString("photoplace_id"));
+//                                map.put("place_id", c.getString("place_id"));
+//                                map.put("photoplace_path", c.getString("photoplace_path"));
+//                                map.put("place_upid", c.getString("place_upid"));
+//                                MyArrList.add(map);
+//                                placeImage.add(map);
+//                            }
+////                            Log.d("position", MyArrList.size() + "");
+//                            Log.d("placeHome", "get placeImage " + placeImage.toString());
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+//                    }
+//                });
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        queue.add(stringRequest);
+//    }
+    public String showFacility(String d) {
+        StringTokenizer st = new StringTokenizer(d,":");
+        String s="";
+        ArrayList<Integer> array = new ArrayList<>();
+        while (st.hasMoreTokens()){
+            array.add(Integer.parseInt(st.nextToken())-1);
+        }
+        for (int i =0 ;i<array.size();i++){
+            if (i!=array.size()-1){
+                s+= "- "+some_array[array.get(i)]+"\n";
+            }else{
+                s+= "- "+some_array[array.get(i)];
+            }
+        }
+        return s;
     }
 //    public void myClickHandler(View v)
 //    {

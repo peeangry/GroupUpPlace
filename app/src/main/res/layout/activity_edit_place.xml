@@ -539,9 +539,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="50dp"
-                android:background="@color/classicBlue"
-                android:text="@string/btn"
+                android:background="@drawable/button"
                 android:onClick="backHome"
+                android:text="@string/btn"
                 android:textColor="@color/white" />
 
         </LinearLayout>

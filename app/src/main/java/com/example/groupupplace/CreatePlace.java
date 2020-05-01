@@ -22,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -1232,9 +1233,25 @@ public class CreatePlace extends AppCompatActivity {
                 showTime.setVisibility(View.VISIBLE);
                 dt_timeOpen = edt_timeOne.getText().toString();
                 dt_timeEnd = edt_timeTwo.getText().toString();
-                showTime.setText(showStringDay(date) + "เวลา " + dt_timeOpen + " - " + dt_timeEnd);
-                viewTime.dismiss();
-                btn_time.setVisibility(View.GONE);
+                if (dt_timeOpen.isEmpty()||dt_timeEnd.isEmpty()){
+                    final AlertDialog viewDetail = new AlertDialog.Builder(CreatePlace.this).create();
+                    viewDetail.setTitle("กรุณากำหนดเวลาเปิด-ปิด");
+                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE,"เสร็จสิ้น", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            viewDetail.dismiss();
+                        }
+                    });
+                    viewDetail.show();
+                    Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                    layoutParams.weight=15;
+                    btnPositive.setLayoutParams(layoutParams);
+                }else {
+                    showTime.setText(showStringDay(date) + "เวลา " + dt_timeOpen + " - " + dt_timeEnd);
+                    btn_time.setVisibility(View.GONE);
+                    viewTime.dismiss();
+                }
             }
         });
 

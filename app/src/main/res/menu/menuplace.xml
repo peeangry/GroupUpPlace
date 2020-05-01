@@ -5,8 +5,6 @@
             android:title="@string/home" />
         <item android:id="@+id/menu_account"
             android:title="@string/account"/>
-        <item android:id="@+id/menu_calendar"
-            android:title="@string/manage_calendar"/>
         <item android:id="@+id/menu_signout"
             android:title="@string/signout"/>
     </group>

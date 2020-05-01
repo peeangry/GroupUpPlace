@@ -369,10 +369,6 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 goToManageAccount();
                 Log.d(TAG, "onNavigationItemSelected account: " + item.getTitle());
                 break;
-            case R.id.menu_calendar:
-                goToManageCalendar();
-                Log.d(TAG, "onNavigationItemSelected calendar: " + item.getTitle());
-                break;
             case R.id.menu_signout:
                 signout();
                 Log.d(TAG, "onNavigationItemSelected signout: " + item.getTitle());

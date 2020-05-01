@@ -1,10 +1,19 @@
 package com.example.groupupplace;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,12 +22,16 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,27 +44,46 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.net.ssl.HttpsURLConnection;
+
 public class Edit_place extends AppCompatActivity {
-    String pId = "", Name = "", Dest = "", Faci = "", Rating = "", UserId = "", Price = "", Phone = "", Seat = "", Deposite = "", Day = "", StartTime = "", EndTime = "",email="";
+    String pId = "", Name = "", Dest = "", Faci = "", Rating = "", UserId = "", Price = "", Phone = "", Seat = "", Deposite = "", Day = "", StartTime = "", EndTime = "", email = "";
     Edit_place.ResponseStr responseStr = new Edit_place.ResponseStr();
     ArrayList<HashMap<String, String>> placeImage, placeTheme;
     EditText edtName, edtDetail, edtPhone;
     Spinner sp_price, sp_seat;
-    Button btn_calendar, btn_theme, btn_time;
+    Button btn_calendar, btn_theme, btn_time, btn_con;
     ImageView img1, img2, img3, img4, img5;
     CheckBox cb_park, cb_wifi, cb_Credit, cb_kid, cb_air, cb_priRoom, cb_bts, cb_mrt;
     TextView showTime;
     Switch sw_depo;
+    boolean check = true;
+    Bitmap bitmap, bitmap2, bitmap3, bitmap4, bitmap5;
     ArrayList<String> facility;
-    ArrayList<String> theme ;
+    ArrayList<String> theme;
     String[] some_array;
     ArrayList<String> date;
     String dt_timeOpen, dt_timeEnd;
+    final int READ_EXTERNAL_PERMISSION_CODE = 1;
+    ProgressDialog progressDialog;
+    String ServerUploadPath = "http://www.groupupdb.com/android/editplace.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +98,7 @@ public class Edit_place extends AppCompatActivity {
         btn_theme = findViewById(R.id.btn_editTheme);
         sp_price = findViewById(R.id.spin_EditpriceRange);
         btn_time = findViewById(R.id.btn_editselect_time);
+        btn_con = findViewById(R.id.editPlace_confirm);
         showTime = findViewById(R.id.editshow_time);
         img1 = findViewById(R.id.edit_image1);
         img2 = findViewById(R.id.edit_image2);
@@ -103,16 +136,17 @@ public class Edit_place extends AppCompatActivity {
         EndTime = getIntent().getStringExtra("ItemEndTime");
         email = getIntent().getStringExtra("ItemUserEmail");
         theme = (ArrayList<String>) getIntent().getSerializableExtra("theme");
-       if (theme!=null){
-           Log.d("theme", "back select theme "+theme.toString()); // theme use for db
-       }else{
-           getPlaceTheme();
-       }
+        if (theme != null) {
+            Log.d("theme", "back select theme " + theme.toString()); // theme use for db
+        } else {
+            getPlaceTheme();
+        }
 
         dt_timeOpen = "";
         dt_timeEnd = "";
-        Log.d("editplce", pId + " : " + Name + " : " + Dest + " : " + Faci + " : " + Rating + " : " + UserId + " : " + Price + " : " + Phone + " : " + Seat + " : " + Deposite + " : " + Day + " : " + StartTime + " : " + EndTime);
         getPlacePhotoPid();
+        Log.d("editplce", pId + " : " + Name + " : " + Dest + " : " + Faci + " : " + Rating + " : " + UserId + " : " + Price + " : " + Phone + " : " + Seat + " : " + Deposite + " : " + Day + " : " + StartTime + " : " + EndTime);
+
 
         edtName.setText(Name);
         edtDetail.setText(Dest);
@@ -143,14 +177,25 @@ public class Edit_place extends AppCompatActivity {
             Log.d("placedeposit", Deposite);//off
             sw_depo.setChecked(false);
         }
-
+        sw_depo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Deposite = "1";
+                    Log.d("placedeposit", Deposite);//on
+                } else {
+                    Deposite = "0";
+                    Log.d("placedeposit", Deposite);//off
+                }
+            }
+        });
         btn_calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent in = new Intent(Edit_place.this,ManageCalendar.class);
-                in.putExtra("id",UserId+"");
-                in.putExtra("email",email+"");
-                in.putExtra("pid",pId+"");
+                Intent in = new Intent(Edit_place.this, ManageCalendar.class);
+                in.putExtra("id", UserId + "");
+                in.putExtra("email", email + "");
+                in.putExtra("pid", pId + "");
                 startActivity(in);
             }
         });
@@ -166,7 +211,44 @@ public class Edit_place extends AppCompatActivity {
                 selectThemePlace();
             }
         });
+        img1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getImage(1);
+            }
+        });
+        img2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getImage(2);
+            }
+        });
+        img3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getImage(3);
+            }
+        });
+        img4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getImage(4);
+            }
+        });
+        img5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getImage(5);
+            }
+        });
+        btn_con.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageUploadToServerFunction();
+            }
+        });
     }
+
     public void selectThemePlace() {
         Log.d("theme", theme.toString());//off
         Intent in = new Intent(Edit_place.this, Edit_theme.class);
@@ -184,12 +266,13 @@ public class Edit_place extends AppCompatActivity {
         in.putExtra("ItemStartTime", StartTime + "");
         in.putExtra("ItemEndTime", EndTime + "");
         in.putExtra("ItemUserEmail", email + "");
-        in.putExtra("theme",theme);
+        in.putExtra("theme", theme);
         Log.d("editplce", pId + " : " + Name + " : " + Dest + " : " + Faci + " : " + Rating + " : " + UserId + " : " + Price + " : " + Phone + " : " + Seat + " : " + Deposite + " : " + Day + " : " + StartTime + " : " + EndTime);
 
         startActivity(in);
         //ตอนส่งกลับใช้ finish
     }
+
     public void backHome(View v) {
         finish();
     }
@@ -446,13 +529,31 @@ public class Edit_place extends AppCompatActivity {
                 showTime.setVisibility(View.VISIBLE);
                 dt_timeOpen = edt_timeOne.getText().toString();
                 dt_timeEnd = edt_timeTwo.getText().toString();
-                showTime.setText(showStringDay(date) + "เวลา " + dt_timeOpen + " - " + dt_timeEnd);
-                viewTime.dismiss();
-                btn_time.setVisibility(View.GONE);
+                if (dt_timeOpen.isEmpty() || dt_timeEnd.isEmpty()) {
+                    final AlertDialog viewDetail = new AlertDialog.Builder(Edit_place.this).create();
+                    viewDetail.setTitle("กรุณากำหนดเวลาเปิด-ปิด");
+                    viewDetail.setButton(viewDetail.BUTTON_POSITIVE, "เสร็จสิ้น", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            viewDetail.dismiss();
+                        }
+                    });
+                    viewDetail.show();
+                    Button btnPositive = viewDetail.getButton(AlertDialog.BUTTON_POSITIVE);
+                    LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) btnPositive.getLayoutParams();
+                    layoutParams.weight = 15;
+                    btnPositive.setLayoutParams(layoutParams);
+                } else {
+                    showTime.setText(showStringDay(date) + "เวลา " + dt_timeOpen + " - " + dt_timeEnd);
+                    btn_time.setVisibility(View.GONE);
+                    viewTime.dismiss();
+                }
+
             }
         });
 
     }
+
     public void removeDate(String id) {
         String number = "";
         for (int i = 0; i < date.size(); i++) {
@@ -462,6 +563,7 @@ public class Edit_place extends AppCompatActivity {
         }
         date.remove(Integer.parseInt(number));
     }
+
     public void getPlacePhotoPid() {
         responseStr = new Edit_place.ResponseStr();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -508,9 +610,9 @@ public class Edit_place extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                if (placeImage.size()==0){
+                if (placeImage.size() == 0) {
 
-                }else {
+                } else {
                     new Extend_MyHelper.SendHttpRequestTask(placeImage.get(0).get("photoplace_path"), img1, 350).execute();
                     new Extend_MyHelper.SendHttpRequestTask(placeImage.get(1).get("photoplace_path"), img2, 350).execute();
                     new Extend_MyHelper.SendHttpRequestTask(placeImage.get(2).get("photoplace_path"), img3, 350).execute();
@@ -569,7 +671,7 @@ public class Edit_place extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                for (int i =0;i<placeTheme.size();i++){
+                for (int i = 0; i < placeTheme.size(); i++) {
                     theme.add(placeTheme.get(i).get("theme_id").toString());
                 }
                 Log.d("placeHome", "theme " + theme.toString());
@@ -609,7 +711,7 @@ public class Edit_place extends AppCompatActivity {
         while (st.hasMoreTokens()) {
             facility.add(st.nextToken());
         }
-        Log.d("facility124", "start : "+facility.toString());
+        Log.d("facility124", "start : " + facility.toString());
     }
 
     public class ResponseStr {
@@ -746,6 +848,7 @@ public class Edit_place extends AppCompatActivity {
         facility.remove(Integer.parseInt(number));
         Log.d("facility124", facility.toString());
     }
+
     public void enableCheckBox(CheckBox cb, CheckBox cb1, CheckBox cb2, CheckBox cb3, CheckBox cb4, CheckBox cb5, CheckBox cb6, CheckBox cb7, CheckBox cb8, boolean b) {
         cb.setEnabled(b);
         cb1.setEnabled(b);
@@ -764,6 +867,7 @@ public class Edit_place extends AppCompatActivity {
         cb1.setEnabled(b);
         cb2.setEnabled(b);
     }
+
     public String showStringDay(ArrayList<String> date) {
         String day = "";
         for (int i = 0; i < date.size(); i++) {
@@ -792,5 +896,611 @@ public class Edit_place extends AppCompatActivity {
         }
         return day;
     }
+
+    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize, boolean filter) {
+        float ratio = Math.min(
+                (float) maxImageSize / realImage.getWidth(),
+                (float) maxImageSize / realImage.getHeight());
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
+                height, filter);
+        return newBitmap;
+    }
+
+    @Override
+    protected void onActivityResult(int RC, int RQC, Intent I) {
+
+        super.onActivityResult(RC, RQC, I);
+
+        if (RC == 1 && RQC == RESULT_OK && I != null && I.getData() != null) {
+
+            Uri uri = I.getData();
+
+            try {
+
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                Bitmap dstBmp;
+                if (bitmap.getWidth() >= bitmap.getHeight()) {
+
+                    dstBmp = Bitmap.createBitmap(
+                            bitmap,
+                            bitmap.getWidth() / 2 - bitmap.getHeight() / 2,
+                            0,
+                            bitmap.getHeight(),
+                            bitmap.getHeight()
+                    );
+
+                } else {
+
+                    dstBmp = Bitmap.createBitmap(
+                            bitmap,
+                            0,
+                            bitmap.getHeight() / 2 - bitmap.getWidth() / 2,
+                            bitmap.getWidth(),
+                            bitmap.getWidth()
+                    );
+                }
+                Bitmap lbp = scaleDown(dstBmp, 275, false);
+
+                img1.setImageBitmap(lbp);
+
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
+        if (RC == 2 && RQC == RESULT_OK && I != null && I.getData() != null) {
+
+            Uri uri = I.getData();
+
+            try {
+
+                bitmap2 = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                Bitmap dstBmp;
+                if (bitmap2.getWidth() >= bitmap2.getHeight()) {
+
+                    dstBmp = Bitmap.createBitmap(
+                            bitmap2,
+                            bitmap2.getWidth() / 2 - bitmap2.getHeight() / 2,
+                            0,
+                            bitmap2.getHeight(),
+                            bitmap2.getHeight()
+                    );
+
+                } else {
+
+                    dstBmp = Bitmap.createBitmap(
+                            bitmap2,
+                            0,
+                            bitmap2.getHeight() / 2 - bitmap2.getWidth() / 2,
+                            bitmap2.getWidth(),
+                            bitmap2.getWidth()
+                    );
+                }
+                Bitmap lbp = scaleDown(dstBmp, 275, false);
+
+                img2.setImageBitmap(lbp);
+
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
+        if (RC == 3 && RQC == RESULT_OK && I != null && I.getData() != null) {
+
+            Uri uri = I.getData();
+
+            try {
+
+                bitmap3 = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                Bitmap dstBmp;
+                if (bitmap3.getWidth() >= bitmap3.getHeight()) {
+
+                    dstBmp = Bitmap.createBitmap(
+                            bitmap3,
+                            bitmap3.getWidth() / 2 - bitmap3.getHeight() / 2,
+                            0,
+                            bitmap3.getHeight(),
+                            bitmap3.getHeight()
+                    );
+
+                } else {
+
+                    dstBmp = Bitmap.createBitmap(
+                            bitmap3,
+                            0,
+                            bitmap3.getHeight() / 2 - bitmap3.getWidth() / 2,
+                            bitmap3.getWidth(),
+                            bitmap3.getWidth()
+                    );
+                }
+                Bitmap lbp = scaleDown(dstBmp, 275, false);
+
+                img3.setImageBitmap(lbp);
+
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
+        if (RC == 4 && RQC == RESULT_OK && I != null && I.getData() != null) {
+
+            Uri uri = I.getData();
+
+            try {
+
+                bitmap4 = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                Bitmap dstBmp;
+                if (bitmap4.getWidth() >= bitmap4.getHeight()) {
+
+                    dstBmp = Bitmap.createBitmap(
+                            bitmap4,
+                            bitmap4.getWidth() / 2 - bitmap4.getHeight() / 2,
+                            0,
+                            bitmap4.getHeight(),
+                            bitmap4.getHeight()
+                    );
+
+                } else {
+
+                    dstBmp = Bitmap.createBitmap(
+                            bitmap4,
+                            0,
+                            bitmap4.getHeight() / 2 - bitmap4.getWidth() / 2,
+                            bitmap4.getWidth(),
+                            bitmap4.getWidth()
+                    );
+                }
+                Bitmap lbp = scaleDown(dstBmp, 275, false);
+
+                img4.setImageBitmap(lbp);
+
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
+        if (RC == 5 && RQC == RESULT_OK && I != null && I.getData() != null) {
+
+            Uri uri = I.getData();
+
+            try {
+
+                bitmap5 = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+
+                Bitmap dstBmp;
+                if (bitmap5.getWidth() >= bitmap5.getHeight()) {
+
+                    dstBmp = Bitmap.createBitmap(
+                            bitmap5,
+                            bitmap5.getWidth() / 2 - bitmap5.getHeight() / 2,
+                            0,
+                            bitmap5.getHeight(),
+                            bitmap5.getHeight()
+                    );
+
+                } else {
+
+                    dstBmp = Bitmap.createBitmap(
+                            bitmap5,
+                            0,
+                            bitmap5.getHeight() / 2 - bitmap5.getWidth() / 2,
+                            bitmap5.getWidth(),
+                            bitmap5.getWidth()
+                    );
+                }
+                Bitmap lbp = scaleDown(dstBmp, 275, false);
+
+                img5.setImageBitmap(lbp);
+
+
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void requestImagePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Permission needed")
+                    .setMessage("This permission is needed for access the gallery")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(Edit_place.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_PERMISSION_CODE);
+                        }
+                    }).create().show();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_PERMISSION_CODE);
+        }
+    }
+
+    public void getImage(int reqCode) {
+        if (ContextCompat.checkSelfPermission(Edit_place.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(Edit_place.this, "You have already permission access gallery", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.putExtra("email", email + "");
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Image From Gallery"), reqCode);
+        } else {
+            requestImagePermission();
+//                Intent intent = new Intent();
+//                intent.setType("image/*");
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                startActivityForResult(Intent.createChooser(intent, "Select Image From Gallery"), reqCode);
+        }
+    }
+
+    public void ImageUploadToServerFunction() {
+
+        ByteArrayOutputStream byteArrayOutputStreamObject, byteArrayOutputStreamObject2, byteArrayOutputStreamObject3, byteArrayOutputStreamObject4, byteArrayOutputStreamObject5;
+        byteArrayOutputStreamObject = new ByteArrayOutputStream();
+        byteArrayOutputStreamObject2 = new ByteArrayOutputStream();
+        byteArrayOutputStreamObject3 = new ByteArrayOutputStream();
+        byteArrayOutputStreamObject4 = new ByteArrayOutputStream();
+        byteArrayOutputStreamObject5 = new ByteArrayOutputStream();
+//        if (bitmap == null&&bitmap2 == null&&bitmap3 ==null&&bitmap4==null&&bitmap5==null) {
+////            createNoImage();
+//            Log.d("ConvertImage","noimage");
+//        } else {
+        if (bitmap != null) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject);
+        }
+        if (bitmap2 != null) {
+            bitmap2.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject2);
+        }
+        if (bitmap3 != null) {
+            bitmap3.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject3);
+        }
+        if (bitmap4 != null) {
+            bitmap4.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject4);
+        }
+        if (bitmap5 != null) {
+            bitmap5.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStreamObject5);
+        }
+        byte[] byteArrayVar = byteArrayOutputStreamObject.toByteArray();
+        byte[] byteArrayVar2 = byteArrayOutputStreamObject2.toByteArray();
+        byte[] byteArrayVar3 = byteArrayOutputStreamObject3.toByteArray();
+        byte[] byteArrayVar4 = byteArrayOutputStreamObject4.toByteArray();
+        byte[] byteArrayVar5 = byteArrayOutputStreamObject5.toByteArray();
+
+        final String ConvertImage = Base64.encodeToString(byteArrayVar, Base64.DEFAULT);
+        final String ConvertImage2 = Base64.encodeToString(byteArrayVar2, Base64.DEFAULT);
+        final String ConvertImage3 = Base64.encodeToString(byteArrayVar3, Base64.DEFAULT);
+        final String ConvertImage4 = Base64.encodeToString(byteArrayVar4, Base64.DEFAULT);
+        final String ConvertImage5 = Base64.encodeToString(byteArrayVar5, Base64.DEFAULT);
+        Log.d("ConvertImage", "1 " + ConvertImage);
+        Log.d("ConvertImage", "2 " + ConvertImage2.isEmpty());//true ไม่มีรูป false มีรูป
+        Log.d("ConvertImage", "3 " + ConvertImage3);
+        Log.d("ConvertImage", "4 " + ConvertImage4);
+        Log.d("ConvertImage", "5 " + ConvertImage5);
+        final String name = edtName.getText().toString();
+        final String detail = edtDetail.getText().toString();
+        final String price = sp_price.getSelectedItemPosition() + "";
+        final String phone = edtPhone.getText().toString();
+        final String people = sp_seat.getSelectedItemPosition() + "";
+        final String depo = Deposite;
+        final String dt_timeS = dt_timeOpen;
+        final String dt_timeE = dt_timeEnd;
+        String dateopen = "";
+        String facilityString = "";
+        String themeString = "";
+        for (int i = 0; i < date.size(); i++) {
+            if (i == date.size() - 1) {
+                dateopen += date.get(i);
+            } else {
+                dateopen += date.get(i) + ":";
+            }
+        }
+        for (int i = 0; i < facility.size(); i++) {
+            if (i == facility.size() - 1) {
+                facilityString += facility.get(i);
+            } else {
+                facilityString += facility.get(i) + ":";
+            }
+        }
+        for (int i = 0; i < theme.size(); i++) {
+            if (i == theme.size() - 1) {
+                themeString += theme.get(i);
+            } else {
+                themeString += theme.get(i) + ":";
+            }
+        }
+
+        final String finalFacility = facilityString;
+        final String finalDateopen = dateopen;
+        final String finalThemeString = themeString;
+        Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS.isEmpty() + " : " + dt_timeE.isEmpty() + " : " + finalDateopen.isEmpty() + " : " + finalFacility + " : " + finalThemeString);
+        Log.d("datatodb", theme.toString());
+
+        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                progressDialog = ProgressDialog.show(Edit_place.this, "place is creating", "Please Wait", false, false);
+            }
+
+            @Override
+            protected void onPostExecute(String string1) {
+
+                super.onPostExecute(string1);
+
+                // Dismiss the progress dialog after done uploading.
+                progressDialog.dismiss();
+
+                // Printing uploading success message coming from server on android app.
+                Toast.makeText(Edit_place.this, string1, Toast.LENGTH_LONG).show();
+
+                // Setting image as transparent after done uploading.
+                img1.setImageResource(android.R.color.transparent);
+                img2.setImageResource(android.R.color.transparent);
+                img3.setImageResource(android.R.color.transparent);
+                img4.setImageResource(android.R.color.transparent);
+                img5.setImageResource(android.R.color.transparent);
+                Intent in = new Intent(Edit_place.this, HomePlace.class);
+                in.putExtra("id", UserId + "");
+                in.putExtra("email", email + "");
+                startActivity(in);
+
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility + " : " + finalThemeString);
+                Log.d("datatodb", theme.toString());
+                Edit_place.ImageProcessClass imageProcessClass = new Edit_place.ImageProcessClass();
+                HashMap<String, String> HashMapParams = new HashMap<String, String>();
+                HashMapParams.put("pid", pId.toString());
+                HashMapParams.put("name", name.toString());
+                HashMapParams.put("id", UserId.toString());
+                HashMapParams.put("email", email.toString());
+                HashMapParams.put("detail", detail.toString());
+                HashMapParams.put("price", price.toString());
+                HashMapParams.put("phone", phone.toString());
+                HashMapParams.put("people", people.toString());
+                HashMapParams.put("depo", depo.toString());
+                if (!finalDateopen.isEmpty()){
+                    HashMapParams.put("date", finalDateopen.toString());
+                }
+                if (!dt_timeS.isEmpty()){
+                    HashMapParams.put("timeS", dt_timeS.toString());
+                }
+                if (!dt_timeE.isEmpty()){
+                    HashMapParams.put("timeE", dt_timeE.toString());
+                }
+                HashMapParams.put("facility", finalFacility.toString());
+                if (!finalThemeString.isEmpty()){
+                    HashMapParams.put("theme", finalThemeString.toString());
+                }
+                if (!ConvertImage.isEmpty()){
+                    HashMapParams.put("photo", ConvertImage.toString());
+                }
+                if (!ConvertImage2.isEmpty()){
+                    HashMapParams.put("photo", ConvertImage2.toString());
+                }
+                if (!ConvertImage3.isEmpty()){
+                    HashMapParams.put("photo", ConvertImage3.toString());
+                }
+                if (!ConvertImage4.isEmpty()){
+                    HashMapParams.put("photo", ConvertImage4.toString());
+                }
+                if (!ConvertImage5.isEmpty()){
+                    HashMapParams.put("photo", ConvertImage5.toString());
+                }
+                Log.d("hashmap", HashMapParams.size() + "");
+                Log.d("hashmap", HashMapParams.toString());
+                String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
+                return FinalData;
+            }
+        }
+        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+        AsyncTaskUploadClassOBJ.execute();
+    }
+
+
+
+    public class ImageProcessClass {
+
+        public String ImageHttpRequest(String requestURL, HashMap<String, String> PData) {
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            try {
+
+                URL url;
+                HttpURLConnection httpURLConnectionObject;
+                OutputStream OutPutStream;
+                BufferedWriter bufferedWriterObject;
+                BufferedReader bufferedReaderObject;
+                int RC;
+
+                url = new URL(requestURL);
+                Log.d("hashmap","url : "+ url.toString());
+                httpURLConnectionObject = (HttpURLConnection) url.openConnection();
+
+                httpURLConnectionObject.setReadTimeout(240000);
+
+                httpURLConnectionObject.setConnectTimeout(240000);
+
+                httpURLConnectionObject.setRequestMethod("POST");
+
+                httpURLConnectionObject.setDoInput(true);
+
+                httpURLConnectionObject.setDoOutput(true);
+
+                OutPutStream = httpURLConnectionObject.getOutputStream();
+
+                bufferedWriterObject = new BufferedWriter(
+
+                        new OutputStreamWriter(OutPutStream, "UTF-8"));
+
+                bufferedWriterObject.write(bufferedWriterDataFN(PData));
+
+                bufferedWriterObject.flush();
+
+                bufferedWriterObject.close();
+
+                OutPutStream.close();
+
+                RC = httpURLConnectionObject.getResponseCode();
+                Log.d("hashmap","url : "+ RC);
+                if (RC == HttpsURLConnection.HTTP_OK) {
+
+                    bufferedReaderObject = new BufferedReader(new InputStreamReader(httpURLConnectionObject.getInputStream()));
+
+                    stringBuilder = new StringBuilder();
+
+                    String RC2;
+
+                    while ((RC2 = bufferedReaderObject.readLine()) != null) {
+
+                        stringBuilder.append(RC2);
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return stringBuilder.toString();
+        }
+
+        private String bufferedWriterDataFN(HashMap<String, String> HashMapParams) throws UnsupportedEncodingException {
+
+            StringBuilder stringBuilderObject;
+
+            stringBuilderObject = new StringBuilder();
+
+            for (Map.Entry<String, String> KEY : HashMapParams.entrySet()) {
+
+                if (check)
+
+                    check = false;
+                else
+                    stringBuilderObject.append("&");
+
+                stringBuilderObject.append(URLEncoder.encode(KEY.getKey(), "UTF-8"));
+
+                stringBuilderObject.append("=");
+
+                stringBuilderObject.append(URLEncoder.encode(KEY.getValue(), "UTF-8"));
+            }
+
+            return stringBuilderObject.toString();
+        }
+
+    }
+
+
+//    public void createNoImage() {
+//        final String name = edt_name.getText().toString();
+//        final String detail = edt_detail.getText().toString();
+//        final String price = sp_price.getSelectedItemPosition()+"";
+//        final String phone = edt_phone.getText().toString();
+//        final String people = spin_numseat.getSelectedItemPosition()+"";
+//        final String depo = placedeposit;
+//        final String dt_timeS = dt_timeOpen;
+//        final String dt_timeE = dt_timeEnd;
+//        String dateopen = "";
+//        String facility = "";
+//        String themeString = "";
+//        for (int i = 0; i < date.size(); i++) {
+//            if (i == date.size() - 1) {
+//                dateopen += date.get(i);
+//            } else {
+//                dateopen += date.get(i) + ":";
+//            }
+//        }
+//        for (int i = 0; i < factlity.size(); i++) {
+//            if (i == factlity.size() - 1) {
+//                facility += factlity.get(i);
+//            } else {
+//                facility += factlity.get(i) + ":";
+//            }
+//        }
+//        for (int i = 0; i < theme.size(); i++) {
+//            if (i == theme.size() - 1) {
+//                themeString += theme.get(i);
+//            } else {
+//                themeString += theme.get(i) + ":";
+//            }
+//        }
+//
+//        final String finalFacility = facility;
+//        final String finalDateopen = dateopen;
+//        final String finalThemeString = themeString;
+//        Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility + " : " + finalThemeString);
+//        Log.d("datatodb", theme.toString());
+//        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+//
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//
+//                progressDialog = ProgressDialog.show(Edit_place.this, "place is creating", "Please Wait", false, false);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(String string1) {
+//
+//                super.onPostExecute(string1);
+//
+//                // Dismiss the progress dialog after done uploading.
+//                progressDialog.dismiss();
+//
+//                // Printing uploading success message coming from server on android app.
+//                Toast.makeText(Edit_place.this, string1, Toast.LENGTH_LONG).show();
+//
+//                // Setting image as transparent after done uploading.
+//                Intent in = new Intent(Edit_place.this, HomePlace.class);
+//                in.putExtra("id", id + "");
+//                in.putExtra("email", email + "");
+//                startActivity(in);
+//
+//            }
+//
+//            @Override
+//            protected String doInBackground(Void... params) {
+//                Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility + " : " + finalThemeString);
+//                Log.d("datatodb", theme.toString());
+//                Edit_place.ImageProcessClass imageProcessClass = new Edit_place.ImageProcessClass();
+//                HashMap<String, String> HashMapParams = new HashMap<String, String>();
+//                HashMapParams.put("name", name);
+//                HashMapParams.put("id", id);
+//                HashMapParams.put("email", email);
+//                HashMapParams.put("detail", detail);
+//                HashMapParams.put("price", price);
+//                HashMapParams.put("phone", phone);
+//                HashMapParams.put("people", people);
+//                HashMapParams.put("depo", depo);
+//                HashMapParams.put("date", finalDateopen);
+//                HashMapParams.put("timeS", dt_timeS);
+//                HashMapParams.put("timeE", dt_timeE);
+//                HashMapParams.put("facility", finalFacility);
+//                HashMapParams.put("theme", finalThemeString);
+//
+//                Log.d("hashmap", HashMapParams.size() + "");
+//                Log.d("hashmap", HashMapParams.toString());
+//                String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
+//                return FinalData;
+//            }
+//        }
+//        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+//        AsyncTaskUploadClassOBJ.execute();
+//    }
 
 }

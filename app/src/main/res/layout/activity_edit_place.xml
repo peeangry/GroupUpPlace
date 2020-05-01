@@ -534,7 +534,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/newPlace_confirm"
+                android:id="@+id/editPlace_confirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

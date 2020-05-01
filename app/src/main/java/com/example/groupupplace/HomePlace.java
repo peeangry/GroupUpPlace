@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -52,6 +55,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 public class HomePlace extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -71,9 +75,11 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         String ItemDay;
         String ItemStartTime;
         String ItemEndTime;
-//        upid,pPrice,pPhone,pSeat,pDepo,pDate,pStartTime,pEndTime
+        String ItemFaciString;
+
+        //        upid,pPrice,pPhone,pSeat,pDepo,pDate,pStartTime,pEndTime
         //        Item(ImageView drawable, String t, boolean b){
-        Item(String id,String name, String desc, String faci, float rating, String drawable,String uid,String price,String phone,String seat,String deposit,String day,String sTime ,String eTime) {
+        Item(String id, String name, String desc, String faci, float rating, String drawable, String uid, String price, String phone, String seat, String deposit, String day, String sTime, String eTime) {
             ItemId = id;
             ItemDrawable = drawable;
             ItemName = name;
@@ -88,6 +94,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
             ItemDay = day;
             ItemStartTime = sTime;
             ItemEndTime = eTime;
+            ItemFaciString = showFacility(ItemFaci);
         }
 
     }
@@ -100,7 +107,6 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         RatingBar rating;
         Button confirm;
     }
-
     public class ItemsListAdapter extends BaseAdapter {
         private ArrayList<HomePlace.Item> arraylist;
         private Context context;
@@ -127,7 +133,6 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         public long getItemId(int position) {
             return position;
         }
-
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             View rowView = convertView;
@@ -163,7 +168,6 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
             final String ItemDay = list.get(position).ItemDay;
             final String ItemStartTime = list.get(position).ItemStartTime;
             final String ItemEndTime = list.get(position).ItemEndTime;
-
             viewHolder.text.setText(ItemName);
             viewHolder.rating.setRating(ItemRating);
             viewHolder.description.setText(ItemDest);
@@ -173,27 +177,49 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 @Override
                 public void onClick(View v) {
 //                    ItemId,ItemDrawable,ItemName,ItemDest,ItemFaci,Rating,ItemUserId,ItemPrice,ItemPhone,ItemSeat,ItemDeposite,ItemDay,ItemStartTime,ItemEndTime,
-                    Intent in =  new Intent(HomePlace.this,Edit_place.class);
-                    in.putExtra("ItemId",ItemId+"");
-                    in.putExtra("ItemName",ItemName+"");
-                    in.putExtra("ItemDest",ItemDest+"");
-                    in.putExtra("ItemFaci",ItemFaci+"");
-                    in.putExtra("Rating",ItemRating+"");
-                    in.putExtra("ItemUserId",ItemUserId+"");
-                    in.putExtra("ItemPrice",ItemPrice+"");
-                    in.putExtra("ItemPhone",ItemPhone+"");
-                    in.putExtra("ItemSeat",ItemSeat+"");
-                    in.putExtra("ItemDeposite",ItemDeposite+"");
-                    in.putExtra("ItemDay",ItemDay+"");
-                    in.putExtra("ItemStartTime",ItemStartTime+"");
-                    in.putExtra("ItemEndTime",ItemEndTime+"");
-                    in.putExtra("ItemUserEmail",email+"");
+                    Intent in = new Intent(HomePlace.this, Edit_place.class);
+                    in.putExtra("ItemId", ItemId + "");
+                    in.putExtra("ItemName", ItemName + "");
+                    in.putExtra("ItemDest", ItemDest + "");
+                    in.putExtra("ItemFaci", ItemFaci + "");
+                    in.putExtra("Rating", ItemRating + "");
+                    in.putExtra("ItemUserId", ItemUserId + "");
+                    in.putExtra("ItemPrice", ItemPrice + "");
+                    in.putExtra("ItemPhone", ItemPhone + "");
+                    in.putExtra("ItemSeat", ItemSeat + "");
+                    in.putExtra("ItemDeposite", ItemDeposite + "");
+                    in.putExtra("ItemDay", ItemDay + "");
+                    in.putExtra("ItemStartTime", ItemStartTime + "");
+                    in.putExtra("ItemEndTime", ItemEndTime + "");
+                    in.putExtra("ItemUserEmail", email + "");
                     startActivity(in);
 
-                    Log.d("listclick",position+"  "+ItemId);
+                    Log.d("listclick", position + "  " + ItemId);
                 }
             });
             return rowView;
+        }
+
+        // Filter Class
+        public void filter(String charText) {
+            charText = charText.toLowerCase(Locale.getDefault());
+            list.clear();
+            if (charText.length() == 0) {
+                list.addAll(arraylist);
+            } else {
+                for (Item wp : arraylist) {
+                    if (wp.ItemName.toLowerCase(Locale.getDefault())
+                            .contains(charText)) {
+                        list.add(wp);
+                    }
+                    else if (wp.ItemFaciString.toLowerCase(Locale.getDefault())
+                            .contains(charText)) {
+                        list.add(wp);
+                    }
+
+                }
+            }
+            notifyDataSetChanged();
         }
     }
 
@@ -210,11 +236,12 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
     TextView hEmail;
     String name = "", id = "", email = "", photo = "";
     ListView placeList;
-    ArrayList<HashMap<String, String>> placeArray,placeTheme,placeImage;
+    ArrayList<HashMap<String, String>> placeArray, placeTheme, placeImage;
     ProgressDialog progressDialog;
     ImageButton btnAlert, btnCreatePlace;
     ImageView imgAccount;
     String[] some_array;
+    EditText edtSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,10 +264,12 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         hName = v.findViewById(R.id.menu_name);
         hEmail = v.findViewById(R.id.menu_email);
         imgAccount = v.findViewById(R.id.imageUser);
+        edtSearch = findViewById(R.id.editTextSearch);
         email = getIntent().getStringExtra("email");
         photo = getIntent().getStringExtra("photo");
         Extend_MyHelper.checkInternetLost(this);
         new Extend_MyHelper.SendHttpRequestTask(photo, imgAccount, 250).execute();
+        search();
         progressDialog = new ProgressDialog(HomePlace.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");
@@ -451,7 +480,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        new CountDownTimer(500,500){
+        new CountDownTimer(500, 500) {
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -499,6 +528,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
             }
         }.start();
     }
+
     public void getUserThread() {
         responseStr = new ResponseStr();
 
@@ -607,10 +637,10 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
 
 //            String mystring = getResources().getString(R.string.mystring);
 //            String s = event_creater + "ได้เชิญคุณเข้าร่วม " + ename + " เป็น " + priName + " โดยมีช่วงเวลาระหว่างเดือน " + some_array[Integer.parseInt(sSta)] + " ถึง " + some_array[Integer.parseInt(sEnd)];
-            Log.d("pathimage","item Home : "+ pName+" / "+ pDetail+" / "+ pFacility+" / "+ pScore+" / "+ pImage);
-            HomePlace.Item item = new HomePlace.Item(pid,pName,pDetail,pFacility,Float.parseFloat(pScore),pImage,upid,pPrice,pPhone,pSeat,pDepo,pDate,pStartTime,pEndTime);
+            Log.d("pathimage", "item Home : " + pName + " / " + pDetail + " / " + pFacility + " / " + pScore + " / " + pImage);
+            HomePlace.Item item = new HomePlace.Item(pid, pName, pDetail, pFacility, Float.parseFloat(pScore), pImage, upid, pPrice, pPhone, pSeat, pDepo, pDate, pStartTime, pEndTime);
             items.add(item);
-            Log.d("pathimage","item : "+ items.toString());
+            Log.d("pathimage", "item : " + items.toString());
         }
 
     }
@@ -673,99 +703,47 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         initItems();
         setItemsListView();
     }
-//    public void getPlaceTheme() {
-//        responseStr = new HomePlace.ResponseStr();
-//        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-//        String url = "http://www.groupupdb.com/android/getplacetheme.php";
-//        url += "?sId=" + id;
-//        Log.d("position", "stringRequest  " + url);
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            HashMap<String, String> map;
-//                            JSONArray data = new JSONArray(response.toString());
-//                            for (int i = 0; i < data.length(); i++) {
-//                                JSONObject c = data.getJSONObject(i);
-//                                map = new HashMap<String, String>();
-//                                map.put("placetheme_id", c.getString("placetheme_id"));
-//                                map.put("theme_id", c.getString("theme_id"));
-//                                map.put("place_id", c.getString("place_id"));
-//                                map.put("place_upid", c.getString("place_upid"));
-//                                MyArrList.add(map);
-//                                placeTheme.add(map);
-//                            }
-////                            Log.d("position", MyArrList.size() + "");
-//                            Log.d("placeHome", "get placeTheme " + placeTheme.toString());
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-//                    }
-//                });
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
-//    }
-//    public void getPlacePhoto() {
-//        responseStr = new HomePlace.ResponseStr();
-//        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
-//        String url = "http://www.groupupdb.com/android/getplacephoto.php";
-//        url += "?sId=" + id;
-//        Log.d("position", "stringRequest  " + url);
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            HashMap<String, String> map;
-//                            JSONArray data = new JSONArray(response.toString());
-//                            for (int i = 0; i < data.length(); i++) {
-//                                JSONObject c = data.getJSONObject(i);
-//                                map = new HashMap<String, String>();
-//                                map.put("photoplace_id", c.getString("photoplace_id"));
-//                                map.put("place_id", c.getString("place_id"));
-//                                map.put("photoplace_path", c.getString("photoplace_path"));
-//                                map.put("place_upid", c.getString("place_upid"));
-//                                MyArrList.add(map);
-//                                placeImage.add(map);
-//                            }
-////                            Log.d("position", MyArrList.size() + "");
-//                            Log.d("placeHome", "get placeImage " + placeImage.toString());
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
-//                    }
-//                });
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(stringRequest);
-//    }
+
     public String showFacility(String d) {
-        StringTokenizer st = new StringTokenizer(d,":");
-        String s="";
+        StringTokenizer st = new StringTokenizer(d, ":");
+        String s = "";
         ArrayList<Integer> array = new ArrayList<>();
-        while (st.hasMoreTokens()){
-            array.add(Integer.parseInt(st.nextToken())-1);
+        while (st.hasMoreTokens()) {
+            array.add(Integer.parseInt(st.nextToken()) - 1);
         }
-        for (int i =0 ;i<array.size();i++){
-            if (i!=array.size()-1){
-                s+= "- "+some_array[array.get(i)]+"\n";
-            }else{
-                s+= "- "+some_array[array.get(i)];
+        for (int i = 0; i < array.size(); i++) {
+            if (i != array.size() - 1) {
+                s += "- " + some_array[array.get(i)] + "\n";
+            } else {
+                s += "- " + some_array[array.get(i)];
             }
         }
         return s;
+    }
+
+    public void search() {
+        edtSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+                String text = edtSearch.getText().toString().toLowerCase(Locale.getDefault());
+                myItemsListAdapter.filter(text);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1,
+                                          int arg2, int arg3) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+                // TODO Auto-generated method stub
+            }
+        });
+
     }
 //    public void myClickHandler(View v)
 //    {

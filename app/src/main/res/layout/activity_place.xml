@@ -128,14 +128,14 @@
                         android:id="@+id/btn_managePlace"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
+                        android:layout_marginLeft="40dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginRight="30dp"
+                        android:layout_marginRight="40dp"
                         android:layout_marginBottom="10dp"
                         android:alpha="0.8"
                         android:background="@drawable/button"
-                        android:drawableLeft="@drawable/ic_edit_black_24dp"
 
+                        android:drawableLeft="@drawable/ic_edit_black_24dp"
                         android:text="@string/manage_place"
                         android:textColor="#FFFFFF" />
 

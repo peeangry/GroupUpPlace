@@ -362,7 +362,6 @@ public class ManageCalendar extends AppCompatActivity {
             public void onClick(View v) {
                 final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(ManageCalendar.this).create();
                 viewDetail.setTitle("ยืนยันการเพิ่มวันที่");
-                viewDetail.setMessage("เมื่อยืนยันแล้วคุณจะไม่สามารถแก้ไขได้");
                 viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -395,11 +394,12 @@ public class ManageCalendar extends AppCompatActivity {
                                 progressDialog.dismiss();
                                 // Printing uploading success message coming from server on android app.
                                 Toast.makeText(ManageCalendar.this, string1, Toast.LENGTH_LONG).show();
-                                Intent in = new Intent(ManageCalendar.this, HomePlace.class);
-                                in.putExtra("email", email + "");
-                                in.putExtra("id", uid + "");
-//                                Manage_calendar.this.finish();
-                                startActivity(in);
+                                finish();
+//                                Intent in = new Intent(ManageCalendar.this, Edit_place.class);
+//                                in.putExtra("email", email + "");
+//                                in.putExtra("id", uid + "");
+////                                Manage_calendar.this.finish();
+//                                startActivity(in);
 
                             }
 

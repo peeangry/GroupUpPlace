@@ -135,10 +135,15 @@
             android:layout_height="1dip"
             android:layout_marginTop="10dp"
             android:background="#CCCCCC" />
-
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/pullToRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <ListView
             android:id="@+id/placeList"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

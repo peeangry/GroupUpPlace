@@ -31,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -311,7 +312,16 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 getUser();
             }
         }.start();
-
+        final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+//                startActivity(getIntent());
+                getUser();
+//                refreshData(); // your code
+                pullToRefresh.setRefreshing(false);
+            }
+        });
 
 //        new CountDownTimer(2000, 1000) {
 //            public void onFinish() {

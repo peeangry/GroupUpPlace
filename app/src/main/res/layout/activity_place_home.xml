@@ -48,7 +48,7 @@
 
             <View
                 android:id="@+id/view2"
-                android:layout_width="20dp"
+                android:layout_width="60dp"
                 android:layout_height="match_parent" />
 
             <View
@@ -65,18 +65,38 @@
                 android:layout_weight="3"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/myPlace" />
-
-            <ImageButton
-                android:id="@+id/btn_notification"
+            <RelativeLayout
+                android:id="@+id/badge2"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/classicBlue"
-                app:srcCompat="@drawable/ic_notifications_black_24dp" />
+                android:layout_height="wrap_content"
 
-            <View
-                android:id="@+id/view4"
-                android:layout_width="20dp"
-                android:layout_height="match_parent" />
+                android:layout_toRightOf="@+id/badge_layout1">
+                <RelativeLayout
+                    android:id="@+id/relative_layout1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/btn_notification"
+                        android:layout_width="60dip"
+                        android:layout_height="60dip"
+                        android:background="@color/classicBlue"
+                        app:srcCompat="@drawable/ic_notifications_black_24dp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/badge_notification_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@id/relative_layout1"
+
+                    android:background="@drawable/red_button"
+                    android:gravity="center"
+                    android:text="21"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
 
             <ImageButton
                 android:id="@+id/btn_newGroup"

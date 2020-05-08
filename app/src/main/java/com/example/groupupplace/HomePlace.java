@@ -751,8 +751,8 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
 
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         Log.d("footer", "id getnumNotification" + id);
-        String url = "http://www.groupupdb.com/android/getnumnotification.php";
-        url += "?uId=" + id;
+        String url = "http://www.groupupdb.com/android/getnumnotificationplace.php";
+        url += "?pId=" + id;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

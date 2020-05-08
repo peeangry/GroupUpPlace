@@ -243,6 +243,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
     ImageView imgAccount;
     String[] some_array;
     EditText edtSearch;
+    TextView numNoti;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -255,6 +256,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         btnAlert = findViewById(R.id.btn_notification);
         btnCreatePlace = findViewById(R.id.btn_newGroup);
         placeList = findViewById(R.id.placeList);
+        numNoti = findViewById(R.id.badge_notification_2);
         navigationView.setNavigationItemSelectedListener(HomePlace.this);
         navigationView.bringToFront();
         placeArray = new ArrayList<>();
@@ -271,6 +273,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         Extend_MyHelper.checkInternetLost(this);
         new Extend_MyHelper.SendHttpRequestTask(photo, imgAccount, 250).execute();
         search();
+        numNoti.setVisibility(View.INVISIBLE);
         progressDialog = new ProgressDialog(HomePlace.this);
         progressDialog.setMessage("กำลังโหลดข้อมูล....");
         progressDialog.setTitle("กรุณารอซักครู่");
@@ -293,31 +296,15 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
 //                        Toast.makeText(HomePlace.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                getUserThread();
-                deleteDateOldDay();
-            }
-        }).start();
-        new CountDownTimer(300, 300) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                getUser();
-            }
-        }.start();
+        deleteDateOldDay();
+        getUser();
         final SwipeRefreshLayout pullToRefresh = findViewById(R.id.pullToRefresh);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 //                startActivity(getIntent());
                 getUser();
+                getnumNotification();
 //                refreshData(); // your code
                 pullToRefresh.setRefreshing(false);
             }
@@ -476,6 +463,8 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                             new Extend_MyHelper.SendHttpRequestTask(photo, imgAccount, 250).execute();
 //                            writeFile(id,name,email);
                             Log.d("footer", "email " + email + " name " + name + " id " + id);
+                            getplace();
+                            getnumNotification();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -490,53 +479,53 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-        new CountDownTimer(500, 500) {
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-
-            }
-
-            @Override
-            public void onFinish() {
-                class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                    }
-
-                    @Override
-                    protected void onPostExecute(String string1) {
-                        super.onPostExecute(string1);
-                        new CountDownTimer(300, 300) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                showAllCheckboxClick();
-                            }
-                        }.start();
-
-                        progressDialog.dismiss();
-                        Toast.makeText(HomePlace.this, string1, Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    @Override
-                    protected String doInBackground(Void... params) {
-                        getplace();
-//                        getPlacePhoto();
-//                        getPlaceTheme();
-                        return "successful!!!";
-                    }
-                }
-                AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-                AsyncTaskUploadClassOBJ.execute();
-            }
-        }.start();
+//        new CountDownTimer(500, 500) {
+//
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
+//                    @Override
+//                    protected void onPreExecute() {
+//                        super.onPreExecute();
+//                    }
+//
+//                    @Override
+//                    protected void onPostExecute(String string1) {
+//                        super.onPostExecute(string1);
+//                        new CountDownTimer(300, 300) {
+//                            @Override
+//                            public void onTick(long millisUntilFinished) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onFinish() {
+//                                showAllCheckboxClick();
+//                            }
+//                        }.start();
+//
+//
+//                        Toast.makeText(HomePlace.this, string1, Toast.LENGTH_SHORT).show();
+//
+//                    }
+//
+//                    @Override
+//                    protected String doInBackground(Void... params) {
+//                        getplace();
+////                        getPlacePhoto();
+////                        getPlaceTheme();
+//                        return "successful!!!";
+//                    }
+//                }
+//                AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
+//                AsyncTaskUploadClassOBJ.execute();
+//            }
+//        }.start();
     }
 
     public void getUserThread() {
@@ -693,6 +682,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                             }
                             Log.d("placeHome", "get placeArray " + placeArray.toString());
 //                            Log.d("place", "get MyArrList " + MyArrList.toString());
+                            showAllCheckboxClick();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -712,6 +702,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
     public void showAllCheckboxClick() {
         initItems();
         setItemsListView();
+        progressDialog.dismiss();
     }
 
     public String showFacility(String d) {
@@ -754,6 +745,51 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
+    }
+    public void getnumNotification() {
+        responseStr = new ResponseStr();
+
+        final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
+        Log.d("footer", "id getnumNotification" + id);
+        String url = "http://www.groupupdb.com/android/getnumnotification.php";
+        url += "?uId=" + id;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            HashMap<String, String> map = null;
+                            JSONArray data = new JSONArray(response.toString());
+                            for (int i = 0; i < data.length(); i++) {
+                                JSONObject c = data.getJSONObject(i);
+                                map = new HashMap<String, String>();
+                                map.put("num", c.getString("num"));
+                                MyArrList.add(map);
+                            }
+                            //set Header menu name email
+                            Log.d("footer", MyArrList.get(0).get("num"));
+                            String numSn =MyArrList.get(0).get("num");
+                            int numIn = Integer.parseInt(numSn);
+                            if (numIn>0){
+                                numNoti.setVisibility(View.VISIBLE);
+                                numNoti.setText(numSn);
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Log", "Volley::onErrorResponse():" + error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
     }
 //    public void myClickHandler(View v)
 //    {

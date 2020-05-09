@@ -111,4 +111,5 @@
     <string name="sat">เสาร์</string>
     <string name="manage_place">จัดการสถานที่</string>
     <string name="edit_theme">แก้ไขธีมสถานที่</string>
+    <string name="see_review">รีวิว</string>
 </resources>

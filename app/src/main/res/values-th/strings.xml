@@ -112,4 +112,11 @@
     <string name="manage_place">จัดการสถานที่</string>
     <string name="edit_theme">แก้ไขธีมสถานที่</string>
     <string name="see_review">รีวิว</string>
+    <string name="alert_name">สถานที่ : </string>
+    <string name="alert_date">วันที่ : </string>
+    <string name="alert_event">ชื่ออีเว้นท์ : </string>
+    <string name="alert_creater">ผู้จอง : </string>
+    <string name="alert_email">อีเมลติดต่อ : </string>
+    <string name="alert_time">เวลา : </string>
+
 </resources>

@@ -55,7 +55,7 @@
         </LinearLayout>
 
         <ListView
-            android:id="@+id/listView_slipCheck"
+            android:id="@+id/listView_placeAlert"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

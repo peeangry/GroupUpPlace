@@ -948,31 +948,4 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         list.setAdapter(myItemsListAdapter2);
         Log.d("pathimage", items2.toString());
     }
-//    public void myClickHandler(View v)
-//    {
-//
-//        //reset all the listView items background colours
-//        //before we set the clicked one..
-//
-//        ListView lvItems = getListView();
-//        for (int i=0; i < lvItems.getChildCount(); i++)
-//        {
-//            lvItems.getChildAt(i).setBackgroundColor(Color.BLUE);
-//        }
-//
-//
-//        //get the row the clicked button is in
-//        LinearLayout vwParentRow = (LinearLayout)v.getParent();
-//
-//        TextView child = (TextView)vwParentRow.getChildAt(0);
-//        Button btnChild = (Button)vwParentRow.getChildAt(1);
-//        btnChild.setText(child.getText());
-//        btnChild.setText("I've been clicked!");
-//
-//        int c = Color.CYAN;
-//
-//        vwParentRow.setBackgroundColor(c);
-//        vwParentRow.refreshDrawableState();
-//    }
-
 }

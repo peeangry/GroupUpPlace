@@ -149,12 +149,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <View
-            android:id="@+id/view6"
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:layout_marginTop="10dp"
-            android:background="#CCCCCC" />
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/pullToRefresh"

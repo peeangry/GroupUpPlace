@@ -694,6 +694,7 @@ public class CreatePlace extends AppCompatActivity {
             String dateopen = "";
             String facility = "";
             String themeString = "";
+            Extend_MyHelper.removeDuplicateValue(date);
             for (int i = 0; i < date.size(); i++) {
                 if (i == date.size() - 1) {
 //                    dateopen += date.get(i);

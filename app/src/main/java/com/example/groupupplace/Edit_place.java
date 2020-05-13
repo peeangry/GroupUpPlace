@@ -526,6 +526,7 @@ public class Edit_place extends AppCompatActivity {
         btn_condate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Extend_MyHelper.removeDuplicateValue(date);
                 showTime.setVisibility(View.VISIBLE);
                 dt_timeOpen = edt_timeOne.getText().toString();
                 dt_timeEnd = edt_timeTwo.getText().toString();
@@ -1312,8 +1313,6 @@ public class Edit_place extends AppCompatActivity {
         AsyncTaskUploadClassOBJ.execute();
     }
 
-
-
     public class ImageProcessClass {
 
         public String ImageHttpRequest(String requestURL, HashMap<String, String> PData) {
@@ -1404,103 +1403,5 @@ public class Edit_place extends AppCompatActivity {
         }
 
     }
-
-
-//    public void createNoImage() {
-//        final String name = edt_name.getText().toString();
-//        final String detail = edt_detail.getText().toString();
-//        final String price = sp_price.getSelectedItemPosition()+"";
-//        final String phone = edt_phone.getText().toString();
-//        final String people = spin_numseat.getSelectedItemPosition()+"";
-//        final String depo = placedeposit;
-//        final String dt_timeS = dt_timeOpen;
-//        final String dt_timeE = dt_timeEnd;
-//        String dateopen = "";
-//        String facility = "";
-//        String themeString = "";
-//        for (int i = 0; i < date.size(); i++) {
-//            if (i == date.size() - 1) {
-//                dateopen += date.get(i);
-//            } else {
-//                dateopen += date.get(i) + ":";
-//            }
-//        }
-//        for (int i = 0; i < factlity.size(); i++) {
-//            if (i == factlity.size() - 1) {
-//                facility += factlity.get(i);
-//            } else {
-//                facility += factlity.get(i) + ":";
-//            }
-//        }
-//        for (int i = 0; i < theme.size(); i++) {
-//            if (i == theme.size() - 1) {
-//                themeString += theme.get(i);
-//            } else {
-//                themeString += theme.get(i) + ":";
-//            }
-//        }
-//
-//        final String finalFacility = facility;
-//        final String finalDateopen = dateopen;
-//        final String finalThemeString = themeString;
-//        Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility + " : " + finalThemeString);
-//        Log.d("datatodb", theme.toString());
-//        class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-//
-//            @Override
-//            protected void onPreExecute() {
-//                super.onPreExecute();
-//
-//                progressDialog = ProgressDialog.show(Edit_place.this, "place is creating", "Please Wait", false, false);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(String string1) {
-//
-//                super.onPostExecute(string1);
-//
-//                // Dismiss the progress dialog after done uploading.
-//                progressDialog.dismiss();
-//
-//                // Printing uploading success message coming from server on android app.
-//                Toast.makeText(Edit_place.this, string1, Toast.LENGTH_LONG).show();
-//
-//                // Setting image as transparent after done uploading.
-//                Intent in = new Intent(Edit_place.this, HomePlace.class);
-//                in.putExtra("id", id + "");
-//                in.putExtra("email", email + "");
-//                startActivity(in);
-//
-//            }
-//
-//            @Override
-//            protected String doInBackground(Void... params) {
-//                Log.d("datatodb", name + " : " + detail + " : " + price + " : " + phone + " : " + people + " : " + depo + " : " + dt_timeS + " : " + dt_timeE + " : " + finalDateopen + " : " + finalFacility + " : " + finalThemeString);
-//                Log.d("datatodb", theme.toString());
-//                Edit_place.ImageProcessClass imageProcessClass = new Edit_place.ImageProcessClass();
-//                HashMap<String, String> HashMapParams = new HashMap<String, String>();
-//                HashMapParams.put("name", name);
-//                HashMapParams.put("id", id);
-//                HashMapParams.put("email", email);
-//                HashMapParams.put("detail", detail);
-//                HashMapParams.put("price", price);
-//                HashMapParams.put("phone", phone);
-//                HashMapParams.put("people", people);
-//                HashMapParams.put("depo", depo);
-//                HashMapParams.put("date", finalDateopen);
-//                HashMapParams.put("timeS", dt_timeS);
-//                HashMapParams.put("timeE", dt_timeE);
-//                HashMapParams.put("facility", finalFacility);
-//                HashMapParams.put("theme", finalThemeString);
-//
-//                Log.d("hashmap", HashMapParams.size() + "");
-//                Log.d("hashmap", HashMapParams.toString());
-//                String FinalData = imageProcessClass.ImageHttpRequest(ServerUploadPath, HashMapParams);
-//                return FinalData;
-//            }
-//        }
-//        AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-//        AsyncTaskUploadClassOBJ.execute();
-//    }
 
 }

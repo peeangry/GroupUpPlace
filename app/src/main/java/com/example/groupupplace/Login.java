@@ -154,9 +154,6 @@ public class Login extends AppCompatActivity {
                             email = user.getEmail();
                             saveData();
 //                            updateUI(customer);
-                            Intent intent = new Intent(Login.this, HomePlace.class);
-                            intent.putExtra("email",email);
-                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -176,6 +173,9 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.e("Log", "Volley::onResponse():" + response);
+                        Intent intent = new Intent(Login.this, HomePlace.class);
+                        intent.putExtra("email",email);
+                        startActivity(intent);
                     }
                 },
                 new Response.ErrorListener() {

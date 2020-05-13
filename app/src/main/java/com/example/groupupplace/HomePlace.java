@@ -109,6 +109,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         Button confirm;
         Button Review;
     }
+
     public class ItemsListAdapter extends BaseAdapter {
         private ArrayList<HomePlace.Item> arraylist;
         private Context context;
@@ -135,6 +136,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         public long getItemId(int position) {
             return position;
         }
+
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             View rowView = convertView;
@@ -206,7 +208,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                     View mView = getLayoutInflater().inflate(R.layout.layout_showreview_dialog, null);
                     ImageButton btn_close = mView.findViewById(R.id.showbutton_btnClose);
                     ListView list = mView.findViewById(R.id.list_ShowReview);
-                    getReview(ItemId,list);
+                    getReview(ItemId, list);
                     btn_close.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -231,8 +233,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                     if (wp.ItemName.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
-                    }
-                    else if (wp.ItemFaciString.toLowerCase(Locale.getDefault())
+                    } else if (wp.ItemFaciString.toLowerCase(Locale.getDefault())
                             .contains(charText)) {
                         list.add(wp);
                     }
@@ -242,6 +243,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
             notifyDataSetChanged();
         }
     }
+
     public class Item2 {
         //        String ItemDrawable;
         String ItemName;
@@ -257,12 +259,14 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         }
 
     }
+
     static class ViewHolder2 {
         //        ImageView icon;
         TextView tName;
         TextView tReview;
         RatingBar rtScore;
     }
+
     public class ItemsListAdapter2 extends BaseAdapter {
         private ArrayList<HomePlace.Item2> arraylist2;
         private Context context;
@@ -407,40 +411,6 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
             }
         });
 
-//        new CountDownTimer(2000, 1000) {
-//            public void onFinish() {
-//                class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-//                    @Override
-//                    protected void onPreExecute() {
-//                        super.onPreExecute();
-//                        progressDialog = ProgressDialog.show(HomePlace.this, "Dowloading Place", "Please Wait", false, false);
-//                    }
-//
-//                    @Override
-//                    protected void onPostExecute(String string1) {
-//                        super.onPostExecute(string1);
-//                        showAllCheckboxClick();
-//                        progressDialog.dismiss();
-//                        Toast.makeText(HomePlace.this, string1, Toast.LENGTH_SHORT).show();
-//
-//                    }
-//
-//                    @Override
-//                    protected String doInBackground(Void... params) {
-//                        getEventInvitation();
-//                        getPlacePhoto();
-//                        getPlaceTheme();
-//                        return "successful!!!";
-//                    }
-//                }
-//                AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-//                AsyncTaskUploadClassOBJ.execute();
-//            }
-//
-//            public void onTick(long millisUntilFinished) {
-//                // millisUntilFinished    The amount of time until finished.
-//            }
-//        }.start();
         Log.d("footer", "email " + email + " name " + name + " id " + id);
 
         //firebase signin
@@ -468,11 +438,6 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 startActivity(in);
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
 
@@ -562,6 +527,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                             Log.d("footer", "email " + email + " name " + name + " id " + id);
                             getplace();
                             getnumNotification();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -576,53 +542,17 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                 });
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
-//        new CountDownTimer(500, 500) {
-//
-//            @Override
-//            public void onTick(long millisUntilFinished) {
-//
-//            }
-//
-//            @Override
-//            public void onFinish() {
-//                class AsyncTaskUploadClass extends AsyncTask<Void, Void, String> {
-//                    @Override
-//                    protected void onPreExecute() {
-//                        super.onPreExecute();
-//                    }
-//
-//                    @Override
-//                    protected void onPostExecute(String string1) {
-//                        super.onPostExecute(string1);
-//                        new CountDownTimer(300, 300) {
-//                            @Override
-//                            public void onTick(long millisUntilFinished) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onFinish() {
-//                                showAllCheckboxClick();
-//                            }
-//                        }.start();
-//
-//
-//                        Toast.makeText(HomePlace.this, string1, Toast.LENGTH_SHORT).show();
-//
-//                    }
-//
-//                    @Override
-//                    protected String doInBackground(Void... params) {
-//                        getplace();
-////                        getPlacePhoto();
-////                        getPlaceTheme();
-//                        return "successful!!!";
-//                    }
-//                }
-//                AsyncTaskUploadClass AsyncTaskUploadClassOBJ = new AsyncTaskUploadClass();
-//                AsyncTaskUploadClassOBJ.execute();
-//            }
-//        }.start();
+        new CountDownTimer(2000, 2000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                progressDialog.dismiss();
+            }
+        }.start();
     }
 
     public void getUserThread() {
@@ -743,7 +673,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
 
     public void getplace() {
         responseStr = new HomePlace.ResponseStr();
-
+        placeArray.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
         String url = "http://www.groupupdb.com/android/getplace.php";
         url += "?sId=" + id;//รอเอาIdจากfirebase
@@ -843,6 +773,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         });
 
     }
+
     public void getnumNotification() {
         responseStr = new ResponseStr();
 
@@ -865,9 +796,9 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
                             }
                             //set Header menu name email
                             Log.d("footer", MyArrList.get(0).get("num"));
-                            String numSn =MyArrList.get(0).get("num");
+                            String numSn = MyArrList.get(0).get("num");
                             int numIn = Integer.parseInt(numSn);
-                            if (numIn>0){
+                            if (numIn > 0) {
                                 numNoti.setVisibility(View.VISIBLE);
                                 numNoti.setText(numSn);
                             }
@@ -888,6 +819,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
     }
+
     public void getReview(String pid, final ListView listView) {
         placeReview.clear();
         final ArrayList<HashMap<String, String>> MyArrList = new ArrayList<HashMap<String, String>>();
@@ -941,7 +873,7 @@ public class HomePlace extends AppCompatActivity implements NavigationView.OnNav
             String detail = placeReview.get(i).get("review_detail").toString();
             String score = placeReview.get(i).get("review_score").toString();
             String pId = placeReview.get(i).get("place_id").toString();
-            HomePlace.Item2 item2 = new HomePlace.Item2(name,detail,score);
+            HomePlace.Item2 item2 = new HomePlace.Item2(name, detail, score);
             items2.add(item2);
         }
         myItemsListAdapter2 = new HomePlace.ItemsListAdapter2(this, items2);

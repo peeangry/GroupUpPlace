@@ -43,7 +43,7 @@ public class Login extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
     String customer;
     SignInButton signInButton;
-    String name ="",email="";
+    String name ="",email="",fcm="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,7 @@ public class Login extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         mAuth = FirebaseAuth.getInstance();
         signInButton = findViewById(R.id.sign_in_button);
+        getTokenRetieve();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
             String channelId  = getString(R.string.default_notification_channel_id);
@@ -168,6 +169,7 @@ public class Login extends AppCompatActivity {
         String url = "http://www.groupupdb.com/android/createuserplace.php";
         url += "?sName=" + name;
         url += "&sEmail=" + email;
+        url += "&fcm=" + fcm;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -233,8 +235,9 @@ public class Login extends AppCompatActivity {
 
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
+                        fcm =token;
                         Log.d(TAG, msg);
-                        Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         // [END retrieve_current_token]

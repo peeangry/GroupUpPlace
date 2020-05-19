@@ -697,7 +697,7 @@ public class CreatePlace extends AppCompatActivity {
             Extend_MyHelper.removeDuplicateValue(date);
             for (int i = 0; i < date.size(); i++) {
                 if (i == date.size() - 1) {
-//                    dateopen += date.get(i);
+                    dateopen += date.get(i);
                 } else {
                     dateopen += date.get(i) + ":";
                 }
@@ -741,7 +741,7 @@ public class CreatePlace extends AppCompatActivity {
                     progressDialog.dismiss();
 
                     // Printing uploading success message coming from server on android app.
-                    Toast.makeText(CreatePlace.this, string1, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(CreatePlace.this, string1, Toast.LENGTH_LONG).show();
 
                     // Setting image as transparent after done uploading.
                     btn_img1.setImageResource(android.R.color.transparent);
@@ -942,7 +942,7 @@ public class CreatePlace extends AppCompatActivity {
                 progressDialog.dismiss();
 
                 // Printing uploading success message coming from server on android app.
-                Toast.makeText(CreatePlace.this, string1, Toast.LENGTH_LONG).show();
+//                Toast.makeText(CreatePlace.this, string1, Toast.LENGTH_LONG).show();
 
                 // Setting image as transparent after done uploading.
                 Intent in = new Intent(CreatePlace.this, HomePlace.class);

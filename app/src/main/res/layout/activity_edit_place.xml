@@ -238,7 +238,8 @@
                     android:backgroundTint="#FFFFFF"
                     android:ems="8"
                     android:hint="@string/phone"
-                    android:inputType="phone" />
+                    android:inputType="phone"
+                    android:maxLength="10" />
 
             </LinearLayout>
 

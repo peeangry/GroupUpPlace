@@ -1245,7 +1245,7 @@ public class Edit_place extends AppCompatActivity {
                 progressDialog.dismiss();
 
                 // Printing uploading success message coming from server on android app.
-                Toast.makeText(Edit_place.this, string1, Toast.LENGTH_LONG).show();
+//                Toast.makeText(Edit_place.this, string1, Toast.LENGTH_LONG).show();
 
                 // Setting image as transparent after done uploading.
                 img1.setImageResource(android.R.color.transparent);

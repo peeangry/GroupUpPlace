@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="skipPlace"
                 android:text="Place"
-                android:visibility="visible" />
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 

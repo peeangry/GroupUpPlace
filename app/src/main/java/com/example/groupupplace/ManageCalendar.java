@@ -378,7 +378,7 @@ public class ManageCalendar extends AppCompatActivity {
 
                                 super.onPreExecute();
 
-                                progressDialog = ProgressDialog.show(ManageCalendar.this, "Calendar is Uploading", "Please Wait", false, false);
+                                progressDialog = ProgressDialog.show(ManageCalendar.this, "กำลังอัปโหลดปฏิทิน", "กรุณารอซักครู่", false, false);
 
                             }
 
@@ -467,7 +467,7 @@ public class ManageCalendar extends AppCompatActivity {
 
                                 super.onPreExecute();
 
-                                progressDialog = ProgressDialog.show(ManageCalendar.this, "Calendar is Uploading", "Please Wait", false, false);
+                                progressDialog = ProgressDialog.show(ManageCalendar.this, "กำลังอัปโหลดปฏิทิน", "กรุณารอซักครู่", false, false);
                             }
 
                             @Override
@@ -1371,7 +1371,7 @@ public class ManageCalendar extends AppCompatActivity {
     public void SaveCalenGettoDB() {
 
         final android.app.AlertDialog viewDetail = new android.app.AlertDialog.Builder(ManageCalendar.this).create();
-        viewDetail.setTitle("Confirm Add Calendar to DataBase");
+        viewDetail.setTitle("ยืนยันการเพิ่มวันที่เข้าสู่ปฏิทิน");
 
         viewDetail.setButton(viewDetail.BUTTON_NEGATIVE, "ยกเลิก", new DialogInterface.OnClickListener() {
             @Override
@@ -1397,7 +1397,7 @@ public class ManageCalendar extends AppCompatActivity {
                     protected void onPreExecute() {
                         super.onPreExecute();
 //                        checkdateforcal(dateString,dateInYear);
-                        progressDialog = ProgressDialog.show(ManageCalendar.this, "Calendar is Uploading", "Please Wait", false, false);
+                        progressDialog = ProgressDialog.show(ManageCalendar.this, "กำลังอัปโหลดปฏิทิน", "กรุณารอซักครู่", false, false);
                     }
 
                     @Override
@@ -1742,7 +1742,7 @@ public class ManageCalendar extends AppCompatActivity {
 
                 super.onPreExecute();
 
-                progressDialog = ProgressDialog.show(ManageCalendar.this, "Calendar is Uploading", "Please Wait", false, false);
+                progressDialog = ProgressDialog.show(ManageCalendar.this, "กำลังอัปโหลดปฏิทิน", "กรุณารอซักครู่", false, false);
             }
 
             @Override

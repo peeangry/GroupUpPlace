@@ -1233,7 +1233,7 @@ public class Edit_place extends AppCompatActivity {
             protected void onPreExecute() {
                 super.onPreExecute();
 
-                progressDialog = ProgressDialog.show(Edit_place.this, "place is creating", "Please Wait", false, false);
+                progressDialog = ProgressDialog.show(Edit_place.this, "กำลังแก้ไขสถานที่", "กรุณารอซักครู่", false, false);
             }
 
             @Override

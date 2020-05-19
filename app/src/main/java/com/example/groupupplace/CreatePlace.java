@@ -729,7 +729,7 @@ public class CreatePlace extends AppCompatActivity {
                 protected void onPreExecute() {
                     super.onPreExecute();
 
-                    progressDialog = ProgressDialog.show(CreatePlace.this, "place is creating", "Please Wait", false, false);
+                    progressDialog = ProgressDialog.show(CreatePlace.this, "กำลังสร้างสถานที่", "กรุณารอซักครู่", false, false);
                 }
 
                 @Override
@@ -930,7 +930,7 @@ public class CreatePlace extends AppCompatActivity {
             protected void onPreExecute() {
                 super.onPreExecute();
 
-                progressDialog = ProgressDialog.show(CreatePlace.this, "place is creating", "Please Wait", false, false);
+                progressDialog = ProgressDialog.show(CreatePlace.this, "กำลังสร้างสถานที่", "กรุณารอซักครู่", false, false);
             }
 
             @Override
